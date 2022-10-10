@@ -6,5 +6,9 @@ En este día se ha ordenado y clasificado los requisitos mencionados por el clie
 Todos los miembros del grupo ha participado para clasificar y determinar todos los requisitos del proyecto.
 Duración aproximada: 3h
 
-# 09/10/2022
+## 09/10/2022
 Florin Babusca Voicu: Ha realizado todos sus requisitos asignados, que tienen como identificador Fx, donde x es un número entero. 
+
+## 10/1072022
+Hoy se han reunido Claudia Vega Rodrigez y Florin Babusca Voicu para ir creando el documento de requisitos. 
+Florin: Ha creado el apartado de introducción.

@@ -1,4 +1,4 @@
-#Archivo de bitácora
+# Archivo de bitácora
 En este documento se informará sobre qué se ha hecho cada día y sobre la actividad de cada miembro.
 
 ## 07/10/2022

@@ -1,0 +1,94 @@
+\ProvidesPackage{umatfgspanish}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{libertine}
+\usepackage{geometry}
+\usepackage[titletoc]{appendix}
+\usepackage[final]{pdfpages}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{titlesec} %% For custom sections
+\usepackage{etoolbox} %% End on odd page
+\usepackage[spanish]{babel}
+\usepackage{inconsolata}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{fontspec}
+\usepackage{amsmath}
+
+\setmonofont{[Iosevka.ttf]}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{codebg}{HTML}{fafafa}
+\definecolor{numbergrey}{HTML}{7f7f7f}
+
+\hypersetup{
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black}
+}
+
+\lstset{ 
+  backgroundcolor=\color{codebg},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+  basicstyle=\ttfamily,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  inputpath=code,
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  morekeywords={*,\$},             % if you want to add more keywords to the set
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                     % sets default tabsize to 2 spaces
+}
+
+%% begin abstract format
+\makeatletter
+\renewenvironment{abstract}{%
+    \if@twocolumn
+      \section*{\abstractname \\}%
+    \else %% <- here I've removed \small
+    \begin{flushright}
+        {\filleft\Huge\bfseries\fontsize{48pt}{12}\selectfont\abstractname\vspace{\z@}}%  %% <- here I've added the format
+        \end{flushright}
+      \quotation
+    \fi}
+    {\if@twocolumn\else\endquotation\fi}
+\makeatother
+%% end abstract format
+
+\titleformat{\section}[display]
+    {\filleft\Huge\bfseries\fontsize{48pt}{12}\selectfont}
+    {\color{numbergrey}\fontsize{112pt}{12}\selectfont\thesection \\}
+    {0pt}{}
+
+\geometry{
+ a4paper,
+ left=2.5cm,
+ top=2.5cm,
+ }
+
+\renewcommand{\baselinestretch}{1.5} %% line spacing of 1.5
+
+\pretocmd{\section}{\cleardoublepage}{}{} %% Start on odd page
+
+\newenvironment{umaappendices}
+  { \begin{appendices}
+        \titleformat{\section}[display]
+            {\filleft\Huge\bfseries\fontsize{48pt}{12}\selectfont}
+            {\color{numbergrey}Apéndice \thesection}{0pt}{}
+  }{
+    \end{appendices}
+  }

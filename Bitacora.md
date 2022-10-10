@@ -9,6 +9,7 @@ Duración aproximada: 3h
 ## 09/10/2022
 Florin Babusca Voicu: Ha realizado todos sus requisitos asignados, que tienen como identificador Fx, donde x es un número entero. 
 
-## 10/1072022
+## 10/10/2022
 Hoy se han reunido Claudia Vega Rodrigez y Florin Babusca Voicu para ir creando el documento de requisitos. 
 Florin: Ha creado el apartado de introducción.
+Claudia: Ha realizado sus requisitos asignados que tienen como identificador Cx, donde x es un número entero

@@ -6,21 +6,21 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
  	\caption{Prioridad de requisitos}
 	\centering
 	
-	\begin{tabular}{C{1cm}|C{10cm}C{3cm}}
+	\begin{tabular}{C{1cm}|C{11cm}C{3cm}}
  		\toprule
  		\textbf{ID} & \textbf{Descripción} & \textbf{Prioridad} \\
  		\midrule
- 		F1 & Posibilidad de cancelar la ejecución de una tarea del robot & Obligatorio \\
-   		F2 & Poder asignar varias tareas a un robot & Deseable \\
-   		F3 & Asignar varios robots para una misma tarea & Deseable\\
-   		F4 & Los robots podrán notificar fallos durante la realización de una tarea & Obligatorio\\
-   		C1 & Roles de usuario: El técnico implementa las tareas y el sanitario asigna las tareas al robot & Obligatorio\\
-   		C2 & Implementar tareas básicas para el robot y que sea escalable desde la interfaz. & Deseable\\
-   		J1 & Visualizar el estado de cada uno de los robots. & Obligatorio\\
-   		J2 & Guardar el historial de cada robot automáticamente. & Obligatorio\\
-   		P1 & En la monitorización del robot se deberá poder acceder a todas las tareas y su estado (en ejecución, interrumpida, etc). & Obligatorio\\
-   		P2 & Basic authorization para entrar en la aplicación . & Deseable\\
-   		P3 & Los robots notifican a la aplicación, que no puedan realizar la tarea por alguna razón. & Obligatorio\\
+ 		RF-1 & Posibilidad de cancelar la ejecución de una tarea del robot & Necesario \\
+   		RF-2 & Poder asignar varias tareas a un robot & Deseable \\
+   		RF-3 & Asignar varios robots para una misma tarea & Deseable\\
+   		RF-4 & Los robots podrán notificar fallos durante la realización de una tarea & Prioritario\\
+   		RF-5 & Roles de usuario: El técnico implementa las tareas y el sanitario asigna las tareas al robot & Prioritario\\
+   		RF-6 & Implementar tareas básicas para el robot y que sea escalable desde la interfaz. & Deseable\\
+   		RF-7 & Visualizar el estado de cada uno de los robots. & Necesario\\
+   		RF-8 & Guardar el historial de cada robot automáticamente. & Necesario\\
+   		RF-9 & En la monitorización del robot se deberá poder acceder a todas las tareas y su estado (en ejecución, interrumpida, etc). & Necesario\\
+   		RF-10 & Autorización mediante usario-contraseña para entrar en la aplicación . & Deseable\\
+   		RF-12 & Los robots notifican a la aplicación, que no puedan realizar la tarea por alguna razón. & Prioritario\\
  		\bottomrule
  		\end{tabular}
 
@@ -32,14 +32,14 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 
 \begin{table}[H]
     \label{tab:reqF1}
- 	\caption{Descripción requisito F1}
+ 	\caption{Descripción requisito RF-1}
 	\centering
 	
 	\begin{tabular}{C{3cm}|C{12cm}}
  		\toprule
  		\textbf{Atributo} & \textbf{Descripción} \\
  		\midrule
- 	    ID & F1 \\
+ 	    ID & RF-1 \\
  	    Cómo... & Empleado sanitario \\
  	    Quiero... & Poder cancelar en todo momento una tarea asignada a un robot determinado. \\
  	    Para obtener... & Mayor control sobre la actividad del robot. \\
@@ -51,14 +51,14 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 
 \begin{table}[H]
     \label{tab:reqF2}
- 	\caption{Descripción requisito F2}
+ 	\caption{Descripción requisito RF-2}
 	\centering
 	
 	\begin{tabular}{C{3cm}|C{12cm}}
  		\toprule
  		\textbf{Atributo} & \textbf{Descripción} \\
  		\midrule
- 	    ID & F2 \\
+ 	    ID & RF-2 \\
  	    Cómo... & Empleado sanitario \\
  	    Quiero... & Poder asignar varias tareas en secuencia para el robot. \\
  	    Para obtener... & La posibilidad de asignar al robot una lista de tareas que el complete en un orden concreto.  \\
@@ -70,7 +70,7 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 
 \begin{table}[H]
     \label{tab:reqF3}
- 	\caption{Descripción requisito F3}
+ 	\caption{Descripción requisito RF-3}
 	\centering
 	
 	\begin{tabular}{C{3cm}|C{12cm}}
@@ -89,14 +89,14 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 
 \begin{table}[H]
     \label{tab:reqF4}
- 	\caption{Descripción requisito F4}
+ 	\caption{Descripción requisito RF-4}
 	\centering
 	
 	\begin{tabular}{C{3cm}|C{12cm}}
  		\toprule
  		\textbf{Atributo} & \textbf{Descripción} \\
  		\midrule
- 	    ID & F4 \\
+ 	    ID & RF-4 \\
  	    Cómo... & Empleado sanitario \\
  	    Quiero... & Poder ver si ha ocurrido un problema durante el desarrollo de la tarea del robot.\\
  	    Para obtener... & Una información más detallada sobre cada trabajo que hayan llevado a cabo el robot.  \\
@@ -111,14 +111,14 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 
 \begin{table}[H]
     \label{tab:reqC1}
- 	\caption{Descripción requisito C1}
+ 	\caption{Descripción requisito RF-5}
 	\centering
 	
 	\begin{tabular}{C{3cm}|C{12cm}}
  		\toprule
  		\textbf{Atributo} & \textbf{Descripción} \\
  		\midrule
- 	    ID & C1 \\
+ 	    ID & RF-5 \\
  	    Cómo... & Técnico Sanitario y Empleado Sanitario \\
  	    Quiero... & Poder asignar la responsabilidad de implementación al técnico y que el usuario sanitario se encargue de dar tareas a los robots. \\
  	    Para obtener... & Un sistema de multiusuario.  \\
@@ -130,18 +130,18 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 
 \begin{table}[H]
     \label{tab:reqC2}
- 	\caption{Descripción requisito C2}
+ 	\caption{Descripción requisito RF-6}
 	\centering
 	
 	\begin{tabular}{C{3cm}|C{12cm}}
  		\toprule
  		\textbf{Atributo} & \textbf{Descripción} \\
  		\midrule
- 	    ID & C2 \\
+ 	    ID & RF-6 \\
  	    Cómo... & Técnico Sanitario \\
  	    Quiero... & Implementar tareas básicas para el robot. \\
  	    Para obtener... & Asignarles a los robots una o más tareas básicas.  \\
- 	    Criterio de Aceptación & El objetivo es que así es sistema sea escalable a más tareas. \\
+ 	    Criterio de Aceptación & El objetivo es que así el sistema sea escalable a más tareas. \\
  	    Versión & 1 \\
  		\bottomrule
  		\end{tabular}
@@ -149,14 +149,14 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 
 \begin{table}[H]
     \label{tab:reqJ1}
- 	\caption{Descripción requisito J1}
+ 	\caption{Descripción requisito RF-7}
 	\centering
 	
 	\begin{tabular}{C{3cm}|C{12cm}}
  		\toprule
  		\textbf{Atributo} & \textbf{Descripción} \\
  		\midrule
- 	    ID & J1 \\
+ 	    ID & RF-7 \\
  	    Cómo... & Empleado Sanitario \\
  	    Quiero... & Visualizar el estado de cada uno de los robots. \\
  	    Para obtener... & Información acerca de cuál está libre.  \\
@@ -170,14 +170,14 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 
 \begin{table}[H]
     \label{tab:reqJ1}
- 	\caption{Descripción requisito J2}
+ 	\caption{Descripción requisito RF-8}
 	\centering
 	
 	\begin{tabular}{C{3cm}|C{12cm}}
  		\toprule
  		\textbf{Atributo} & \textbf{Descripción} \\
  		\midrule
- 	    ID & J2 \\
+ 	    ID & RF-8 \\
  	    Cómo... & Técnico Sanitario \\
  	    Quiero... & Guardar el historial de cada robot automáticamente. \\
  	    Para obtener... & Información acerca de los eventos pasados del robot.  \\
@@ -188,14 +188,14 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 \end{table}
 \begin{table}[H]
     \label{tab:reqF2}
- 	\caption{Descripción requisito P1}
+ 	\caption{Descripción requisito RF-9}
 	\centering
 
 	\begin{tabular}{C{3cm}|C{12cm}}
  		\toprule
  		\textbf{Atributo} & \textbf{Descripción} \\
  		\midrule
- 	    ID & P1 \\
+ 	    ID & RF-9 \\
  	    Cómo... & Técnico sanitario \\
  	    Quiero... & Poder ver en la monitorización del robot las tareas y sus estados (en ejecución, interrumpida, etc). \\
  	    Para obtener... & Una visión general de la asignación de tareas y su estado  \\
@@ -207,14 +207,14 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 
 \begin{table}[H]
     \label{tab:reqF2}
- 	\caption{Descripción requisito P2}
+ 	\caption{Descripción requisito RF-10}
 	\centering
 
 	\begin{tabular}{C{3cm}|C{12cm}}
  		\toprule
  		\textbf{Atributo} & \textbf{Descripción} \\
  		\midrule
- 	    ID & P2 \\
+ 	    ID & RF-10 \\
  	    Cómo... & Técnico sanitario \\
  	    Quiero... & Que los usuarios de la aplicación puedan entrar a la aplicación con un inicio de sesión básico (ID, contraseña y rol) \\
  	    Para obtener... & Mayor seguridad en el acceso a la aplicación  \\
@@ -226,14 +226,14 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 
 \begin{table}[H]
     \label{tab:reqF2}
- 	\caption{Descripción requisito P3}
+ 	\caption{Descripción requisito RF-11}
 	\centering
 
 	\begin{tabular}{C{3cm}|C{12cm}}
  		\toprule
  		\textbf{Atributo} & \textbf{Descripción} \\
  		\midrule
- 	    ID & P3 \\
+ 	    ID & RF-11 \\
  	    Cómo... & Empleado sanitario \\
  	    Quiero... & Que los robots notifiquen a la aplicación que no pueden realizar la tarea por alguna razón \\
  	    Para obtener... & Información necesaria y rápida sobre los robots en ese estado  \\
@@ -245,16 +245,16 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitos} la priorid
 \subsection{Requisitos no funcionales}
 
 \begin{enumerate}
-  \item La aplicación debe soportar al menos dos usuarios simultáneamente.
-  \item Deberán existir diferentes tipos de error para el usuario.
-  \item Existirán fallos durante la realización de una tarea que tengan diferentes implicaciones para el robot, como, por ejemplo, si existe un fallo por batería baja, el robot anulará su cola de tareas para ir a la zona de recarga de batería.
-  \item El sistema deberá proporcionar un sistema con interfaz de escritorio. 
+  \item El sistema deberá proporcionar un sistema con interfaz de usuario.
   \item El programa debe tener una naturaleza sencilla para poder configurar o manejar a distintos tipos de robots.
-  \item La información asociada a una tarea deberá incluir la fecha y la hora a la que se ha realizado.
+  \item La aplicación debe soportar al menos dos usuarios simultáneamente.
   \item Se debe poder ver lo que estan haciendo los robots de un vistazo.
+  \item Deberán existir diferentes tipos de error para el usuario.
+  \item Para que el robot notifique los errores se deberá de disponer de una API de GETs para los robots
+  \item Existirán fallos durante la realización de una tarea que tengan diferentes implicaciones para el robot, como, por ejemplo, si existe un fallo por batería baja, el robot anulará su cola de tareas para ir a la zona de recarga de batería.
+  \item La información asociada a una tarea deberá incluir la fecha y la hora a la que se ha realizado.
   \item Sería deseable poder tener un filtro en el que seleccionar por tipos los robots que se muestran en la vista.
   \item Solo se almacenará el historial de la última jornada.
   \item Recibir información de los estados de los robots con una asincronía máxima de 30 segundos
-  \item Para que el robot notifique los errores se deberá de disponer de una API de GETs para los robots
 
 \end{enumerate}

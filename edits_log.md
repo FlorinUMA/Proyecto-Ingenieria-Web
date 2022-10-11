@@ -21,4 +21,8 @@ Por otro lado Juan Carlos ha dividido el archivo de texto en diferentes archivos
 
 
 ### Pablo
-Pablo ha anotado sus correspondientes 5 requisitos en el documento así como ha solucionado algunos errores gramaticales encontrados en la realización del documento de requisitos. 
+Pablo ha anotado sus correspondientes 5 requisitos en el documento así como ha solucionado algunos errores gramaticales encontrados en la realización del documento de requisitos.
+
+## 11/10/2022
+
+Última revisión antes de la entrega del documento de requisitos. Se ha añadido una nueva sección justificando el formato escogido y se han editado los IDs de los requisitos. Dichos cambios han sido realizados por Juan Carlos, bajo la decisión de todos los miembros del grupo.

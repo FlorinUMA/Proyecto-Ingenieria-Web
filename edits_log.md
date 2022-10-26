@@ -26,3 +26,14 @@ Pablo ha anotado sus correspondientes 5 requisitos en el documento así como ha 
 ## 11/10/2022
 
 Última revisión antes de la entrega del documento de requisitos. Se ha añadido una nueva sección justificando el formato escogido y se han editado los IDs de los requisitos. Dichos cambios han sido realizados por Juan Carlos, bajo la decisión de todos los miembros del grupo.
+
+## 25/10/2022
+
+Reunión de los miembros del grupo para decidir la división de tareas para la próxima entrega, además de asginar los puntos a corregir de la anterior entrega con el objetivo del mejorar la misma.
+
+## 26/10/2022
+
+## Claudia 
+
+Claudia ha realizado la corrección de los requisitos no funcionales del 6 al 9, ambos inclusive, y los ha ordenado en tablas tal y como se muestran los requisitos funcionales. Además, ha hecho el cambio de un requisito no funcional al funcional (correspondía con el anterior RNF-9) y eliminado el RF-5, puesto que no tenía sentido considerarlo un requisito.
+

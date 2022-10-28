@@ -33,7 +33,10 @@ Reunión de los miembros del grupo para decidir la división de tareas para la p
 
 ## 26/10/2022
 
-## Claudia 
+### Claudia 
 
 Claudia ha realizado la corrección de los requisitos no funcionales del 6 al 9, ambos inclusive, y los ha ordenado en tablas tal y como se muestran los requisitos funcionales. Además, ha hecho el cambio de un requisito no funcional al funcional (correspondía con el anterior RNF-9) y eliminado el RF-5, puesto que no tenía sentido considerarlo un requisito.
 
+## 28/10/2022
+### Pablo
+Pablo ha corregido los requisitos no funcionales del 1 al 5, ambos inclusive y los ha colocado en la tabla de requisitos general. Además, ha dividido los requisitos no funcionales que ha corregido en subsecciones según la tipología que presenten.

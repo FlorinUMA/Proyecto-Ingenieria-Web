@@ -40,3 +40,6 @@ Claudia ha realizado la corrección de los requisitos no funcionales del 6 al 9,
 ## 28/10/2022
 ### Pablo
 Pablo ha corregido los requisitos no funcionales del 1 al 5, ambos inclusive y los ha colocado en la tabla de requisitos general. Además, ha dividido los requisitos no funcionales que ha corregido en subsecciones según la tipología que presenten.
+
+## 30/10/2022
+Hemos finiquitado las correcciones indicadas en el feedback de la última entrega y hemos realizado el diagrama IFML de la aplicación.

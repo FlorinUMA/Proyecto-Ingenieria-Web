@@ -52,4 +52,5 @@ Se ha reunido junto a Pablo con el profesor para resolver dudas acerca del model
 Han finalizado el diagrama UML y su correspondiente explicación. Además se ha realizado un diagrama de despliegue simple.
 
 ## 03/11/2022
-Se han realizado varias correcciones al documento, además de añadir referencias y nuevas explicaciones que aún no estaban acabadas.
+- Mañana: Se han realizado varias correcciones al documento, además de añadir referencias y nuevas explicaciones que aún no estaban acabadas.
+- Tarde: Se ha reunido el grupo para dar un último repaso al documento y a los diagramas sacando como conclusión una corrección en el diagrama de clases.

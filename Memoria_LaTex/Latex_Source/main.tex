@@ -1,5 +1,5 @@
 \documentclass[12pt, a4paper]{exam}
-\title{\textbf{Documento de Requisitos}}
+\title{\textbf{Web de control de robots sanitarios}}
 \author{Florín Babusca, Pablo Molina, Juan Carlos Ruiz, Claudia Vega}
 
 \usepackage{float} %Eliminar tras la primera entrega
@@ -12,8 +12,11 @@
 % Pack de librerias de sistemas inteligentes
 \usepackage{graphicx}
 \usepackage{array}
+\usepackage{biblatex}
 \usepackage{booktabs}
 \usepackage[utf8]{inputenc}
+
+\addbibresource{references.bib}
 
 \usepackage{titling}
 \renewcommand\maketitlehooka{\null\mbox{}\vfill}
@@ -22,25 +25,27 @@
 \usepackage{subfiles} % Best loaded last in the preamble
 
 \begin{document}
-\lhead{\textit{Documento de Requisitos - Ingeniería web}}
+\lhead{\textit{Control de robots sanitarios - Ingeniería web}}
 
 \begin{titlingpage}
 \maketitle
 \end{titlingpage}
 \tableofcontents
 
-% NOTA: Hay que hacer una tabla ordenando los requisitos de mayor a menor importancia.
-% Mi parte (Florin) tienen como id Fx, donde x es un número entero. NO los he ordenado por prioridad aún.
-% Debería de hacerse cuando tengamos todos los requisitos redactados.
-
-\section{Justificación del formato}
-\subfile{sections/formatJustify}
-
 \section{Introducción}
 \subfile{sections/introduction}
-
 \section{Descripción de requisitos}
+\label{sec:DocRequisitos}
+    \subsection{Justificación del formato}
+    \subfile{sections/formatJustify}
 \subfile{sections/descRequisitos}
+
+\section{Modelado}
+\subfile{sections/modelling}
+
+% References
+\printbibliography
+\newpage
 
 % Back Cover
 \includepdf[noautoscale=true, width=\paperwidth]{backcover.pdf}

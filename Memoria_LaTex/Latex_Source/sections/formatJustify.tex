@@ -1,0 +1,53 @@
+Hemos decidido utilizar dos formatos, uno tabular para los requisitos funcionales y otro para los requisitos no funcionales. Esto se ha hecho pensando en el modelo de trabajo que se utilizará durante el desarrollo de la web, ya que con total seguridad se aplicará la metodología SCRUM. 
+
+La principal razón de dicha decisión es porque durante el desarrollo web, es necesaria la interacción continua con los stakeholders, ya que en la mayoría de las veces dicho grupo presenta una heterogeneidad y mutidisciplinaridad en sus constituyentes muy amplia, la cual puede plantear retos para alcanzar consenso
+sobre los requisitos. Además, el entorno de desarrollo web es especialmente impredecible y dinámico, por lo que es necesario minimizar los riesgos asociados a dicha incertidumbre, y SCRUM lo consigue gracias a las entregas parciales que va generando y la constante participación de los stakeholders durante el desarrollo.
+
+Al inicio de los requisitos (tanto funcionales como no funcionales) podremos observar una tabla con información relevante sobre estos, tales como, en caso de los requisitos funcionales, prioridad de cada requisito, que podrá ser Prioritario, Necesario o Deseable.
+
+\subsubsection{Formato de requisitos funcionales}
+Para los requisitos funcionales hemos decidido utilizar un modelo de tabla basado en User Stories, es así para que sea más comprensible para un cliente que no esté relacionado con el ámbito informático. En él se recogen la identificación del requisito (mediante el código RF-n, siendo n el número del requisito), el usuario que utilizará dicha característica, el requisito en cuestión, el porqué del requisito, los criterios de aceptación que posee el requisito y la versión del mismo. En la tabla \ref{tab:formatoRF} podemos observar el modelo de tabla que se va a utilizar para los requisitos funcionales.
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\begin{table}[H]
+    \label{tab:formatoRF}
+ 	\caption{Modelo de requisito funcional}
+	\centering
+	
+	\begin{tabular}{C{3cm}|C{12cm}}
+ 		\toprule
+ 		\textbf{Atributo} & \textbf{Descripción} \\
+ 		\midrule
+ 	    ID & RF-n \\
+ 	    Cómo... & <Usuario> \\
+ 	    Quiero... & <Funcionalidad> \\
+ 	    Para obtener... & <Objetivo de la funcionalidad>  \\
+ 	    Criterio de Aceptación & <Criterio> \\
+ 	    Versión & <número de versión> \\
+ 		\bottomrule
+ 		\end{tabular}
+\end{table}
+
+El formato que se ha elegido para describir los requisitos funcionales es especialmente útil para SCRUM por la familiaridad que posee con los usuarios finales, ya que ayudará a la comprensión y validación de los mismos.
+
+\subsubsection{Formato de requisitos no funcionales}
+Los requisitos no funcionales se han representado también con un formato tabular, pero el contenido de la tabla asociado es diferente para facilitar el manejo dichos requisitos. En la tabla \ref{tab:formatoRNF} podemos observar el formato que tendrán dichos requisitos.
+
+\begin{table}[H]
+    \label{tab:formatoRNF}
+ 	\caption{Modelo de requisito no funcional}
+	\centering
+	
+	\begin{tabular}{C{3cm}|C{12cm}}
+ 		\toprule
+ 		\textbf{Atributo} & \textbf{Descripción} \\
+ 		\midrule
+ 	    ID & RNF-n \\
+ 	    Descripción & <Descripción> \\
+ 	    Precedente & <ID Requisito Funcional> \\
+ 	    Versión & <número de versión> \\
+ 		\bottomrule
+ 		\end{tabular}
+\end{table}
+
+Dicho formato se ha elegido porque facilita mucho el seguimiento de la procedencia de dicho requisito no funcional, es decir, nos permite averiguar de qué requisito funcional es derivado y cómo se pueden relacionar con otros requisitos funcionales. Además, los requisitos no funcionales irán agrupados en categorías para así facilitar la lectura y el uso del documento.

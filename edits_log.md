@@ -46,7 +46,7 @@ Hemos finiquitado las correcciones indicadas en el feedback de la última entreg
 
 ## 02/11/2022
 ### Florin
-Se ha reunido junto a pablo con el profesor para resolver dudas acerca del modelado de la web y finalizó el digrama IFML, además de completar varias explicaciones en el documento.
+Se ha reunido junto a Pablo con el profesor para resolver dudas acerca del modelado de la web y finalizó el digrama IFML, además de completar varias explicaciones en el documento.
 
 ### Pablo y Juan Carlos
 Han finalizado el diagrama UML y su correspondiente explicación. Además se ha realizado un diagrama de despliegue simple.

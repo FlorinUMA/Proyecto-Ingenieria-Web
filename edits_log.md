@@ -43,3 +43,13 @@ Pablo ha corregido los requisitos no funcionales del 1 al 5, ambos inclusive y l
 
 ## 30/10/2022
 Hemos finiquitado las correcciones indicadas en el feedback de la última entrega y hemos realizado el diagrama IFML de la aplicación.
+
+## 02/11/2022
+### Florin
+Se ha reunido junto a pablo con el profesor para resolver dudas acerca del modelado de la web y finalizó el digrama IFML, además de completar varias explicaciones en el documento.
+
+### Pablo y Juan Carlos
+Han finalizado el diagrama UML y su correspondiente explicación. Además se ha realizado un diagrama de despliegue simple.
+
+## 03/11/2022
+Se han realizado varias correcciones al documento, además de añadir referencias y nuevas explicaciones que aún no estaban acabadas.

@@ -21,4 +21,35 @@ Por otro lado Juan Carlos ha dividido el archivo de texto en diferentes archivos
 
 
 ### Pablo
-Pablo ha anotado sus correspondientes 5 requisitos en el documento así como ha solucionado algunos errores gramaticales encontrados en la realización del documento de requisitos. 
+Pablo ha anotado sus correspondientes 5 requisitos en el documento así como ha solucionado algunos errores gramaticales encontrados en la realización del documento de requisitos.
+
+## 11/10/2022
+
+Última revisión antes de la entrega del documento de requisitos. Se ha añadido una nueva sección justificando el formato escogido y se han editado los IDs de los requisitos. Dichos cambios han sido realizados por Juan Carlos, bajo la decisión de todos los miembros del grupo.
+
+## 25/10/2022
+
+Reunión de los miembros del grupo para decidir la división de tareas para la próxima entrega, además de asginar los puntos a corregir de la anterior entrega con el objetivo del mejorar la misma.
+
+## 26/10/2022
+
+### Claudia 
+
+Claudia ha realizado la corrección de los requisitos no funcionales del 6 al 9, ambos inclusive, y los ha ordenado en tablas tal y como se muestran los requisitos funcionales. Además, ha hecho el cambio de un requisito no funcional al funcional (correspondía con el anterior RNF-9) y eliminado el RF-5, puesto que no tenía sentido considerarlo un requisito.
+
+## 28/10/2022
+### Pablo
+Pablo ha corregido los requisitos no funcionales del 1 al 5, ambos inclusive y los ha colocado en la tabla de requisitos general. Además, ha dividido los requisitos no funcionales que ha corregido en subsecciones según la tipología que presenten.
+
+## 30/10/2022
+Hemos finiquitado las correcciones indicadas en el feedback de la última entrega y hemos realizado el diagrama IFML de la aplicación.
+
+## 02/11/2022
+### Florin
+Se ha reunido junto a pablo con el profesor para resolver dudas acerca del modelado de la web y finalizó el digrama IFML, además de completar varias explicaciones en el documento.
+
+### Pablo y Juan Carlos
+Han finalizado el diagrama UML y su correspondiente explicación. Además se ha realizado un diagrama de despliegue simple.
+
+## 03/11/2022
+Se han realizado varias correcciones al documento, además de añadir referencias y nuevas explicaciones que aún no estaban acabadas.

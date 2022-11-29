@@ -1,0 +1,75 @@
+{# Makes use of base.jinja #}
+{% extends 'base.jinja' %}
+
+{% block head %}
+{# Adds the title, stylesheet links and favicon #}
+
+<title>Robot monitoring - Login</title>
+{% endblock %}
+
+
+{% block content%}
+<div class="container-fluid my-5">
+    <div class="container-sm col-sm-5 mx-auto">
+        <div class="card text-center">
+            <div class="card-header bg-primary text-light">
+                <h5 class="card-title">Log in</h5>
+            </div>
+            <div class="card-body">
+                <form action="/login" method="post">
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        {# <label class="form-label" for="user_input">User</label> #}
+                        <input type="text" id="user_input" class="form-control" placeholder="User"/>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                        {# <label class="form-label" for="passw_input">Password</label> #}
+                        <input type="password" id="passw_input" class="form-control" placeholder="Password" />
+                    </div>
+
+                    <!-- 2 column grid layout for inline styling -->
+                    <div class="row mb-4">
+                        <div class="col d-flex justify-content-center">
+                        <!-- Checkbox -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="show_pw" onclick="show_pw('passw_input')" unchecked />
+                            <label class="form-check-label" for="show_pw"> Show password </label>
+                        </div>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{# Adds the scripts and dependencies #}
+
+<script type="text/javascript">
+    function show_pw(id) {
+        var x = document.getElementById(id);
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+    integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous">
+    </script>
+{% endblock %}
+</body>
+
+</html>

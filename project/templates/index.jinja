@@ -17,7 +17,7 @@
     </ul>
 </div>
 <div class="topnav-right">
-    <button type="button" class="btn btn-sync me-3 btn-lg">
+    <button type="button" class="btn btn-sync me-3 btn-lg" id="login_btn">
         <span class="btn-sync__text">
             LOGIN 
         </span>
@@ -51,6 +51,12 @@
 
 {% block scripts %}
 {# Adds the scripts and dependencies #}
+<script type="text/javascript">
+    document.getElementById("login_btn").onclick = function() {
+        location.href = "/login";
+    };
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
     </script>

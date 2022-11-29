@@ -2,7 +2,8 @@ from flask import (
     Flask,
     render_template,
     redirect,
-    url_for
+    url_for,
+    request
 )
 
 app = Flask(__name__)
@@ -11,9 +12,14 @@ app = Flask(__name__)
 def index():
     return render_template("index.jinja")
 
-@app.route("/error", methods=["GET"])
-def error():
-    return render_template("error.jinja")
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        print("post received")
+        print(request.get_json())
+        return redirect("/")
+    else:
+        return render_template("login.jinja")
 
 # @app.route("/asig-tarea", methods=["POST"])
 # def asig_tarea():

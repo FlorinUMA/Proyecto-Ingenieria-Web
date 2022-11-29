@@ -1,0 +1,63 @@
+{# Makes use of base.jinja #}
+{% extends 'base.jinja' %}
+
+{% block head %}
+{# Adds the title, stylesheet links and favicon #}
+
+<title>Robot monitoring</title>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+
+{%block navbar%}
+<div class="collapse navbar-collapse" id="menuItems">
+    <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+            <a href="/" class="nav-link">Home</a>
+        </li>
+    </ul>
+</div>
+<div class="topnav-right">
+    <button type="button" class="btn btn-sync me-3 btn-lg">
+        <span class="btn-sync__text">
+            LOGIN 
+        </span>
+    </button>
+</div>
+{% endblock %}
+
+
+{% block content%}
+<div class="container-fluid text-white my-5">
+    <div class="container-sm row justify-content-between min-vw-100">
+        <fieldset class="col-xl-6 mb-6">
+            <legend class="my-2 mx-3 row align-items-center justify-content-center">About</legend>
+            <div>
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at finibus purus. Vivamus sodales quam at lacus facilisis mollis. Phasellus nibh neque, efficitur sit amet nunc et, sodales rhoncus nunc. Sed suscipit nisi et lacus sagittis, nec gravida nisl lobortis. Quisque et diam quis augue convallis hendrerit. In faucibus ultricies felis ut congue. Sed a bibendum purus. Nulla ipsum mi, rhoncus sed augue quis, blandit pharetra purus. Sed iaculis eget neque sit amet consequat. Suspendisse feugiat sagittis eros, in aliquam leo imperdiet eu. In orci velit, dignissim ac laoreet non, maximus quis justo. Vestibulum sit amet ligula magna. Nullam mattis interdum lectus, id lobortis est placerat ut. Praesent tempus commodo sagittis. Maecenas eu metus eget tellus posuere tempus. Vestibulum efficitur placerat odio ultricies ornare.
+                </br>
+                Duis id sollicitudin justo. Integer at lorem elit. Aenean sollicitudin viverra nisl, id varius velit consequat quis. Nulla cursus vel massa non euismod. Fusce lacinia vel libero quis sagittis. Vivamus rutrum at dui vel ullamcorper. Mauris diam nulla, rhoncus in gravida nec, volutpat sit amet tortor. Suspendisse potenti. Aliquam congue lorem eget sollicitudin ultricies. Quisque placerat ligula id fringilla suscipit. 
+                </p>
+            </div>
+        </fieldset>
+        <fieldset class="col-xl-5 mb-6 text-center">
+            <img class="rounded mx-auto my-auto" src="{{url_for('static', filename='img/tuggy-inline.png')}}" alt="robot" title="robot" height=400 width=600>
+        </fieldset>
+        {# <fieldset class="fieldset-about col-md-4">
+            
+        </fieldset> #}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{# Adds the scripts and dependencies #}
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+    integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous">
+    </script>
+{% endblock %}
+</body>
+
+</html>

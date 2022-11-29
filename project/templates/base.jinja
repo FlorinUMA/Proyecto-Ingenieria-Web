@@ -1,7 +1,76 @@
+{# This is a template that contains the navbar and footer #}
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Robot controller</title>
-        
-    </head>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{url_for('static', filename='img/androide.svg')}}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    
+    {# Links and title inside the head tag #}
+    {% block head %} {% endblock %}
+</head>
+
+<body class="d-flex flex-column min-vh-100 bg">
+    {# <header>
+        <nav class="navbar navbar-expand navbar-light bg-nav shadow justify-content-start">
+            <div>
+                <a class="m-2 logo" href="/">
+                    <img class=logoNav src="{{url_for('static', filename='img/androide.png')}}" alt="logo" title="logo">
+                </a>
+                <a class="d-sm-flex first-title text-decoration-none title mx-3">Robot control</a>
+                <a class="d-sm-flex home-link mx-3 text-right" href="/">Home</a>
+
+            </div>
+            
+            {% block nav_button %} {% endblock %}
+        </nav>
+    </header> #}
+    <header>
+        <div class="container-fluid bg-nav p-2 shadow">
+            <nav class="navbar navbar-light navbar-expand-md">
+                <a class="m-2 logo" href="/">
+                    <img class=logoNav src="{{url_for('static', filename='img/androide.png')}}" alt="logo" title="logo">
+                </a>
+                <a href="/" class="navbar-brand ps-3">Robot Control</a>
+                <button class="navbar-toggler ms-1 me-auto" type="button" data-bs-toggle="collapse" data-bs-target="#menuItems" aria-controls="menuItems" aria-expanded="false" aria-label="Toggle Navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                {% block navbar %} {% endblock %}
+            </nav>
+        </div>
+    </header>
+    <main>
+    {# Main cotent of the view #}
+    {% block content %} {% endblock %}
+    </main>
+
+    <footer class="mt-auto bg-nav text-center">
+            <!-- Grid container -->
+        <div class="container p-4 pb-0">
+            <!-- Section: Social media -->
+            <section class="mb-4">
+                <a class="text-justify text-decoration-none text-black" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+                    Site design &copy; 2022. All rights reserved. Website content licensed CC BY-NC-ND 4.0
+                </a>
+                <!-- UMA -->
+                <a class="footer-logo mx-3 nav-link d-inline-block"
+                    href="https://www.uma.es/">
+                    <img class="logo" src="{{url_for('static', filename='img/marcauma.svg')}}" alt="UMA"
+                        title="UMA" width="80" height="80">
+                </a>
+            </section>
+        </div>
+    </footer>
+    {# Scripts #}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+    {% block scripts %}{% endblock %}
+</body>
 </html>

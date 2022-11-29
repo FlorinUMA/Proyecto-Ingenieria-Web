@@ -1,0 +1,52 @@
+{% extends 'base.jinja' %}
+
+{% block head %}
+<title>Error {{error_type}}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid text-center p-5" style="display: grid; place-content:center;">
+    <h1>
+        ERROR {{error_type}}
+    </h1>
+    <div>
+        {{error_msg}}<br><br>
+        <a href="{{ url_for('index') }}" style="text-decoration: none; color: white;">
+            <p>Click Here
+        </a> to go to the Home Page</p><br>
+        <p>Or wait <span id="seconds">10</span> seconds.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script language="JavaScript" type="text/javascript">
+
+    // Countdown timer for redirecting to another URL after several seconds
+
+    var seconds = 10; // seconds for HTML
+    var foo; // variable for clearInterval() function
+    var url = "{{ url_for('index') }}"
+
+    function redirect() {
+        document.location.href = url;
+    }
+
+    function updateSecs() {
+        document.getElementById("seconds").innerHTML = seconds;
+        seconds--;
+        if (seconds == -1) {
+            clearInterval(foo);
+            redirect();
+        }
+    }
+
+    function countdownTimer() {
+        foo = setInterval(function () {
+            updateSecs()
+        }, 1000);
+    }
+
+    countdownTimer();
+</script>
+{% endblock %}

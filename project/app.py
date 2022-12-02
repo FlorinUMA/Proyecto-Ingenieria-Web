@@ -34,6 +34,7 @@ class Tecnicos(db.Model):
 class Robots(db.Model):
     __tablename__ = 'Robots'
     id = db.Column(db.Integer, primary_key=True)
+    us_Tec = db.Column(db.String(50), db.ForeignKey(Tecnicos.usuarioTecnico), nullable = False)
     def __repr__(self):
         return 'Robot %r' % self.id
 

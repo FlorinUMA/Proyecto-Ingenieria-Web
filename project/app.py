@@ -21,37 +21,44 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hospital.db' # 3 barras porqu
 with app.app_context():
     db = SQLAlchemy(app)
 
-class Usuario(db.Model):
-    __tablename__ = 'Usuario'
+class Usuarios(db.Model):
+    __tablename__ = 'Usuarios'
     usuario = db.Column(db.String(50), primary_key=True)
     contrasenya = db.Column(db.String(200), nullable=False)
     rol = db.Column(db.String(10), nullable=False)
     def __repr__(self):
         return 'Usuario %r' % self.usuario
 
-# class Medicos(db.Model):
-#     __tablename__ = 'Medicos'
-#     usuarioMedico = db.Column(db.String(50), db.ForeignKey(Personal.usuario), primary_key=True)
-#     def __repr__(self):
-#         return 'Medico %r' % self.usuarioMedico
+class Medicos(db.Model):
+    __tablename__ = 'Medicos'
+    usuarioMedico = db.Column(db.String(50), db.ForeignKey(Usuarios.usuario), primary_key=True)
+    def __repr__(self):
+        return 'Medico %r' % self.usuarioMedico
 
-# class Tecnicos(db.Model):
-#     __tablename__ = 'Tecnicos'
-#     usuarioTecnico = db.Column(db.String(50), db.ForeignKey(Personal.usuario), primary_key=True)
-#     def __repr__(self):
-#         return 'Tecnico %r' % self.usuarioMedico
+class Tecnicos(db.Model):
+    __tablename__ = 'Tecnicos'
+    usuarioTecnico = db.Column(db.String(50), db.ForeignKey(Usuarios.usuario), primary_key=True)
+    def __repr__(self):
+        return 'Tecnico %r' % self.usuarioMedico
+
+class Estados(db.Model):
+    __tablename__ = 'Estados'
+    id = db.Column(db.Integer, primary_key=True)
+    descripcion = db.Column(db.String(300), nullable = True)
+    def __repr__(self):
+        return 'Estado %r' % self.descripcion
 
 class Robots(db.Model):
     __tablename__ = 'Robots'
     id = db.Column(db.Integer, primary_key=True)
-    # us_Tec = db.Column(db.String(50), db.ForeignKey(Tecnicos.usuarioTecnico), nullable = False)
+    estadoId = db.Column(db.Integer, db.ForeignKey(Estados.id))
     def __repr__(self):
         return 'Robot %r' % self.id
 
 class Tareas(db.Model):
     __tablename__ = 'tareas'
-    nombre = db.Column(db.String(100), primary_key=True)
-    # estado = db.Column(db.String(25), nullable = False)
+    nombre = db.Column(db.String(100), nullable=False)
+    
     param0 = db.Column(db.String(100), nullable = True) # ¿Debería ser null o string vacío? Yo creo que null tendría más sentido
     param1 = db.Column(db.String(100), nullable = True)
     param2 = db.Column(db.String(100), nullable = True) 
@@ -64,25 +71,25 @@ class Tareas(db.Model):
     param9 = db.Column(db.String(100), nullable = True)
 
     rob_Id = db.Column(db.Integer, db.ForeignKey(Robots.id), primary_key=True)
+    AsignaTecnico = db.Column(db.String(50), db.ForeignKey(Tecnicos.usuarioTecnico))
+    ejecutaMedico = db.Column(db.String(50), db.ForeignKey(Medicos.usuarioMedico))
     def __repr__(self):
         return 'Tarea %r' % self.nombre + " " + self.rob_Id
     
 
 class Historial(db.Model):
     __tablename__ = 'historial'
-    id_tarea = db.Column(db.Integer, primary_key=True)
-    desc = db.Column(db.String(100), nullable=True)
-    
-    tarea_id = db.Column(db.Integer, db.ForeignKey(Tareas.id), primary_key=True)
+    idEstado = db.Column(db.Integer, db.ForeignKey(Estados.id), primary_key=True)
+    idTarea = db.Column(db.Integer, db.ForeignKey(Tareas.rob_Id), primary_key=True)
     def __repr__(self):
         return 'Historial %r' % self.id
 
 
 def inserta_usuarios():
-    medico1 = Usuario(usuario="medico1", contrasenya="12345", rol="medico")
-    medico2 = Usuario(usuario="medico2", contrasenya="11111", rol="medico")
-    tecnico1 = Usuario(usuario="tecnico1", contrasenya="0000", rol="tecnico")
-    tecnico2 = Usuario(usuario="tecnico2", contrasenya="soy_tecnico", rol="tecnico")
+    medico1 = Usuarios(usuario="medico1", contrasenya="12345", rol="medico")
+    medico2 = Usuarios(usuario="medico2", contrasenya="11111", rol="medico")
+    tecnico1 = Usuarios(usuario="tecnico1", contrasenya="0000", rol="tecnico")
+    tecnico2 = Usuarios(usuario="tecnico2", contrasenya="soy_tecnico", rol="tecnico")
 
     db.session.add(medico1)
     db.session.commit()

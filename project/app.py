@@ -51,7 +51,7 @@ class Robots(db.Model):
 class Tareas(db.Model):
     __tablename__ = 'tareas'
     nombre = db.Column(db.String(100), primary_key=True)
-    rob_Id = db.Column(db.Integer, db.ForeignKey(Robots.id), primary_key=True)
+    # estado = db.Column(db.String(25), nullable = False)
     param0 = db.Column(db.String(100), nullable = True) # ¿Debería ser null o string vacío? Yo creo que null tendría más sentido
     param1 = db.Column(db.String(100), nullable = True)
     param2 = db.Column(db.String(100), nullable = True) 
@@ -61,10 +61,21 @@ class Tareas(db.Model):
     param6 = db.Column(db.String(100), nullable = True) 
     param7 = db.Column(db.String(100), nullable = True) 
     param8 = db.Column(db.String(100), nullable = True) 
-    param9 = db.Column(db.String(100), nullable = True) 
+    param9 = db.Column(db.String(100), nullable = True)
+
+    rob_Id = db.Column(db.Integer, db.ForeignKey(Robots.id), primary_key=True)
     def __repr__(self):
         return 'Tarea %r' % self.nombre + " " + self.rob_Id
+    
 
+class Historial(db.Model):
+    __tablename__ = 'historial'
+    id_tarea = db.Column(db.Integer, primary_key=True)
+    desc = db.Column(db.String(100), nullable=True)
+    
+    tarea_id = db.Column(db.Integer, db.ForeignKey(Tareas.id), primary_key=True)
+    def __repr__(self):
+        return 'Historial %r' % self.id
 
 
 def inserta_usuarios():
@@ -107,6 +118,7 @@ def login():
 
 if __name__ == "__main__":
     app.app_context().push()
+    db.drop_all()
     db.create_all()
     inserta_usuarios()
     app.run(port=5000, debug=True)

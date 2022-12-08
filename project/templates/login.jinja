@@ -5,6 +5,18 @@
 {# Adds the title, stylesheet links and favicon #}
 
 <title>Robot monitoring - Login</title>
+<link rel="stylesheet" href=
+"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+<link rel="stylesheet" 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
+
+<style>
+    form i {
+        cursor: pointer;
+    }
+</style>
 {% endblock %}
 
 
@@ -16,21 +28,26 @@
                 <h5 class="card-title">Log in</h5>
             </div>
             <div class="card-body">
-                <form action="/login" method="post">
+                <form action="/login" method="post" enctype="application/json">
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                        {# <label class="form-label" for="user_input">User</label> #}
-                        <input type="text" id="user_input" class="form-control" placeholder="User"/>
+                        {# <label class="form-label" for="user">User</label> #}
+                        <input type="text" name="user" id="user" class="form-control" placeholder="User"/>
                     </div>
 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
                         {# <label class="form-label" for="passw_input">Password</label> #}
-                        <input type="password" id="passw_input" class="form-control" placeholder="Password" />
+                        <p>
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Password" />
+                            <i class="bi bi-eye-slash" id="togglePassword"></i>
+                        </p>
                     </div>
-
-                    <!-- 2 column grid layout for inline styling -->
-                    <div class="row mb-4">
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+                </form>
+                <!-- 2 column grid layout for inline styling -->
+                    <div class="row mb-4 justify-content-center">
                         <div class="col d-flex justify-content-center">
                         <!-- Checkbox -->
                         <div class="form-check">
@@ -38,10 +55,6 @@
                             <label class="form-check-label" for="show_pw"> Show password </label>
                         </div>
                     </div>
-
-                    <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-                </form>
             </div>
         </div>
     </div>
@@ -51,9 +64,24 @@
 {% block scripts %}
 {# Adds the scripts and dependencies #}
 
+<script>
+    const togglePassword = document.querySelector("#togglePassword");
+    const password = document.querySelector("#password");
+
+    togglePassword.addEventListener("click", function () {
+    
+    // toggle the type attribute
+    const type = password.getAttribute("type") === "password" ? "text" : "password";
+    password.setAttribute("type", type);
+    // toggle the eye icon
+    this.classList.toggle('fa-eye');
+    this.classList.toggle('fa-eye-slash');
+    });
+</script>
+
 <script type="text/javascript">
     function show_pw(id) {
-        var x = document.getElementById(id);
+        var x = document.getElementById("passw_input");
         if (x.type === "password") {
             x.type = "text";
         } else {

@@ -46,15 +46,11 @@
                     <!-- Submit button -->
                     <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
                 </form>
-                <!-- 2 column grid layout for inline styling -->
-                    <div class="row mb-4 justify-content-center">
-                        <div class="col d-flex justify-content-center">
-                        <!-- Checkbox -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="show_pw" onclick="show_pw('passw_input')" unchecked />
-                            <label class="form-check-label" for="show_pw"> Show password </label>
-                        </div>
+                {% if error %}
+                    <div style="color: red;">
+                        <p>Usuario o contraseña insertados incorrectos. No se ha encontrado el usuario en la base de datos. Pruebe otra vez o consulte con su técnico</p>
                     </div>
+                {% endif %}
             </div>
         </div>
     </div>

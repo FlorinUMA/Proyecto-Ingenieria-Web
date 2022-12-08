@@ -2,11 +2,11 @@ from flask import (
     Flask,
     render_template,
     redirect,
-    url_for,
+    flash,
     request
 )
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, and_, select
 from sqlalchemy.pool import StaticPool
 
 engine = create_engine(
@@ -27,7 +27,7 @@ class Usuarios(db.Model):
     contrasenya = db.Column(db.String(200), nullable=False)
     rol = db.Column(db.String(10), nullable=False)
     def __repr__(self):
-        return 'Usuario %r' % self.usuario
+        return 'Usuarios %r' % self.usuario
 
 class Medicos(db.Model):
     __tablename__ = 'Medicos'
@@ -105,18 +105,49 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    error = False
     if request.method == "POST":
-        # print("post received")
+        # Cuando reciba un método post, recoge el usuario y la contraseña insertada
         user = request.form.get("user")
         passw = request.form.get("password")
 
-        query = Usuario.query.first()
-        print(query.contrasenya)
+        # Hacemos un try/except para controlar cuando no se encuentre al usuario
+        try:
+            # Creamos la query, seleccionando al usuario con el mismo usuario y contraseña insertado
+            statement = select(Usuarios).where(
+                    Usuarios.usuario == user,
+                    Usuarios.contrasenya == passw
+            )
 
+            # Ejecutamos la query
+            query = db.session.execute(statement)
+            # Guardamos el resultado
+            result = query.one()[0]
 
-        return redirect("/")
+            # ==== PLACEHOLDER PARA COMPROBAR QUE FUNCIONA [BORRAR] ======
+            print(result.usuario)
+            print(result.contrasenya)
+            print(result.rol)
+
+            # ===== DESCOMENTAR CUANDO TENGAMOS VISTAS DE TECNICO Y MEDICO ==========
+            
+            # if (result.rol == "medico"):
+            #     return render_template("medico.jinja")
+            # elif (result.rol == "tecnico"):
+            #     return render_template("medico.jinja")
+            # else:
+            #     flash("ERROR 501: El usuario no tiene un rol correcto asignado, consulte con su técnico")
+            #     return redirect("/")
+
+            return redirect("/")
+        except:
+            # Si no se encuentra al usuario se lanza una excepción que es controlada y se recarga la página de login esta vez mostrando un mensaje de contraseña o usuario incorrecto
+            error=True
+            return render_template("login.jinja", error=error)
+
     else:
-        return render_template("login.jinja")
+        # Si recibe un GET se carga la página con normalidad
+        return render_template("login.jinja", error=error)
 
 # @app.route("/asig-tarea", methods=["POST"])
 # def asig_tarea():

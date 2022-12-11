@@ -54,3 +54,13 @@ Han finalizado el diagrama UML y su correspondiente explicación. Además se ha 
 ## 03/11/2022
 - Mañana: Se han realizado varias correcciones al documento, además de añadir referencias y nuevas explicaciones que aún no estaban acabadas.
 - Tarde: Se ha reunido el grupo para dar un último repaso al documento y a los diagramas sacando como conclusión una corrección en el diagrama de clases.
+
+## 29/11/2022
+El grupo se reunió para repartirse las distintas tareas de la creación de la página web y decicir como sería la mejor manera de llevarla a cabo.
+
+## 8/12/2022
+El grupo se reunió para poner en conjunto como iba el proyecto y se avanzó en el mismo.
+
+## 11/12/2022
+## Claudia 
+Ha realizado la clase medico.jinja y las funciones de insert de Robots y Tareas para realizar pruebas. 

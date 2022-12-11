@@ -1,0 +1,27 @@
+{# Makes use of base.jinja #}
+{% extends 'base.jinja' %}
+
+{% block head %}
+{# Adds the title, stylesheet links and favicon #}
+
+<title>Robot monitoring</title>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% endblock %}
+
+{% block content%}
+
+<div class="list-group"></div>
+{% for i in Robots%} 
+
+<a href="#" class="list-group-item list-group-item-action">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">[[i.id]]</h5>
+    </div>
+    <p class="mb-1">[[i.estadoId]]</p>
+    <button type="submit" class="btn btn-primary btn-block mb-4">Ver Robot</button>
+  </a>
+
+{% endfor %}
+</div>
+{% endblock %}

@@ -99,6 +99,30 @@ def inserta_usuarios():
     db.session.add(tecnico2)
     db.session.commit()
 
+def inserta_robots():
+    robot1 = Robots(id = 122, estadoId = 122)
+    robot2 = Robots(id = 123, estadoId = 123)
+    robot3 = Robots(id = 124, estadoId = 124)
+    robot4 = Robots(id = 125, estadoId = 125)
+
+    db.session.add(robot1)
+    db.session.commit()
+    db.session.add(robot2)
+    db.session.commit()
+    db.session.add(robot3)
+    db.session.commit()
+    db.session.add(robot4)
+    db.session.commit()
+
+def inserta_tareas():
+    tarea1 = Tareas(rob_id = Robots.id, asignaTecnico = Tecnicos.usuarioTecnico, ejecutaMedico = Medicos.usuarioMedico)
+    tarea2 = Tareas(rob_id = Robots.id, asignaTecnico = Tecnicos.usuarioTecnico, ejecutaMedico = Medicos.usuarioMedico)
+    tarea3 = Tareas(rob_id = Robots.id, asignaTecnico = Tecnicos.usuarioTecnico, ejecutaMedico = Medicos.usuarioMedico)
+    tarea4 = Tareas(rob_id = Robots.id, asignaTecnico = Tecnicos.usuarioTecnico, ejecutaMedico = Medicos.usuarioMedico)
+    tarea5 = Tareas(rob_id = Robots.id, asignaTecnico = Tecnicos.usuarioTecnico, ejecutaMedico = Medicos.usuarioMedico)
+
+    # inserta_tareas no se si va así o está mal.
+    
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.jinja")
@@ -152,6 +176,9 @@ def login():
 # @app.route("/asig-tarea", methods=["POST"])
 # def asig_tarea():
 #     pass
+@app.route("/medico", methods=["GET"])
+def medico():
+    return render_template("medico.jinja")
 
 if __name__ == "__main__":
     app.app_context().push()

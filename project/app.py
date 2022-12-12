@@ -70,8 +70,8 @@ class Tareas(db.Model):
     param9 = db.Column(db.String(100), nullable = True)
 
     rob_Id = db.Column(db.Integer, db.ForeignKey(Robots.id), primary_key=True)
-    asignaTecnico = db.Column(db.String(50), db.ForeignKey(Tecnicos.usuarioTecnico))
-    ejecutaMedico = db.Column(db.String(50), db.ForeignKey(Medicos.usuarioMedico))
+    asignaTecnico = db.Column(db.String(50), db.ForeignKey(Tecnicos.usuarioTecnico), nullable = False)
+    ejecutaMedico = db.Column(db.String(50), db.ForeignKey(Medicos.usuarioMedico), nullable = True)
     def __repr__(self):
         return 'Tarea %r' % self.nombre + " " + self.rob_Id
     
@@ -114,15 +114,32 @@ def inserta_robots():
     db.session.add(robot4)
     db.session.commit()
 
-def inserta_tareas():
-    tarea1 = Tareas(rob_id = Robots.id, asignaTecnico = Tecnicos.usuarioTecnico, ejecutaMedico = Medicos.usuarioMedico)
-    tarea2 = Tareas(rob_id = Robots.id, asignaTecnico = Tecnicos.usuarioTecnico, ejecutaMedico = Medicos.usuarioMedico)
-    tarea3 = Tareas(rob_id = Robots.id, asignaTecnico = Tecnicos.usuarioTecnico, ejecutaMedico = Medicos.usuarioMedico)
-    tarea4 = Tareas(rob_id = Robots.id, asignaTecnico = Tecnicos.usuarioTecnico, ejecutaMedico = Medicos.usuarioMedico)
-    tarea5 = Tareas(rob_id = Robots.id, asignaTecnico = Tecnicos.usuarioTecnico, ejecutaMedico = Medicos.usuarioMedico)
+def inserta_tecnicos():
+    tecnico1 = Tecnicos(usuarioTecnico = "tecnico1")
+    tecnico2 = Tecnicos(usuarioTecnico = "tecnico2")
 
-    # inserta_tareas no se si va así o está mal.
-    
+    db.session.add(tecnico1)
+    db.session.commit()
+    db.session.add(tecnico2)
+    db.session.commit()
+
+def inserta_tareas():
+    tarea1 = Tareas(nombre = "Limpieza", rob_Id = 122, asignaTecnico = "tecnico1", param0 = "DURACION=20")
+    tarea2 = Tareas(nombre = "Videollamada", rob_Id = 123, asignaTecnico = "tecnico2", param0 = "NOMBRE_PROGRAMA=Skype")
+    tarea3 = Tareas(nombre = "Aspirar", rob_Id = 124, asignaTecnico = "tecnico1")
+    tarea4 = Tareas(nombre = "Desinfectar", rob_Id = 125, asignaTecnico = "tecnico1")
+
+    db.session.add(tarea1)
+    db.session.commit()
+    db.session.add(tarea2)
+    db.session.commit()
+    db.session.add(tarea3)
+    db.session.commit()
+    db.session.add(tarea4)
+    db.session.commit()
+
+    # Corregido. He establecido las tareas tal que no hayan sido ejecutadas aún por ningún médico
+
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.jinja")
@@ -196,7 +213,7 @@ def modifyTask():
             resultado = peticion.one()[0]
             render_template("taskEditor.jinja", idTareaExistente = IdTareaSeleccionada)
         except:
-            return render_template("index.jinja") # TODO: Preguntar qué hacer en este caso
+            return render_template("index.jinja") # TODO: ¿Es esto correcto?
     else:
         # pass # ¿Sería correcto?
         return render_template("taskEditor.jinja")
@@ -207,4 +224,7 @@ if __name__ == "__main__":
     db.drop_all()
     db.create_all()
     inserta_usuarios()
+    inserta_robots()
+    inserta_tecnicos()
+    inserta_tareas()
     app.run(port=5000, debug=True)

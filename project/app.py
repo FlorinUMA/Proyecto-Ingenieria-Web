@@ -140,10 +140,13 @@ def login():
 
 @app.route("/medico", methods=["GET"])
 def medico():
+    row = Robots.query.with_entities(Robots.id).all()
+    tareas = Tareas.query.with_entities(Tareas).all()
+    estados = Estados.query.with_entities(Estados).all()
     # id = request.args.get('id', type=int)
     # if id == None:
     #     return abort(code=404)
-    return render_template("medico.jinja")
+    return render_template("medico.jinja", row=row, tareas=tareas, estados=estados)
 
 @app.route("/tecnico", methods=["GET"])
 def tecnico():
@@ -158,6 +161,14 @@ def searchTask(robot_id, tareas):
     for tarea in tareas:
         if tarea.rob_Id == robot_id:
             out.append(tarea.nombre)
+    return ', '.join(out)
+
+@app.template_filter("buscaEstado")
+def searchStatus(robot_id, estados):
+    out = []
+    for estado in estados:
+        if estados.rob_Id == robot_id:
+            out.append(estados.descripcion)
     return ', '.join(out)
 
 
@@ -240,6 +251,21 @@ def inserta_tareas():
     db.session.add(tarea3)
     db.session.commit()
     db.session.add(tarea4)
+    db.session.commit()
+
+def inserta_estados():
+    estado1 = Estados(id = 122, descripcion = "Ocupado")
+    estado2 = Estados(id = 123, descripcion = "Atascado")
+    estado3 = Estados(id = 124, descripcion = "Libre")
+    estado4 = Estados(id = 125, descripcion = "Ocupado")
+
+    db.session.add(estado1)
+    db.session.commit()
+    db.session.add(estado2)
+    db.session.commit()
+    db.session.add(estado3)
+    db.session.commit()
+    db.session.add(estado4)
     db.session.commit()
 
 if __name__ == "__main__":

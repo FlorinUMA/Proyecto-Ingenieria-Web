@@ -9,24 +9,45 @@
 
 {% endblock %}
 
+{# {% block content%}
+    {% for i in row %} 
+    <div class="list-group">
+    <a href="#" class="list-group-item list-group-item-action"></a>
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{i[0]}}</h5>
+    </div>
+    <p class="mb-1">{{i.estadoId}}</p> 
+    {# <button class="btn btn-primary btn-sm" style="width: fit-content;">Ver Robot</button>
+    </a>
+    </div>
+    {% endfor %}
+
+{% endblock %} #}
+
+
 {% block content%}
 
+<div class="container-fluid my-5 px-5">
+    <h2>Robots</h2>
+          
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID Robot </th>
+          <th scope="col">Tareas </th>
+          <th scope="col">Estado </th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for i in row %}
+              <tr>
+                <td>{{i[0]}}</td>
+                <td>{{i[0]|buscaTareas(tareas)}}</td>
+                <td>{{i[0]|buscaEstado(estados)}}</td>
+              </tr>
+            {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-
-<div class="list-group">
-
-  {% for i in Robots %} 
-
-  <a href="#" class="list-group-item list-group-item-action">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">[[i.id]]</h5>
-      </div>
-      <p class="mb-1">[[i.estadoId]]</p>
-      <button class="btn btn-primary btn-block mb-4">Ver Robot</button>
-    </a>
-
-  {% endfor %}
-
-</div>
-</div>
 {% endblock %}

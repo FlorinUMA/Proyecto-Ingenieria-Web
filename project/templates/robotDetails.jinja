@@ -12,19 +12,20 @@
 {% block content%}
 
 <div class="container">
-    <h2>Robots</h2>
+
+    <h2>Tasks</h2>
           
     <table class="table tasks">
+      <button OnClick=" location.href='task-editor' ">Edit</button>
       <thead class="thead-dark">
         <tr>
-          <th scope="col">ID Robot </th>
+          <th scope="col">ID Task</th>
         </tr>
       </thead>
       <tbody>
             {% for i in row %}
               <tr>
                 <td>{{i}}</td>
-                <td><button OnClick=" location.href='robotDetails' ">Edit</button></td>
               </tr>
             {% endfor %}
         

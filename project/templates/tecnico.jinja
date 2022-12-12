@@ -1,0 +1,42 @@
+{# Makes use of base.jinja #}
+{% extends 'base.jinja' %}
+
+{% block head %}
+{# Adds the title, stylesheet links and favicon #}
+
+<title>Tasks editor</title>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% endblock %}
+
+{% block content%}
+# creacion tabla
+<div class="container">
+    <h2>Create, edit or assign tasks to a robot</h2>
+          
+    <table class="table tasks">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">ID Robot </th>
+          <th scope="col">ID tasks</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>4</td>
+            <td>12,6,8,1,5</td>
+            <td>
+                <button type="button" class="btn btn-primary"><i class="far fa-plus-square"></i></button>
+                <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
+                <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+              </td>
+      </tbody>
+    </table>
+  </div>
+  # Ver como colocar los datos por fila
+  # ¿Columnas buenas?
+  # Acciones a los botones
+{% endblock %}

@@ -180,6 +180,11 @@ def login():
 def medico():
     return render_template("medico.jinja")
 
+<<<<<<< HEAD
+@app.route("/tecnico", methods=["GET"])
+def tecnico():
+    return render_template("tecnico.jinja")
+=======
 @app.route("/task-editor", methods=["GET", "POST"])
 def modifyTask():
     if request.method == "POST":
@@ -197,6 +202,7 @@ def modifyTask():
         # pass # ¿Sería correcto?
         return render_template("taskEditor.jinja")
 
+>>>>>>> 37198aff8f154a3ec6c7bf92079fcacc3859401c
 
 if __name__ == "__main__":
     app.app_context().push()

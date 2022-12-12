@@ -199,8 +199,18 @@ def medico():
 
 @app.route("/tecnico", methods=["GET"])
 def tecnico():
-    return render_template("tecnico.jinja")
+    row = Robots.query.with_entities(Robots.id).all()
+    return render_template("tecnico.jinja",row=row)
 
+   
+
+@app.route("/robotDetails", methods=["GET"])
+def robotDetails():
+    row = Tareas.query.with_entities(Tareas.nombre).filter(Tareas.rob_Id).all() # TODO: hacer que coja el id del robot de la ruta tecnico
+    return render_template("robotDetails.jinja", row=row) 
+ 
+
+       
 @app.route("/task-editor", methods=["GET", "POST"])
 def modifyTask():
     if request.method == "POST":

@@ -180,6 +180,24 @@ def login():
 def medico():
     return render_template("medico.jinja")
 
+@app.route("/task-editor", methods=["GET", "POST"])
+def modifyTask():
+    if request.method == "POST":
+        IdTareaSeleccionada = request.form.get("seleccionar") # TODO: Cambiar como se obtiene el dato
+        try:
+            sentencia = select(Tareas).where(
+                    Tareas.rob_Id == IdTareaSeleccionada
+            )
+            peticion = db.session.execute(sentencia)
+            resultado = peticion.one()[0]
+            render_template("taskEditor.jinja", idTareaExistente = IdTareaSeleccionada)
+        except:
+            return render_template("index.jinja") # TODO: Preguntar qué hacer en este caso
+    else:
+        # pass # ¿Sería correcto?
+        return render_template("taskEditor.jinja")
+
+
 if __name__ == "__main__":
     app.app_context().push()
     db.drop_all()

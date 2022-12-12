@@ -127,6 +127,16 @@ main {
   outline: 0;
 }
 
+.mini_title {
+  white-space: nowrap;
+  background: none;
+  width: auto;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: xx-large;
+  color: black;
+  font-weight: bold;
+}
+
 
 @media screen and (min-width: 600px){
   .home-link{

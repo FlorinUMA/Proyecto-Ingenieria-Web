@@ -1,93 +1,145 @@
-from flask import (
-    Flask,
-    render_template,
-    redirect,
-    flash,
-    request,
-    abort
-)
+from flask import Flask, render_template, redirect, flash, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine, and_, select
+from sqlalchemy import create_engine, and_, select, update
 from sqlalchemy.pool import StaticPool
 
 engine = create_engine(
-    "sqlite://", 
-    connect_args={"check_same_thread": False}, 
-    poolclass=StaticPool
+    "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
 )
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hospital.db' # 3 barras porque es un path relativo. SI fuera absoluto, serían 4 barras
+
+
+# ======= CREACIÓN DE LA BASE DE DATOS =======
+
+
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "sqlite:///hospital.db"  # 3 barras porque es un path relativo. SI fuera absoluto, serían 4 barras
 with app.app_context():
     db = SQLAlchemy(app)
 
+
 class Usuarios(db.Model):
-    __tablename__ = 'Usuarios'
+    __tablename__ = "Usuarios"
     usuario = db.Column(db.String(50), primary_key=True)
     contrasenya = db.Column(db.String(200), nullable=False)
     rol = db.Column(db.String(10), nullable=False)
+
     def __repr__(self):
-        return 'Usuarios %r' % self.usuario
+        return "Usuarios %r" % self.usuario
+
 
 class Medicos(db.Model):
-    __tablename__ = 'Medicos'
-    usuarioMedico = db.Column(db.String(50), db.ForeignKey(Usuarios.usuario), primary_key=True)
+    __tablename__ = "Medicos"
+    usuarioMedico = db.Column(
+        db.String(50), db.ForeignKey(Usuarios.usuario), primary_key=True
+    )
+
     def __repr__(self):
-        return 'Medico %r' % self.usuarioMedico
+        return "Medico %r" % self.usuarioMedico
+
 
 class Tecnicos(db.Model):
-    __tablename__ = 'Tecnicos'
-    usuarioTecnico = db.Column(db.String(50), db.ForeignKey(Usuarios.usuario), primary_key=True)
+    __tablename__ = "Tecnicos"
+    usuarioTecnico = db.Column(
+        db.String(50), db.ForeignKey(Usuarios.usuario), primary_key=True
+    )
+
     def __repr__(self):
-        return 'Tecnico %r' % self.usuarioMedico
+        return "Tecnico %r" % self.usuarioMedico
+
 
 class Estados(db.Model):
-    __tablename__ = 'Estados'
+    __tablename__ = "Estados"
     id = db.Column(db.Integer, primary_key=True)
-    descripcion = db.Column(db.String(300), nullable = True)
+    nombre = db.Column(db.String, nullable=False)
+    descripcion = db.Column(db.String(300), nullable=True)
+
     def __repr__(self):
-        return 'Estado %r' % self.descripcion
+        return "Estado %r" % self.descripcion
+
 
 class Robots(db.Model):
-    __tablename__ = 'Robots'
+    __tablename__ = "Robots"
     id = db.Column(db.Integer, primary_key=True)
-    estadoId = db.Column(db.Integer, db.ForeignKey(Estados.id))
+    nombre = db.Column(db.String(30), nullable=True)
+
     def __repr__(self):
-        return 'Robot %r' % self.id
+        return "Robot %r" % self.id
+
 
 class Tareas(db.Model):
-    __tablename__ = 'tareas'
-    nombre = db.Column(db.String(100), primary_key=True)
-    param0 = db.Column(db.String(100), nullable = True)
-    param1 = db.Column(db.String(100), nullable = True)
-    param2 = db.Column(db.String(100), nullable = True) 
-    param3 = db.Column(db.String(100), nullable = True) 
-    param4 = db.Column(db.String(100), nullable = True) 
-    param5 = db.Column(db.String(100), nullable = True) 
-    param6 = db.Column(db.String(100), nullable = True) 
-    param7 = db.Column(db.String(100), nullable = True) 
-    param8 = db.Column(db.String(100), nullable = True) 
-    param9 = db.Column(db.String(100), nullable = True)
+    __tablename__ = "tareas"
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100), nullable=False)
+    param0 = db.Column(db.String(100), nullable=True)
+    param1 = db.Column(db.String(100), nullable=True)
+    param2 = db.Column(db.String(100), nullable=True)
+    param3 = db.Column(db.String(100), nullable=True)
+    param4 = db.Column(db.String(100), nullable=True)
+    param5 = db.Column(db.String(100), nullable=True)
+    param6 = db.Column(db.String(100), nullable=True)
+    param7 = db.Column(db.String(100), nullable=True)
+    param8 = db.Column(db.String(100), nullable=True)
+    param9 = db.Column(db.String(100), nullable=True)
 
+    estado_id = db.Column(db.Integer, db.ForeignKey(Estados.id), nullable=False)
     rob_Id = db.Column(db.Integer, db.ForeignKey(Robots.id), nullable=False)
-    asignaTecnico = db.Column(db.String(50), db.ForeignKey(Tecnicos.usuarioTecnico), nullable = False)
-    ejecutaMedico = db.Column(db.String(50), db.ForeignKey(Medicos.usuarioMedico), nullable = True)
+    asignaTecnico = db.Column(
+        db.String(50), db.ForeignKey(Tecnicos.usuarioTecnico), nullable=False
+    )
+    ejecutaMedico = db.Column(
+        db.String(50), db.ForeignKey(Medicos.usuarioMedico), nullable=True
+    )
+
     def __repr__(self):
-        return 'Tarea %r' % self.nombre + " " + str(self.rob_Id)
-    
+        return (
+            "Tarea %r" % self.nombre
+            + " "
+            + str(self.rob_Id)
+            + " "
+            + str(self.estado_id)
+        )
+
 
 class Historial(db.Model):
-    __tablename__ = 'historial'
+    __tablename__ = "historial"
     idEstado = db.Column(db.Integer, db.ForeignKey(Estados.id), primary_key=True)
     idTarea = db.Column(db.Integer, db.ForeignKey(Tareas.rob_Id), primary_key=True)
+
     def __repr__(self):
-        return 'Historial %r' % self.idEstado + " " + self.idTarea
+        return "Historial %r" % self.idEstado + " " + self.idTarea
+
+
+# ======= CONTROL DE ERRORES =======
 
 
 @app.errorhandler(404)
 def error404(err):
     return render_template("error404.jinja")
+
+
+# ======= FILTROS =======
+
+
+@app.template_filter("muestraEstado")
+def searchTask(estado_id):
+    out = Estados.query.with_entities(Estados).filter(Estados.id == estado_id).one()
+    return out.nombre
+
+
+@app.template_filter("buscaTareas")
+def searchTask(robot_id, tareas):
+    out = []
+    for tarea in tareas:
+        if tarea.rob_Id == robot_id:
+            out.append(tarea.nombre)
+    return ", ".join(out)
+
+
+# ======= WEBPAGE ENDPOINTS =======
 
 
 @app.route("/", methods=["GET"])
@@ -107,8 +159,7 @@ def login():
         try:
             # Creamos la query, seleccionando al usuario con el mismo usuario y contraseña insertado
             statement = select(Usuarios).where(
-                    Usuarios.usuario == user,
-                    Usuarios.contrasenya == passw
+                Usuarios.usuario == user, Usuarios.contrasenya == passw
             )
 
             # Ejecutamos la query
@@ -120,17 +171,19 @@ def login():
             # print(result.usuario)
             # print(result.contrasenya)
             # print(result.rol)
-           
-            if (result.rol == "medico"):
+
+            if result.rol == "medico":
                 return redirect("/medico")
-            elif (result.rol == "tecnico"):
+            elif result.rol == "tecnico":
                 return redirect("/tecnico")
             else:
-                flash("ERROR 501: El usuario no tiene un rol correcto asignado, consulte con su técnico")
+                flash(
+                    "ERROR 501: El usuario no tiene un rol correcto asignado, consulte con su técnico"
+                )
                 return redirect("/")
         except:
             # Si no se encuentra al usuario se lanza una excepción que es controlada y se recarga la página de login esta vez mostrando un mensaje de contraseña o usuario incorrecto
-            error=True
+            error = True
             return render_template("login.jinja", error=error)
 
     else:
@@ -148,55 +201,62 @@ def medico():
     #     return abort(code=404)
     return render_template("medico.jinja", row=row, tareas=tareas, estados=estados)
 
+
 @app.route("/tecnico", methods=["GET"])
 def tecnico():
-    row = Robots.query.with_entities(Robots.id).all()
+    row = Robots.query.with_entities(Robots).all()
     tareas = Tareas.query.with_entities(Tareas).all()
     return render_template("tecnico.jinja", row=row, tareas=tareas)
-
-
-@app.template_filter("buscaTareas")
-def searchTask(robot_id, tareas):
-    out = []
-    for tarea in tareas:
-        if tarea.rob_Id == robot_id:
-            out.append(tarea.nombre)
-    return ', '.join(out)
-
-@app.template_filter("buscaEstado")
-def searchStatus(robot_id, estados):
-    out = []
-    for estado in estados:
-        if estados.rob_Id == robot_id:
-            out.append(estados.descripcion)
-    return ', '.join(out)
 
 
 @app.route("/robotDetails", methods=["GET"])
 def robotDetails():
     id_robot = request.args.get("id", type=int)
     # print(id_robot)
-    row = Tareas.query.with_entities(Tareas.nombre).filter(Tareas.rob_Id == id_robot).all()
-    return render_template("robotDetails.jinja", row=row) 
- 
+    row = Tareas.query.with_entities(Tareas).filter(Tareas.rob_Id == id_robot).all()
+    print(row)
+    robot = Robots.query.with_entities(Robots).filter(Robots.id == id_robot).one()
+    return render_template("robotDetails.jinja", row=row, robot=robot)
 
-       
-@app.route("/task-editor", methods=["GET", "POST"])
+
+@app.route("/nueva-tarea", methods=["GET", "POST"])
 def modifyTask():
     if request.method == "POST":
-        IdTareaSeleccionada = request.form.get("seleccionar") # TODO: Cambiar como se obtiene el dato
+        IdTareaSeleccionada = request.form.get(
+            "seleccionar"
+        )  # TODO: Cambiar como se obtiene el dato
         try:
-            sentencia = select(Tareas).where(
-                    Tareas.rob_Id == IdTareaSeleccionada
-            )
+            sentencia = select(Tareas).where(Tareas.rob_Id == IdTareaSeleccionada)
             peticion = db.session.execute(sentencia)
             resultado = peticion.one()[0]
-            render_template("taskEditor.jinja", idTareaExistente = IdTareaSeleccionada)
+            render_template("taskEditor.jinja", idTareaExistente=IdTareaSeleccionada)
         except:
-            return render_template("index.jinja") # TODO: ¿Es esto correcto?
+            return render_template("index.jinja")  # TODO: ¿Es esto correcto?
     else:
         # pass # ¿Sería correcto?
         return render_template("taskEditor.jinja")
+
+
+# ======= API ENDPOINTS =======
+# Creamos los endpoints de la API para que los robots puedan acceder al sistema
+
+
+@app.route("/api/status/<id_tarea>", methods=["POST"])
+def changeTaskStatus(id_tarea):
+    # debe recibir un json de la forma {status:<id_status>} siendo id_status el identificador del nuevo estado
+    estado = request.get_json()["status"]
+
+    try:
+        db.session.query(Tareas).filter(Tareas.id == int(id_tarea)).update(
+            {Tareas.estado_id: int(estado)}, synchronize_session=False
+        )
+        db.session.commit()
+        return jsonify({"statusCode": 200, "message": "Task status updated"})
+    except:
+        return jsonify({"statusCode": 400, "message": "Bad request"})
+
+
+# ======= FUNCIONES DE INSERCIÓN DE DATOS =======
 
 
 def inserta_usuarios():
@@ -214,11 +274,12 @@ def inserta_usuarios():
     db.session.add(tecnico2)
     db.session.commit()
 
+
 def inserta_robots():
-    robot1 = Robots(id = 122, estadoId = 122)
-    robot2 = Robots(id = 123, estadoId = 123)
-    robot3 = Robots(id = 124, estadoId = 124)
-    robot4 = Robots(id = 125, estadoId = 125)
+    robot1 = Robots(id=122, nombre="XLR8")
+    robot2 = Robots(id=123, nombre="C3PO")
+    robot3 = Robots(id=124, nombre="R2D2")
+    robot4 = Robots(id=125, nombre="GR0GU")
 
     db.session.add(robot1)
     db.session.commit()
@@ -229,35 +290,28 @@ def inserta_robots():
     db.session.add(robot4)
     db.session.commit()
 
-def inserta_tecnicos():
-    tecnico1 = Tecnicos(usuarioTecnico = "tecnico1")
-    tecnico2 = Tecnicos(usuarioTecnico = "tecnico2")
+
+def inserta_subclases():
+    tecnico1 = Tecnicos(usuarioTecnico="tecnico1")
+    tecnico2 = Tecnicos(usuarioTecnico="tecnico2")
+    medico1 = Medicos(usuarioMedico="medico1")
+    medico2 = Medicos(usuarioMedico="medico2")
 
     db.session.add(tecnico1)
     db.session.commit()
     db.session.add(tecnico2)
     db.session.commit()
+    db.session.add(medico1)
+    db.session.commit()
+    db.session.add(medico2)
+    db.session.commit()
 
-def inserta_tareas():
-    tarea1 = Tareas(nombre = "Limpieza", rob_Id = 122, asignaTecnico = "tecnico1", param0 = "DURACION=20")
-    tarea2 = Tareas(nombre = "Videollamada", rob_Id = 123, asignaTecnico = "tecnico2", param0 = "NOMBRE_PROGRAMA=Skype")
-    tarea3 = Tareas(nombre = "Aspirar", rob_Id = 124, asignaTecnico = "tecnico1")
-    tarea4 = Tareas(nombre = "Desinfectar", rob_Id = 125, asignaTecnico = "tecnico1")
-
-    db.session.add(tarea1)
-    db.session.commit()
-    db.session.add(tarea2)
-    db.session.commit()
-    db.session.add(tarea3)
-    db.session.commit()
-    db.session.add(tarea4)
-    db.session.commit()
 
 def inserta_estados():
-    estado1 = Estados(id = 122, descripcion = "Ocupado")
-    estado2 = Estados(id = 123, descripcion = "Atascado")
-    estado3 = Estados(id = 124, descripcion = "Libre")
-    estado4 = Estados(id = 125, descripcion = "Ocupado")
+    estado1 = Estados(id=1, nombre="En espera")
+    estado2 = Estados(id=2, nombre="De camino", descripcion="De camino a la tarea")
+    estado3 = Estados(id=3, nombre="En proceso", descripcion="Realizando la tarea")
+    estado4 = Estados(id=4, nombre="Terminado", descripcion="Tarea terminada")
 
     db.session.add(estado1)
     db.session.commit()
@@ -268,12 +322,57 @@ def inserta_estados():
     db.session.add(estado4)
     db.session.commit()
 
+
+def inserta_tareas():
+    tarea1 = Tareas(
+        id=1,
+        nombre="Limpieza",
+        rob_Id=122,
+        estado_id=1,
+        asignaTecnico="tecnico1",
+        param0="DURACION=20",
+    )
+    tarea2 = Tareas(
+        id=2,
+        nombre="Videollamada",
+        rob_Id=122,
+        estado_id=2,
+        asignaTecnico="tecnico2",
+        param0="NOMBRE_PROGRAMA=Skype",
+    )
+    tarea3 = Tareas(
+        id=3, nombre="Aspirar", rob_Id=124, estado_id=2, asignaTecnico="tecnico1"
+    )
+    tarea4 = Tareas(
+        id=4,
+        nombre="Desinfectar",
+        rob_Id=125,
+        estado_id=3,
+        asignaTecnico="tecnico1",
+        ejecutaMedico="medico1",
+    )
+
+    db.session.add(tarea1)
+    db.session.commit()
+    db.session.add(tarea2)
+    db.session.commit()
+    db.session.add(tarea3)
+    db.session.commit()
+    db.session.add(tarea4)
+    db.session.commit()
+
+
+# ======= INICIO DE LA APLICACIÓN =======
+
+
 if __name__ == "__main__":
     app.app_context().push()
     db.drop_all()
     db.create_all()
     inserta_usuarios()
+    inserta_estados()
     inserta_robots()
-    inserta_tecnicos()
+    inserta_subclases()
     inserta_tareas()
+
     app.run(port=5000, debug=True)

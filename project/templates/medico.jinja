@@ -28,7 +28,7 @@
 {% block content%}
 
 <div class="container-fluid my-5 px-5">
-    <h2>Robots</h2>
+    <h2 class="mini_title">Robots</h2>
           
     <table class="table">
       <thead class="thead-dark">
@@ -42,8 +42,8 @@
             {% for i in row %}
               <tr>
                 <td>{{i[0]}}</td>
-                <td>{{i[0]|buscaTareas(tareas)}}</td>
-                <td>{{i[0]|buscaEstado(estados)}}</td>
+                {# <td>{{i[0].id|buscaTareas(tareas)}}</td>
+                <td>{{i[0]|muestraEstado(estados)}}</td> #}
               </tr>
             {% endfor %}
       </tbody>

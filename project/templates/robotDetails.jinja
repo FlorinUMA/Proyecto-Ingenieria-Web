@@ -11,37 +11,43 @@
 
 {%block navbar%}
 <div class="collapse navbar-collapse" id="menuItems">
-    <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-            <a href="/tecnico" class="nav-link">Volver a técnico</a>
-        </li>
-    </ul>
+  <ul class="navbar-nav me-auto">
+    <li class="nav-item">
+      <a href="/tecnico" class="nav-link">Volver a técnico</a>
+    </li>
+  </ul>
 </div>
 {% endblock %}
 
 {% block content%}
 
-<div class="container-fluid my-5 mx-5">
+<div class="container-fluid my-5 px-5">
 
-    <h2>Tasks</h2>
-          
-    <table class="table tasks">
-      <button OnClick="location.href='task-editor'">Edit</button>
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">ID Task</th>
-        </tr>
-      </thead>
-      <tbody>
-            {% for i in row %}
-              <tr>
-                <td>{{i[0]}}</td>
-              </tr>
-            {% endfor %}
-        
+  <h2 class="mini_title">Tareas de {{robot.nombre}}</h2>
 
-      </tbody>
-    </table>
-  </div>
+  <table class="table">
+    <button OnClick="location.href='nueva-tarea'">Edit</button>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Id Tarea</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Ejecutada por</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in row %}
+      <tr>
+        <td>{{i.id}}</td>
+        <td>{{i.nombre}}</td>
+        <td>{{i.estado_id|muestraEstado()}}</td>
+        <td>{{i.ejecutaMedico}}</td>
+
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 {% endblock %}

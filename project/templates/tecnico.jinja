@@ -9,24 +9,36 @@
 
 {% endblock %}
 
+{%block navbar%}
+<div class="collapse navbar-collapse" id="menuItems">
+  <ul class="navbar-nav me-auto">
+    <li class="nav-item">
+      <a href="/nueva-tarea" class="nav-link">Añadir nueva tarea</a>
+    </li>
+  </ul>
+</div>
+{% endblock %}
+
 {% block content%}
 
 <div class="container-fluid my-5 px-5">
-    <h2>Robots</h2>
+    <h2 class="mini_title">Robots</h2>
           
     <table class="table">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">ID Robot </th>
-          <th scope="col">Tareas </th>
+          <th scope="col">ID Robot</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Tareas</th>
         </tr>
       </thead>
       <tbody>
             {% for i in row %}
               <tr>
-                <td>{{i[0]}}</td>
-                <td>{{i[0]|buscaTareas(tareas)}}</td>
-                <td><button OnClick="refRobot({{i[0]}})">Edit</button></td>
+                <td>{{i.id}}</td>
+                <td>{{i.nombre}}</td>
+                <td>{{i.id|buscaTareas(tareas)}}</td>
+                <td><button OnClick="refRobot({{i.id}})">Edit</button></td>
               </tr>
             {% endfor %}
       </tbody>

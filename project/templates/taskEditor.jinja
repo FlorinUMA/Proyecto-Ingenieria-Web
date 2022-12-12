@@ -1,0 +1,59 @@
+{% extends 'base.jinja' %}
+
+{% block head %}
+{# Adds the title, stylesheet links and favicon #}
+
+<title>Editor de Tareas</title>
+<link rel="stylesheet" href=
+"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+<link rel="stylesheet" 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
+
+<style>
+    form i {
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+<!-- Form: -->
+
+{% block content%}
+
+<div class="container-fluid my-5">
+    <form>
+      <div class="form-row">
+        <div class="col">
+          <!-- Cajas de variables. -->
+          <input type="text" class="form-control" placeholder="Variable 0">
+          <input type="text" class="form-control" placeholder="Variable 1">
+          <input type="text" class="form-control" placeholder="Variable 2">
+          <input type="text" class="form-control" placeholder="Variable 3">
+          <input type="text" class="form-control" placeholder="Variable 4">
+          <input type="text" class="form-control" placeholder="Variable 5">
+          <input type="text" class="form-control" placeholder="Variable 6">
+          <input type="text" class="form-control" placeholder="Variable 7">
+          <input type="text" class="form-control" placeholder="Variable 8">
+          <input type="text" class="form-control" placeholder="Variable 9">
+        </div>
+        <div class="col">
+            <!-- Cajas de valores de variables. -->
+          <input type="text" class="form-control" placeholder="Valor variable 0">
+          <input type="text" class="form-control" placeholder="Valor variable 1">
+          <input type="text" class="form-control" placeholder="Valor variable 2">
+          <input type="text" class="form-control" placeholder="Valor variable 3">
+          <input type="text" class="form-control" placeholder="Valor variable 4">
+          <input type="text" class="form-control" placeholder="Valor variable 5">
+          <input type="text" class="form-control" placeholder="Valor variable 6">
+          <input type="text" class="form-control" placeholder="Valor variable 7">
+          <input type="text" class="form-control" placeholder="Valor variable 8">
+          <input type="text" class="form-control" placeholder="Valor variable 9">
+        </div>
+      </div>
+    </form>
+</div>
+
+<button type="submit" class="btn btn-primary btn-block mb-4">Aplicar</button>
+{% endblock %}

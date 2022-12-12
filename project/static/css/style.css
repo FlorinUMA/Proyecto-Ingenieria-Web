@@ -119,16 +119,12 @@ fieldset p{
   color: blue;
 }
 
-#footer {
-  color: darkslategray;
+main {
+  margin-top: 75px;
 }
 
-#footer:hover {
-  color:deepskyblue;
-}
-
-#footer:active {
-  color:darkblue;
+.navbar a:active, a:focus {
+  outline: 0;
 }
 
 

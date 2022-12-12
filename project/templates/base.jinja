@@ -31,7 +31,7 @@
         </nav>
     </header> #}
     <header>
-        <div class="container-fluid bg-nav p-2 shadow">
+        <div class="container-fluid bg-nav p-2 shadow fixed-top">
             <nav class="navbar navbar-light navbar-expand-md">
                 <a id="logo" class="m-2 logo" href="/">
                     <img class=logoNav src="{{url_for('static', filename='img/androide.png')}}" alt="logo" title="logo">
@@ -55,17 +55,22 @@
         <div class="container p-4 pb-0">
             <!-- Section: Social media -->
             <section class="mb-3">
-                <a class="text-justify text-decoration-none" id="footer" href="https://github.com/FlorinUMA/Proyecto-Ingenieria-Web" title="Click here to visit our Github repository">
+                <a class="text-justify text-decoration-none" style="color: gray;">
                     Proyecto Ingeniería de la Salud - Ingeniería web
-                    <br>
+                    <hr/>
                     Proyecto realizado por: Florín Babusca, Pablo Molina, Claudia Vega y Juan Carlos Ruiz
+                    <br/>
+                    <a class="footer-logo mx-3 nav-link d-inline-block mt-2" href="https://www.uma.es/">
+                        <img class="logo" src="{{url_for('static', filename='img/marcauma.svg')}}" alt="UMA"
+                            title="UMA" width="80" height="35">
+                    </a>
+                    <a class="footer-logo mx-3 nav-link d-inline-block mt-2" href="https://github.com/FlorinUMA/Proyecto-Ingenieria-Web">
+                        <img class="logo" src="{{url_for('static', filename='img/github_logo.svg')}}" alt="Repositorio"
+                            title="Repositorio" width="35" height="35">
+                    </a>
                 </a>
                 <!-- UMA -->
-                {# <a class="footer-logo mx-3 nav-link d-inline-block"
-                    href="https://www.uma.es/">
-                    <img class="logo" src="{{url_for('static', filename='img/marcauma.svg')}}" alt="UMA"
-                        title="UMA" width="80" height="35">
-                </a> #}
+                
             </section>
         </div>
     </footer>

@@ -22,8 +22,8 @@
 
 {% block content%}
 <div class="container-fluid my-5">
-    <div class="container-sm col-sm-5 mx-auto">
-        <div class="card text-center">
+    <div class="container-sm col-sm-5 px-5">
+        <div class="card text-center" style="width: fit-content; ">
             <div class="card-header bg-primary text-light">
                 <h5 class="card-title">Log in</h5>
             </div>
@@ -32,19 +32,19 @@
                     <!-- Email input -->
                     <div class="form-outline mb-4">
                         {# <label class="form-label" for="user">User</label> #}
-                        <input type="text" name="user" id="user" class="form-control" placeholder="User"/>
+                        <input type="text" name="user" id="user" class="form-control mx-auto" placeholder="User" style="width: 500px;"/>
                     </div>
 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
                         {# <label class="form-label" for="passw_input">Password</label> #}
                         <p>
-                            <input type="password" name="password" id="password" class="form-control" placeholder="Password" />
-                            <i class="bi bi-eye-slash" id="togglePassword"></i>
+                            <input type="password" name="password" id="password" class="form-control mx-auto" placeholder="Password" style="width: 500px;"/>
+                            <i class="bi bi-eye-slash" id="togglePassword" title="Toggle show or hide password"></i>
                         </p>
                     </div>
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+                    <button type="submit" class="btn btn-primary btn-block mb-4 mx-auto" style="width: fit-content;">Sign in</button>
                 </form>
                 {% if error %}
                     <div style="color: red;">
@@ -65,13 +65,14 @@
     const password = document.querySelector("#password");
 
     togglePassword.addEventListener("click", function () {
-    
-    // toggle the type attribute
-    const type = password.getAttribute("type") === "password" ? "text" : "password";
-    password.setAttribute("type", type);
-    // toggle the eye icon
-    this.classList.toggle('fa-eye');
-    this.classList.toggle('fa-eye-slash');
+        
+        // toggle the type attribute
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+        // toggle the eye icon
+        
+        this.classList.toggle('bi-eye');
+        this.classList.toggle('bi-eye-slash');
     });
 </script>
 

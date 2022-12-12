@@ -23,14 +23,22 @@
       <tbody>
             {% for i in row %}
               <tr>
-                <td>{{i}}</td>
-                <td><button OnClick=" location.href='robotDetails' ">Edit</button></td>
+                <td>{{i[0]}}</td>
+                <td><button OnClick="refRobot({{i[0]}})">Edit</button></td>
               </tr>
             {% endfor %}
-        
-
       </tbody>
     </table>
   </div>
+
+{% endblock %}
+
+{% block scripts%}
+
+<script>
+function refRobot(id) {
+  location.href = `robotDetails?id=${id}`;
+}
+</script>
 
 {% endblock %}

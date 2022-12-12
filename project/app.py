@@ -3,7 +3,8 @@ from flask import (
     render_template,
     redirect,
     flash,
-    request
+    request,
+    abort
 )
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, and_, select
@@ -84,6 +85,99 @@ class Historial(db.Model):
         return 'Historial %r' % self.idEstado + " " + self.idTarea
 
 
+@app.errorhandler(404)
+def error404(err):
+    return render_template("error404.jinja")
+
+
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("index.jinja")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    error = False
+    if request.method == "POST":
+        # Cuando reciba un método post, recoge el usuario y la contraseña insertada
+        user = request.form.get("user")
+        passw = request.form.get("password")
+
+        # Hacemos un try/except para controlar cuando no se encuentre al usuario
+        try:
+            # Creamos la query, seleccionando al usuario con el mismo usuario y contraseña insertado
+            statement = select(Usuarios).where(
+                    Usuarios.usuario == user,
+                    Usuarios.contrasenya == passw
+            )
+
+            # Ejecutamos la query
+            query = db.session.execute(statement)
+            # Guardamos el resultado
+            result = query.one()[0]
+
+            # ==== PLACEHOLDER PARA COMPROBAR QUE FUNCIONA [BORRAR] ======
+            # print(result.usuario)
+            # print(result.contrasenya)
+            # print(result.rol)
+           
+            if (result.rol == "medico"):
+                return redirect("/medico")
+            elif (result.rol == "tecnico"):
+                return redirect("/tecnico")
+            else:
+                flash("ERROR 501: El usuario no tiene un rol correcto asignado, consulte con su técnico")
+                return redirect("/")
+        except:
+            # Si no se encuentra al usuario se lanza una excepción que es controlada y se recarga la página de login esta vez mostrando un mensaje de contraseña o usuario incorrecto
+            error=True
+            return render_template("login.jinja", error=error)
+
+    else:
+        # Si recibe un GET se carga la página con normalidad
+        return render_template("login.jinja", error=error)
+
+
+@app.route("/medico", methods=["GET"])
+def medico():
+    # id = request.args.get('id', type=int)
+    # if id == None:
+    #     return abort(code=404)
+    return render_template("medico.jinja")
+
+@app.route("/tecnico", methods=["GET"])
+def tecnico():
+    row = Robots.query.with_entities(Robots.id).all()
+    return render_template("tecnico.jinja", row=row)
+
+
+@app.route("/robotDetails", methods=["GET"])
+def robotDetails():
+    id_robot = request.args.get("id", type=int)
+    # print(id_robot)
+    row = Tareas.query.with_entities(Tareas.nombre).filter(Tareas.rob_Id == id_robot).all()
+    return render_template("robotDetails.jinja", row=row) 
+ 
+
+       
+@app.route("/task-editor", methods=["GET", "POST"])
+def modifyTask():
+    if request.method == "POST":
+        IdTareaSeleccionada = request.form.get("seleccionar") # TODO: Cambiar como se obtiene el dato
+        try:
+            sentencia = select(Tareas).where(
+                    Tareas.rob_Id == IdTareaSeleccionada
+            )
+            peticion = db.session.execute(sentencia)
+            resultado = peticion.one()[0]
+            render_template("taskEditor.jinja", idTareaExistente = IdTareaSeleccionada)
+        except:
+            return render_template("index.jinja") # TODO: ¿Es esto correcto?
+    else:
+        # pass # ¿Sería correcto?
+        return render_template("taskEditor.jinja")
+
+
 def inserta_usuarios():
     medico1 = Usuarios(usuario="medico1", contrasenya="12345", rol="medico")
     medico2 = Usuarios(usuario="medico2", contrasenya="11111", rol="medico")
@@ -137,97 +231,6 @@ def inserta_tareas():
     db.session.commit()
     db.session.add(tarea4)
     db.session.commit()
-
-    # Corregido. He establecido las tareas tal que no hayan sido ejecutadas aún por ningún médico
-
-@app.route("/", methods=["GET"])
-def index():
-    return render_template("index.jinja")
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    error = False
-    if request.method == "POST":
-        # Cuando reciba un método post, recoge el usuario y la contraseña insertada
-        user = request.form.get("user")
-        passw = request.form.get("password")
-
-        # Hacemos un try/except para controlar cuando no se encuentre al usuario
-        try:
-            # Creamos la query, seleccionando al usuario con el mismo usuario y contraseña insertado
-            statement = select(Usuarios).where(
-                    Usuarios.usuario == user,
-                    Usuarios.contrasenya == passw
-            )
-
-            # Ejecutamos la query
-            query = db.session.execute(statement)
-            # Guardamos el resultado
-            result = query.one()[0]
-
-            # ==== PLACEHOLDER PARA COMPROBAR QUE FUNCIONA [BORRAR] ======
-            print(result.usuario)
-            print(result.contrasenya)
-            print(result.rol)
-
-            # ===== DESCOMENTAR CUANDO TENGAMOS VISTAS DE TECNICO Y MEDICO ==========
-            
-            # if (result.rol == "medico"):
-            #     return render_template("medico.jinja")
-            # elif (result.rol == "tecnico"):
-            #     return render_template("medico.jinja")
-            # else:
-            #     flash("ERROR 501: El usuario no tiene un rol correcto asignado, consulte con su técnico")
-            #     return redirect("/")
-
-            return redirect("/")
-        except:
-            # Si no se encuentra al usuario se lanza una excepción que es controlada y se recarga la página de login esta vez mostrando un mensaje de contraseña o usuario incorrecto
-            error=True
-            return render_template("login.jinja", error=error)
-
-    else:
-        # Si recibe un GET se carga la página con normalidad
-        return render_template("login.jinja", error=error)
-
-# @app.route("/asig-tarea", methods=["POST"])
-# def asig_tarea():
-#     pass
-@app.route("/medico", methods=["GET"])
-def medico():
-    return render_template("medico.jinja")
-
-@app.route("/tecnico", methods=["GET"])
-def tecnico():
-    row = Robots.query.with_entities(Robots.id).all()
-    return render_template("tecnico.jinja",row=row)
-
-   
-
-@app.route("/robotDetails", methods=["GET"])
-def robotDetails():
-    row = Tareas.query.with_entities(Tareas.nombre).filter(Tareas.rob_Id).all() # TODO: hacer que coja el id del robot de la ruta tecnico
-    return render_template("robotDetails.jinja", row=row) 
- 
-
-       
-@app.route("/task-editor", methods=["GET", "POST"])
-def modifyTask():
-    if request.method == "POST":
-        IdTareaSeleccionada = request.form.get("seleccionar") # TODO: Cambiar como se obtiene el dato
-        try:
-            sentencia = select(Tareas).where(
-                    Tareas.rob_Id == IdTareaSeleccionada
-            )
-            peticion = db.session.execute(sentencia)
-            resultado = peticion.one()[0]
-            render_template("taskEditor.jinja", idTareaExistente = IdTareaSeleccionada)
-        except:
-            return render_template("index.jinja") # TODO: ¿Es esto correcto?
-    else:
-        # pass # ¿Sería correcto?
-        return render_template("taskEditor.jinja")
-
 
 if __name__ == "__main__":
     app.app_context().push()

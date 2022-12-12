@@ -12,10 +12,27 @@
 <div class="collapse navbar-collapse" id="menuItems">
     <ul class="navbar-nav me-auto">
         <li class="nav-item">
-            <a href="/" class="nav-link">Home</a>
+            <a href="/" class="nav-link">Sobre nosotros</a>
         </li>
+        <li class="nav-item">
+            <a href="/" class="nav-link">Contacto</a>
+        </li>
+        <li class="nav-item">
+            <a href="https://github.com/FlorinUMA/Proyecto-Ingenieria-Web" class="nav-link" title="https://github.com/FlorinUMA/Proyecto-Ingenieria-Web">Github repository</a>
+        </li>
+        {# {% if is_tecnico%}
+        <li class="nav-item">
+            <a href="/tecnico" class="nav-link">Ir a vista de técnico</a>
+        </li>
+        {% endif %}
+        {% if is_medico%}
+        <li class="nav-item">
+            <a href="/medico" class="nav-link">Ir a vista de médico</a>
+        </li>
+        {% endif %} #}
     </ul>
 </div>
+
 <div class="topnav-right">
     <button type="button" class="btn btn-sync me-3 btn-lg" id="login_btn">
         <span class="btn-sync__text">
@@ -23,6 +40,7 @@
         </span>
     </button>
 </div>
+
 {% endblock %}
 
 
@@ -30,7 +48,7 @@
 <div class="container-fluid text-white my-5">
     <div class="container-sm row justify-content-between min-vw-100">
         <fieldset class="col-xl-6 mb-6">
-            <legend class="my-2 mx-3 row align-items-center justify-content-center">About</legend>
+            <legend class="my-2 mx-3 row align-items-center justify-content-center">Control de robots asistenciales</legend>
             <div>
                 <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur at finibus purus. Vivamus sodales quam at lacus facilisis mollis. Phasellus nibh neque, efficitur sit amet nunc et, sodales rhoncus nunc. Sed suscipit nisi et lacus sagittis, nec gravida nisl lobortis. Quisque et diam quis augue convallis hendrerit. In faucibus ultricies felis ut congue. Sed a bibendum purus. Nulla ipsum mi, rhoncus sed augue quis, blandit pharetra purus. Sed iaculis eget neque sit amet consequat. Suspendisse feugiat sagittis eros, in aliquam leo imperdiet eu. In orci velit, dignissim ac laoreet non, maximus quis justo. Vestibulum sit amet ligula magna. Nullam mattis interdum lectus, id lobortis est placerat ut. Praesent tempus commodo sagittis. Maecenas eu metus eget tellus posuere tempus. Vestibulum efficitur placerat odio ultricies ornare.

@@ -9,6 +9,16 @@
 
 {% endblock %}
 
+{%block navbar%}
+<div class="collapse navbar-collapse" id="menuItems">
+    <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+            <a href="/tecnico" class="nav-link">Volver a técnico</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
 {% block content%}
 
 <div class="container">
@@ -16,7 +26,7 @@
     <h2>Tasks</h2>
           
     <table class="table tasks">
-      <button OnClick=" location.href='task-editor' ">Edit</button>
+      <button OnClick="location.href='task-editor'">Edit</button>
       <thead class="thead-dark">
         <tr>
           <th scope="col">ID Task</th>
@@ -25,7 +35,7 @@
       <tbody>
             {% for i in row %}
               <tr>
-                <td>{{i}}</td>
+                <td>{{i[0]}}</td>
               </tr>
             {% endfor %}
         

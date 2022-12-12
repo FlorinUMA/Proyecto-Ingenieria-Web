@@ -115,6 +115,21 @@ fieldset p{
   transition: all 0.2s;
 }
 
+.bi:hover{
+  color: blue;
+}
+
+#footer {
+  color: darkslategray;
+}
+
+#footer:hover {
+  color:deepskyblue;
+}
+
+#footer:active {
+  color:darkblue;
+}
 
 
 @media screen and (min-width: 600px){

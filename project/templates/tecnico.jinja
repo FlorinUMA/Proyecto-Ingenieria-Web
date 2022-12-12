@@ -11,19 +11,21 @@
 
 {% block content%}
 
-<div class="container-fluid my-5 mx-5">
+<div class="container-fluid my-5 px-5">
     <h2>Robots</h2>
           
-    <table class="table tasks">
+    <table class="table">
       <thead class="thead-dark">
         <tr>
           <th scope="col">ID Robot </th>
+          <th scope="col">Tareas </th>
         </tr>
       </thead>
       <tbody>
             {% for i in row %}
               <tr>
                 <td>{{i[0]}}</td>
+                <td>{{i[0]|buscaTareas(tareas)}}</td>
                 <td><button OnClick="refRobot({{i[0]}})">Edit</button></td>
               </tr>
             {% endfor %}

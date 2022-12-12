@@ -58,7 +58,7 @@ class Robots(db.Model):
 
 class Tareas(db.Model):
     __tablename__ = 'tareas'
-    nombre = db.Column(db.String(100), nullable=False)
+    nombre = db.Column(db.String(100), primary_key=True)
     param0 = db.Column(db.String(100), nullable = True)
     param1 = db.Column(db.String(100), nullable = True)
     param2 = db.Column(db.String(100), nullable = True) 
@@ -70,11 +70,11 @@ class Tareas(db.Model):
     param8 = db.Column(db.String(100), nullable = True) 
     param9 = db.Column(db.String(100), nullable = True)
 
-    rob_Id = db.Column(db.Integer, db.ForeignKey(Robots.id), primary_key=True)
+    rob_Id = db.Column(db.Integer, db.ForeignKey(Robots.id), nullable=False)
     asignaTecnico = db.Column(db.String(50), db.ForeignKey(Tecnicos.usuarioTecnico), nullable = False)
     ejecutaMedico = db.Column(db.String(50), db.ForeignKey(Medicos.usuarioMedico), nullable = True)
     def __repr__(self):
-        return 'Tarea %r' % self.nombre + " " + self.rob_Id
+        return 'Tarea %r' % self.nombre + " " + str(self.rob_Id)
     
 
 class Historial(db.Model):
@@ -148,7 +148,17 @@ def medico():
 @app.route("/tecnico", methods=["GET"])
 def tecnico():
     row = Robots.query.with_entities(Robots.id).all()
-    return render_template("tecnico.jinja", row=row)
+    tareas = Tareas.query.with_entities(Tareas).all()
+    return render_template("tecnico.jinja", row=row, tareas=tareas)
+
+
+@app.template_filter("buscaTareas")
+def searchTask(robot_id, tareas):
+    out = []
+    for tarea in tareas:
+        if tarea.rob_Id == robot_id:
+            out.append(tarea.nombre)
+    return ', '.join(out)
 
 
 @app.route("/robotDetails", methods=["GET"])

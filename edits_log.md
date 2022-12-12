@@ -70,3 +70,6 @@ Ha realizado correcciones de diseño de la base de datos y ha empezado a impleme
 ## 11/12/2022
 # Claudia 
 Ha realizado la clase medico.jinja y las funciones de insert de Robots y Tareas para realizar pruebas. 
+
+## 12/12/2022
+Hoy se han reunido Florin y Pablo para coordinarse durante la implementación de la vista del técnico.

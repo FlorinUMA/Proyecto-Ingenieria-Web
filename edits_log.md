@@ -57,10 +57,16 @@ Han finalizado el diagrama UML y su correspondiente explicación. Además se ha 
 
 ## 29/11/2022
 El grupo se reunió para repartirse las distintas tareas de la creación de la página web y decicir como sería la mejor manera de llevarla a cabo.
-
+## 5/12/2022
+# Florin
+He realizado el modelo conceptual de la base de datos, así como su modelo entidad relación y su respectiva traducción al modelo relacional.
 ## 8/12/2022
 El grupo se reunió para poner en conjunto como iba el proyecto y se avanzó en el mismo.
 
+## 10/12/2022
+# Florin
+Ha realizado correcciones de diseño de la base de datos y ha empezado a implementar el editor de tareas (vista de técnico).
+
 ## 11/12/2022
-## Claudia 
+# Claudia 
 Ha realizado la clase medico.jinja y las funciones de insert de Robots y Tareas para realizar pruebas. 

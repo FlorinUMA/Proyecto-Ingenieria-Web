@@ -146,6 +146,13 @@ def searchTask(robot_id, tareas):
             out.append(tarea.nombre)
     return ", ".join(out)
 
+@app.template_filter("mostrarNombreVariable")
+def presentNameParam(variable):
+    return variable.split("=")[0]
+
+@app.template_filter("mostrarValorVariable")
+def presentValueParam(variable):
+    return variable.split("=")[1]
 
 # ======= WEBPAGE ENDPOINTS =======
 
@@ -225,22 +232,34 @@ def robotDetails():
     return render_template("robotDetails.jinja", row=row, robot=robot)
 
 
-@app.route("/nueva-tarea", methods=["GET", "POST"])
+@app.route("/gestor-tareas", methods=["GET", "POST"])
 def modifyTask():
-    if request.method == "POST":
-        IdTareaSeleccionada = request.form.get(
-            "seleccionar"
-        )  # TODO: Cambiar como se obtiene el dato
-        try:
-            sentencia = select(Tareas).where(Tareas.rob_Id == IdTareaSeleccionada)
-            peticion = db.session.execute(sentencia)
-            resultado = peticion.one()[0]
-            render_template("taskEditor.jinja", idTareaExistente=IdTareaSeleccionada)
-        except:
-            return render_template("index.jinja")  # TODO: ¿Es esto correcto?
+    if request.method == "GET":
+        IdTareaSeleccionada = request.args.get("idTareaGT")
+        if(IdTareaSeleccionada != None):
+            try:
+                sentencia = select(Tareas).where(Tareas.id == IdTareaSeleccionada)
+                peticion = db.session.execute(sentencia)
+                resultado = peticion.one()[0]
+                par0 = resultado.param0 if resultado.param0 != None else ""
+                par1 = resultado.param1 if resultado.param1 != None else ""
+                par2 = resultado.param2 if resultado.param2 != None else ""
+                par3 = resultado.param3 if resultado.param3 != None else ""
+                par4 = resultado.param4 if resultado.param4 != None else ""
+                par5 = resultado.param5 if resultado.param5 != None else ""
+                par6 = resultado.param6 if resultado.param6 != None else ""
+                par7 = resultado.param7 if resultado.param7 != None else ""
+                par8 = resultado.param8 if resultado.param8 != None else ""
+                par9 = resultado.param9 if resultado.param9 != None else ""
+
+                return render_template("taskEditor.jinja", par0 = par0, par1 = par1, par2 = par2, par3 = par3,
+                par4 = par4, par5 = par5, par6 = par6, par7 = par7, par8 = par8, par9 = par9)
+            except:
+                return render_template("taskEditor.jinja", par0 = "", par1 = "", par2 = "", par3 = "",
+                par4 = "", par5 = "", par6 = "", par7 = "", par8 = "", par9 = "")
     else:
-        # pass # ¿Sería correcto?
-        return render_template("taskEditor.jinja")
+        #TODO: Implementar aquí qué cambios ocurrirían en la base de datos al pulsar el botón aplicar
+        return render_template("index.jinja", idTareaExistente = None)
 
 
 # ======= API ENDPOINTS =======
@@ -344,7 +363,7 @@ def inserta_tareas():
     tarea2 = Tareas(
         id=2,
         nombre="Videollamada",
-        # rob_Id=122,
+        # rob_Id=123,
         estado_id=0,
         asignaTecnico="tecnico2",
         param0="NOMBRE_PROGRAMA=Skype",

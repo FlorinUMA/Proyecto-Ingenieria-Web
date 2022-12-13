@@ -37,7 +37,7 @@
       </thead>
       <tbody>
             {% for i in row %}
-              <tr onclick="refRobot({{i.id}})">
+              <tr onclick="refRobot('{{user}}', {{i.id}})">
                 <td>{{i.id}}</td>
                 <td>{{i.nombre}}</td>
                 <td>{{i.id|buscaTareas(tareas)}}</td>
@@ -53,8 +53,8 @@
 {% block scripts%}
 
 <script>
-function refRobot(id) {
-  location.href = `robotDetails?id=${id}`;
+function refRobot(user, id) {
+  location.href = `robotDetails?user=${user}&id=${id}`;
 }
 </script>
 

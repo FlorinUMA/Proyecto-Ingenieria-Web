@@ -75,3 +75,7 @@ Ha realizado la clase medico.jinja y las funciones de insert de Robots y Tareas 
 Hoy se han reunido Florin y Pablo para coordinarse durante la implementación de la vista del técnico.
 
 Juan Carlos ha añadido múltiples cambios de visualización y funcionamiento de la página web.
+
+## 13/12/2022
+Hoy se han reunido Florin, Pablo y Juan Carlos para continuar con el proyecto de forma general.
+

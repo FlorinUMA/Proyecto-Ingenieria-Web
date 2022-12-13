@@ -148,11 +148,11 @@ def searchTask(robot_id, tareas):
 
 @app.template_filter("mostrarNombreVariable")
 def presentNameParam(variable):
-    return variable.split("=")[0]
+    return (variable.split("=")[0] if len(variable) > 0 else "")
 
 @app.template_filter("mostrarValorVariable")
 def presentValueParam(variable):
-    return variable.split("=")[1]
+    return (variable.split("=")[1] if len(variable) > 0 else "")
 
 # ======= WEBPAGE ENDPOINTS =======
 

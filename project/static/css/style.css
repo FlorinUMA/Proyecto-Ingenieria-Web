@@ -137,6 +137,19 @@ main {
   font-weight: bold;
 }
 
+.thead-dark{
+  background-color: darkslategray;
+}
+
+.table-hover tr td:hover{
+  cursor: pointer;
+}
+
+.table-dark tr td, .table-dark tr th{
+  background-color: rgba(10, 10, 10, 0.7);
+  padding: 15px;
+}
+
 
 @media screen and (min-width: 600px){
   .home-link{

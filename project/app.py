@@ -86,7 +86,7 @@ class Tareas(db.Model):
     param9 = db.Column(db.String(100), nullable=True)
 
     estado_id = db.Column(db.Integer, db.ForeignKey(Estados.id), nullable=False)
-    rob_Id = db.Column(db.Integer, db.ForeignKey(Robots.id), nullable=False)
+    rob_Id = db.Column(db.Integer, db.ForeignKey(Robots.id), nullable=True)
     asignaTecnico = db.Column(
         db.String(50), db.ForeignKey(Tecnicos.usuarioTecnico), nullable=False
     )
@@ -125,9 +125,17 @@ def error404(err):
 
 
 @app.template_filter("muestraEstado")
-def searchTask(estado_id):
+def searchStatus(estado_id):
     out = Estados.query.with_entities(Estados).filter(Estados.id == estado_id).one()
     return out.nombre
+
+@app.template_filter("muestraRobot")
+def searchRobot(robot_id):
+    try:
+        out = Robots.query.with_entities(Robots).filter(Robots.id == robot_id).one()
+        return out.nombre
+    except:
+        return ""
 
 
 @app.template_filter("buscaTareas")
@@ -193,13 +201,11 @@ def login():
 
 @app.route("/medico", methods=["GET"])
 def medico():
-    row = Robots.query.with_entities(Robots.id).all()
     tareas = Tareas.query.with_entities(Tareas).all()
-    estados = Estados.query.with_entities(Estados).all()
     # id = request.args.get('id', type=int)
     # if id == None:
     #     return abort(code=404)
-    return render_template("medico.jinja", row=row, tareas=tareas, estados=estados)
+    return render_template("medico.jinja", tareas=tareas)
 
 
 @app.route("/tecnico", methods=["GET"])
@@ -308,11 +314,14 @@ def inserta_subclases():
 
 
 def inserta_estados():
+    estado0 = Estados(id=0, nombre="Sin asignar")
     estado1 = Estados(id=1, nombre="En espera")
     estado2 = Estados(id=2, nombre="De camino", descripcion="De camino a la tarea")
     estado3 = Estados(id=3, nombre="En proceso", descripcion="Realizando la tarea")
     estado4 = Estados(id=4, nombre="Terminado", descripcion="Tarea terminada")
 
+    db.session.add(estado0)
+    db.session.commit()
     db.session.add(estado1)
     db.session.commit()
     db.session.add(estado2)
@@ -335,8 +344,8 @@ def inserta_tareas():
     tarea2 = Tareas(
         id=2,
         nombre="Videollamada",
-        rob_Id=122,
-        estado_id=2,
+        # rob_Id=122,
+        estado_id=0,
         asignaTecnico="tecnico2",
         param0="NOMBRE_PROGRAMA=Skype",
     )

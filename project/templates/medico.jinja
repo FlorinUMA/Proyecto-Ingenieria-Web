@@ -9,41 +9,27 @@
 
 {% endblock %}
 
-{# {% block content%}
-    {% for i in row %} 
-    <div class="list-group">
-    <a href="#" class="list-group-item list-group-item-action"></a>
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">{{i[0]}}</h5>
-    </div>
-    <p class="mb-1">{{i.estadoId}}</p> 
-    {# <button class="btn btn-primary btn-sm" style="width: fit-content;">Ver Robot</button>
-    </a>
-    </div>
-    {% endfor %}
-
-{% endblock %} #}
-
-
 {% block content%}
 
 <div class="container-fluid my-5 px-5">
-    <h2 class="mini_title">Robots</h2>
-          
-    <table class="table">
+    <h2 class="mini_title">Tareas</h2>
+    <br>
+    <table class="table table-hover table-dark mx-auto" style="width: 85%;">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">ID Robot </th>
-          <th scope="col">Tareas </th>
-          <th scope="col">Estado </th>
+          <th scope="col">ID Tarea</th>
+          <th scope="col">Tarea</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Robot asignado</th>
         </tr>
       </thead>
       <tbody>
-            {% for i in row %}
-              <tr>
-                <td>{{i[0]}}</td>
-                {# <td>{{i[0].id|buscaTareas(tareas)}}</td>
-                <td>{{i[0]|muestraEstado(estados)}}</td> #}
+            {% for tarea in tareas %}
+              <tr onclick="alert('This is a task')">
+                <td>{{tarea.id}}</td>
+                <td>{{tarea.nombre}}</td>
+                <td>{{tarea.estado_id|muestraEstado()}}</td>
+                <td>{{tarea.rob_Id|muestraRobot()}}</td>
               </tr>
             {% endfor %}
       </tbody>

@@ -6,6 +6,7 @@
 
 <title>Robots de asistencia</title>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 {% endblock %}
 
 {%block navbar%}
@@ -18,21 +19,24 @@
             <a href="/" class="nav-link">Contacto</a>
         </li>
         <li class="nav-item">
-            <a href="https://github.com/FlorinUMA/Proyecto-Ingenieria-Web" class="nav-link" title="https://github.com/FlorinUMA/Proyecto-Ingenieria-Web">Github repository</a>
+            <a href="https://github.com/FlorinUMA/Proyecto-Ingenieria-Web" class="nav-link" title="https://github.com/FlorinUMA/Proyecto-Ingenieria-Web">Repositorio de Github</a>
         </li>
-        {# {% if is_tecnico%}
+        {% if istecnico%}
+        {% set ref = '/tecnico?user=' + user %}
         <li class="nav-item">
-            <a href="/tecnico" class="nav-link">Ir a vista de técnico</a>
+            <a href={{ref}} class="nav-link">Ir a vista de técnico</a>
         </li>
         {% endif %}
-        {% if is_medico%}
+        {% if ismedico%}
+        {% set ref = '/medico?user=' + user %}
         <li class="nav-item">
-            <a href="/medico" class="nav-link">Ir a vista de médico</a>
+            <a href={{ref}} class="nav-link">Ir a vista de médico</a>
         </li>
-        {% endif %} #}
+        {% endif %}
     </ul>
 </div>
 
+{% if not ismedico and not istecnico %}
 <div class="topnav-right">
     <button type="button" class="btn btn-sync me-3 btn-lg" id="login_btn">
         <span class="btn-sync__text">
@@ -40,6 +44,7 @@
         </span>
     </button>
 </div>
+{% endif %}
 
 {% endblock %}
 

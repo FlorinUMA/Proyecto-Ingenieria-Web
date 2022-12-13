@@ -5,11 +5,15 @@
 {# Adds the title, stylesheet links and favicon #}
 
 <title>Robots de asistencia - Medico</title>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{# <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> #}
+
+<script src="{{url_for('static',filename='js/changeReturn.js')}}"></script>
 
 {% endblock %}
 
 {% block content%}
+
+<script>custom_return("{{user}}")</script>
 
 <div class="container-fluid my-5 px-5">
     <h2 class="mini_title">Tareas</h2>
@@ -37,3 +41,4 @@
   </div>
 
 {% endblock %}
+

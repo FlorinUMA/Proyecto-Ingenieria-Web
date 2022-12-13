@@ -152,7 +152,20 @@ def searchTask(robot_id, tareas):
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.jinja")
+    user = request.args.get("user")
+    if user != None :
+        try:
+            rol = Usuarios.query.with_entities(Usuarios.rol).filter(Usuarios.usuario == user).one()[0]
+            if rol == "medico":
+                return render_template("index.jinja", user=user, ismedico=True, istecnico=False)
+            elif rol == "tecnico":
+                return render_template("index.jinja", user=user, ismedico=False, istecnico=True)
+            else:
+                return render_template("index.jinja", user=user, ismedico=False, istecnico=False)
+        except:
+            return render_template("index.jinja", user=user, ismedico=False, istecnico=False)
+
+    return render_template("index.jinja", user=user, ismedico=False, istecnico=False)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -181,9 +194,9 @@ def login():
             # print(result.rol)
 
             if result.rol == "medico":
-                return redirect("/medico")
+                return redirect(f"/medico?user={result.usuario}")
             elif result.rol == "tecnico":
-                return redirect("/tecnico")
+                return redirect(f"/tecnico?user={result.usuario}")
             else:
                 flash(
                     "ERROR 501: El usuario no tiene un rol correcto asignado, consulte con su técnico"
@@ -201,36 +214,39 @@ def login():
 
 @app.route("/medico", methods=["GET"])
 def medico():
+    user = request.args.get("user")
+    print(user)
     tareas = Tareas.query.with_entities(Tareas).all()
     # id = request.args.get('id', type=int)
     # if id == None:
     #     return abort(code=404)
-    return render_template("medico.jinja", tareas=tareas)
+    return render_template("medico.jinja", user=user, tareas=tareas)
 
 
 @app.route("/tecnico", methods=["GET"])
 def tecnico():
+    user = request.args.get("user")
     row = Robots.query.with_entities(Robots).all()
     tareas = Tareas.query.with_entities(Tareas).all()
-    return render_template("tecnico.jinja", row=row, tareas=tareas)
+    return render_template("tecnico.jinja", user=user, row=row, tareas=tareas)
 
 
 @app.route("/robotDetails", methods=["GET"])
 def robotDetails():
+    user = request.args.get("user")
     id_robot = request.args.get("id", type=int)
     # print(id_robot)
     row = Tareas.query.with_entities(Tareas).filter(Tareas.rob_Id == id_robot).all()
     print(row)
     robot = Robots.query.with_entities(Robots).filter(Robots.id == id_robot).one()
-    return render_template("robotDetails.jinja", row=row, robot=robot)
+    return render_template("robotDetails.jinja", user=user, row=row, robot=robot)
 
 
 @app.route("/nueva-tarea", methods=["GET", "POST"])
 def modifyTask():
     if request.method == "POST":
-        IdTareaSeleccionada = request.form.get(
-            "seleccionar"
-        )  # TODO: Cambiar como se obtiene el dato
+        IdTareaSeleccionada = request.args.get("idTarea")
+        # if(IdTareaSeleccionada == None)
         try:
             sentencia = select(Tareas).where(Tareas.rob_Id == IdTareaSeleccionada)
             peticion = db.session.execute(sentencia)
@@ -344,8 +360,8 @@ def inserta_tareas():
     tarea2 = Tareas(
         id=2,
         nombre="Videollamada",
-        # rob_Id=122,
-        estado_id=0,
+        rob_Id=122,
+        estado_id=2,
         asignaTecnico="tecnico2",
         param0="NOMBRE_PROGRAMA=Skype",
     )

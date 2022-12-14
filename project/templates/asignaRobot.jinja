@@ -1,0 +1,118 @@
+{# Makes use of base.jinja #}
+{% extends 'base.jinja' %}
+
+{% block head %}
+{# Adds the title, stylesheet links and favicon #}
+
+<title>Asigna Robot</title>
+{# <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> #}
+
+<script src="{{url_for('static',filename='js/changeReturn.js')}}"></script>
+
+{% endblock %}
+
+{% block content%}
+
+<script>custom_return("{{user}}")</script>
+
+<div class="container-fluid my-5 px-5">
+    <h2 class="mini_title">Tarea: {{tarea.nombre}}({{tarea.id}})</h2>
+    <p>
+        Seleccione el robot más adecuado para la tarea. Los parámetros de la tarea son los siguientes:
+    </p>
+    <div class="row">
+        <div class="col-sm-6">
+            <form action="/asigna-robot" method="POST">
+
+                <select class="form-select" name="robot">
+                    {% for r in robots %}
+                        <option value="{{r.id}}">{{r.nombre}}</option>
+                    {% endfor %}
+                </select>
+
+                <p>
+                    <input type="hidden" name="user" value={{user}}>
+                    <input type="hidden" name="id_tarea" value={{tarea.id}}>
+                    <input type="submit" class="btn btn-primary mt-3" value="Asignar">
+                    <button class="btn btn-danger mt-3" onclick="history.back()"> Cancel</button>
+                </p>
+
+            </form>
+        </div>
+        <div class="col-sm-5">
+            <table class="table table-dark" style="width: fit-content;">
+                <thead class="thead-dark">
+                    <tr>
+                    <th scope="col">Parámetro</th>
+                    <th scope="col">Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% if tarea.param0 is not none %}
+                        <tr>
+                            <td>{{tarea.param0|mostrarNombreVariable()}}</td>
+                            <td>{{tarea.param0|mostrarValorVariable()}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if tarea.param1 is not none %}
+                        <tr>
+                            <td>{{tarea.param1|mostrarNombreVariable()}}</td>
+                            <td>{{tarea.param1|mostrarValorVariable()}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if tarea.param2 is not none %}
+                        <tr>
+                            <td>{{tarea.param2|mostrarNombreVariable()}}</td>
+                            <td>{{tarea.param2|mostrarValorVariable()}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if tarea.param3 is not none %}
+                        <tr>
+                            <td>{{tarea.param3|mostrarNombreVariable()}}</td>
+                            <td>{{tarea.param3|mostrarValorVariable()}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if tarea.param4 is not none %}
+                        <tr>
+                            <td>{{tarea.param4|mostrarNombreVariable()}}</td>
+                            <td>{{tarea.param4|mostrarValorVariable()}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if tarea.param5 is not none %}
+                        <tr>
+                            <td>{{tarea.param5|mostrarNombreVariable()}}</td>
+                            <td>{{tarea.param5|mostrarValorVariable()}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if tarea.param6 is not none %}
+                        <tr>
+                            <td>{{tarea.param6|mostrarNombreVariable()}}</td>
+                            <td>{{tarea.param6|mostrarValorVariable()}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if tarea.param7 is not none %}
+                        <tr>
+                            <td>{{tarea.param7|mostrarNombreVariable()}}</td>
+                            <td>{{tarea.param7|mostrarValorVariable()}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if tarea.param8 is not none %}
+                        <tr>
+                            <td>{{tarea.param8|mostrarNombreVariable()}}</td>
+                            <td>{{tarea.param8|mostrarValorVariable()}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if tarea.param9 is not none %}
+                        <tr>
+                            <td>{{tarea.param9|mostrarNombreVariable()}}</td>
+                            <td>{{tarea.param9|mostrarValorVariable()}}</td>
+                        </tr>
+                        {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+  </div>
+
+{% endblock %}

@@ -29,7 +29,7 @@
       </thead>
       <tbody>
             {% for tarea in tareas %}
-              <tr onclick="alert('This is a task')">
+              <tr onclick="location.href='asigna-robot?user={{user}}&id_tarea={{tarea.id}}'">
                 <td>{{tarea.id}}</td>
                 <td>{{tarea.nombre}}</td>
                 <td>{{tarea.estado_id|muestraEstado()}}</td>
@@ -41,4 +41,3 @@
   </div>
 
 {% endblock %}
-

@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, flash, request, abort, jsoni
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, and_, select, update
 from sqlalchemy.pool import StaticPool
+from uuid import uuid4
 
 engine = create_engine(
     "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
@@ -9,6 +10,7 @@ engine = create_engine(
 
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = uuid4().hex
 
 
 # ======= CREACIÓN DE LA BASE DE DATOS =======
@@ -72,6 +74,7 @@ class Robots(db.Model):
 
 class Tareas(db.Model):
     __tablename__ = "tareas"
+
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=False)
     param0 = db.Column(db.String(100), nullable=True)
@@ -129,6 +132,7 @@ def searchStatus(estado_id):
     out = Estados.query.with_entities(Estados).filter(Estados.id == estado_id).one()
     return out.nombre
 
+
 @app.template_filter("muestraRobot")
 def searchRobot(robot_id):
     try:
@@ -146,13 +150,16 @@ def searchTask(robot_id, tareas):
             out.append(tarea.nombre)
     return ", ".join(out)
 
+
 @app.template_filter("mostrarNombreVariable")
 def presentNameParam(variable):
-    return (variable.split("=")[0] if len(variable) > 0 else "")
+    return variable.split("=")[0] if len(variable) > 0 else ""
+
 
 @app.template_filter("mostrarValorVariable")
 def presentValueParam(variable):
-    return (variable.split("=")[1] if len(variable) > 0 else "")
+    return variable.split("=")[1] if len(variable) > 0 else ""
+
 
 # ======= WEBPAGE ENDPOINTS =======
 
@@ -160,17 +167,29 @@ def presentValueParam(variable):
 @app.route("/", methods=["GET"])
 def index():
     user = request.args.get("user")
-    if user != None :
+    if user != None:
         try:
-            rol = Usuarios.query.with_entities(Usuarios.rol).filter(Usuarios.usuario == user).one()[0]
+            rol = (
+                Usuarios.query.with_entities(Usuarios.rol)
+                .filter(Usuarios.usuario == user)
+                .one()[0]
+            )
             if rol == "medico":
-                return render_template("index.jinja", user=user, ismedico=True, istecnico=False)
+                return render_template(
+                    "index.jinja", user=user, ismedico=True, istecnico=False
+                )
             elif rol == "tecnico":
-                return render_template("index.jinja", user=user, ismedico=False, istecnico=True)
+                return render_template(
+                    "index.jinja", user=user, ismedico=False, istecnico=True
+                )
             else:
-                return render_template("index.jinja", user=user, ismedico=False, istecnico=False)
+                return render_template(
+                    "index.jinja", user=user, ismedico=False, istecnico=False
+                )
         except:
-            return render_template("index.jinja", user=user, ismedico=False, istecnico=False)
+            return render_template(
+                "index.jinja", user=user, ismedico=False, istecnico=False
+            )
 
     return render_template("index.jinja", user=user, ismedico=False, istecnico=False)
 
@@ -222,12 +241,30 @@ def login():
 @app.route("/medico", methods=["GET"])
 def medico():
     user = request.args.get("user")
-    print(user)
     tareas = Tareas.query.with_entities(Tareas).all()
-    # id = request.args.get('id', type=int)
-    # if id == None:
-    #     return abort(code=404)
     return render_template("medico.jinja", user=user, tareas=tareas)
+
+
+@app.route("/asigna-robot", methods=["GET", "POST"])
+def asignaRobot():
+    user = request.args.get("user")
+    tarea_id = request.args.get("id_tarea")
+
+    if request.method == "POST":
+        robot_id = request.form.get("robot")
+        tarea_id = request.form.get("id_tarea")
+
+        # Actualizamos el robot asignado en la base de datos
+        db.session.query(Tareas).filter(Tareas.id == int(tarea_id)).update(
+            {Tareas.rob_Id: int(robot_id)}, synchronize_session=False
+        )
+        db.session.commit()
+
+        return redirect(f"/medico?user={request.form.get('user')}")
+
+    tarea = Tareas.query.with_entities(Tareas).filter(Tareas.id == tarea_id).one()
+    robots = Robots.query.with_entities(Robots).all()
+    return render_template("asignaRobot.jinja", user=user, tarea=tarea, robots=robots)
 
 
 @app.route("/tecnico", methods=["GET"])
@@ -253,7 +290,7 @@ def robotDetails():
 def modifyTask():
     if request.method == "GET":
         IdTareaSeleccionada = request.args.get("idTareaGT")
-        if(IdTareaSeleccionada != None):
+        if IdTareaSeleccionada != None:
             try:
                 sentencia = select(Tareas).where(Tareas.id == IdTareaSeleccionada)
                 peticion = db.session.execute(sentencia)
@@ -269,14 +306,36 @@ def modifyTask():
                 par8 = resultado.param8 if resultado.param8 != None else ""
                 par9 = resultado.param9 if resultado.param9 != None else ""
 
-                return render_template("taskEditor.jinja", par0 = par0, par1 = par1, par2 = par2, par3 = par3,
-                par4 = par4, par5 = par5, par6 = par6, par7 = par7, par8 = par8, par9 = par9)
+                return render_template(
+                    "taskEditor.jinja",
+                    par0=par0,
+                    par1=par1,
+                    par2=par2,
+                    par3=par3,
+                    par4=par4,
+                    par5=par5,
+                    par6=par6,
+                    par7=par7,
+                    par8=par8,
+                    par9=par9,
+                )
             except:
-                return render_template("taskEditor.jinja", par0 = "", par1 = "", par2 = "", par3 = "",
-                par4 = "", par5 = "", par6 = "", par7 = "", par8 = "", par9 = "")
+                return render_template(
+                    "taskEditor.jinja",
+                    par0="",
+                    par1="",
+                    par2="",
+                    par3="",
+                    par4="",
+                    par5="",
+                    par6="",
+                    par7="",
+                    par8="",
+                    par9="",
+                )
     else:
-        #TODO: Implementar aquí qué cambios ocurrirían en la base de datos al pulsar el botón aplicar
-        return render_template("index.jinja", idTareaExistente = None)
+        # TODO: Implementar aquí qué cambios ocurrirían en la base de datos al pulsar el botón aplicar
+        return render_template("index.jinja", idTareaExistente=None)
 
 
 # ======= API ENDPOINTS =======

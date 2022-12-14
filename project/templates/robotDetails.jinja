@@ -30,7 +30,7 @@
   <h2 class="mini_title">Tareas de {{robot.nombre}}</h2>
 
   <div>
-    {% set ref = 'gestor-tareas?user='+user %}
+    {% set ref = 'task-creator?user='+user %}
 
     <button class="btn btn-primary" onclick="location.href='{{ref}}'">Crear nueva tarea</button>
   </div>
@@ -49,7 +49,7 @@
     <tbody>
       {% for i in row %}
 
-        {% set ref = 'gestor-tareas?user='+user+'&idTareaGT='+i.id|string %}
+        {% set ref = 'task-creator?user='+user+'&idTareaGT='+i.id|string %}
 
       <tr onclick="location.href='{{ref}}'">
         <td>{{i.id}}</td>

@@ -23,6 +23,7 @@
         <tr>
           <th scope="col">ID Tarea</th>
           <th scope="col">Tarea</th>
+          <th scope="col">Tipo</th>
           <th scope="col">Estado</th>
           <th scope="col">Robot asignado</th>
         </tr>
@@ -32,6 +33,7 @@
               <tr onclick="location.href='asigna-robot?user={{user}}&id_tarea={{tarea.id}}'">
                 <td>{{tarea.id}}</td>
                 <td>{{tarea.nombre}}</td>
+                <td>{{tarea.tipo_tarea}}</td>
                 <td>{{tarea.estado_id|muestraEstado()}}</td>
                 <td>{{tarea.rob_Id|muestraRobot()}}</td>
               </tr>

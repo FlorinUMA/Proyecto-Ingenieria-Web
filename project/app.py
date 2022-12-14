@@ -64,13 +64,33 @@ class Estados(db.Model):
         return "Estado %r" % self.descripcion
 
 
+manyRobots_manyTypes = db.Table(
+    "manyRobots_manyTypes",
+    db.Column("robot_id", db.ForeignKey('Robots.id')),
+    db.Column("tipo_tarea", db.ForeignKey('Tipo_tarea.tipo')),
+)
+
+
+
 class Robots(db.Model):
     __tablename__ = "Robots"
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(30), nullable=True)
+    tipos_tareas = db.relationship("Tipo_tarea", secondary=manyRobots_manyTypes, back_populates="robots_ids")
 
     def __repr__(self):
         return "Robot %r" % self.id
+
+
+class Tipo_tarea(db.Model):
+    __tablename__ = "Tipo_tarea"
+    tipo = db.Column(db.String(30), primary_key=True)
+
+    robots_ids = db.relationship("Robots", secondary=manyRobots_manyTypes, back_populates="tipos_tareas")
+    tareas = db.relationship("Tareas")
+
+    def __repr__(self):
+        return "Tipo tarea %r" % self.tipo
 
 
 class Tareas(db.Model):
@@ -88,6 +108,8 @@ class Tareas(db.Model):
     param7 = db.Column(db.String(100), nullable=True)
     param8 = db.Column(db.String(100), nullable=True)
     param9 = db.Column(db.String(100), nullable=True)
+
+    tipo_tarea = db.Column(db.String(30), db.ForeignKey(Tipo_tarea.tipo), nullable=False)
 
     estado_id = db.Column(db.Integer, db.ForeignKey(Estados.id), nullable=False)
     rob_Id = db.Column(db.Integer, db.ForeignKey(Robots.id), nullable=True)
@@ -257,14 +279,21 @@ def asignaRobot():
 
         # Actualizamos el robot asignado en la base de datos
         db.session.query(Tareas).filter(Tareas.id == int(tarea_id)).update(
-            {Tareas.rob_Id: int(robot_id)}, synchronize_session=False
+            {
+                Tareas.rob_Id: int(robot_id),
+                Tareas.estado_id: 1,
+            }, 
+            synchronize_session=False
         )
         db.session.commit()
 
         return redirect(f"/medico?user={request.form.get('user')}")
 
     tarea = Tareas.query.with_entities(Tareas).filter(Tareas.id == tarea_id).one()
-    robots = Robots.query.with_entities(Robots).all()
+    tipo = Tipo_tarea.query.with_entities(Tipo_tarea).filter(Tipo_tarea.tipo == tarea.tipo_tarea).one()
+
+    robots = Robots.query.with_entities(Robots).filter(Robots.tipos_tareas.contains(tipo)).all()
+
     return render_template("asignaRobot.jinja", user=user, tarea=tarea, robots=robots)
 
 
@@ -437,12 +466,12 @@ def inserta_usuarios():
 
 
 def inserta_robots():
-    robot1 = Robots(id=122, nombre="XLR8")
-    robot2 = Robots(id=123, nombre="C3PO")
-    robot3 = Robots(id=124, nombre="R2D2")
-    robot4 = Robots(id=125, nombre="GR0GU")
-    robot5 = Robots(id=126, nombre="Lavatronix3000")
-    robot6 = Robots(id=127, nombre="TorboCleaner5000")
+    robot1 = Robots(id=122, nombre="XLR8", tipos_tareas=[Tipo_tarea.query.get("limpieza"), Tipo_tarea.query.get("desinfeccion"), Tipo_tarea.query.get("transporte")])
+    robot2 = Robots(id=123, nombre="C3PO", tipos_tareas=[Tipo_tarea.query.get("limpieza"), Tipo_tarea.query.get("transporte")])
+    robot3 = Robots(id=124, nombre="R2D2", tipos_tareas=[Tipo_tarea.query.get("videollamada"), Tipo_tarea.query.get("desinfeccion")])
+    robot4 = Robots(id=125, nombre="GR0GU", tipos_tareas=[Tipo_tarea.query.get("videollamada"), Tipo_tarea.query.get("transporte")])
+    robot5 = Robots(id=126, nombre="Lavatronix3000", tipos_tareas=[Tipo_tarea.query.get("limpieza"), Tipo_tarea.query.get("desinfeccion")])
+    robot6 = Robots(id=127, nombre="TorboCleaner5000", tipos_tareas=[Tipo_tarea.query.get("limpieza")])
 
     db.session.add(robot1)
     db.session.commit()
@@ -480,10 +509,8 @@ def inserta_estados():
     estado2 = Estados(id=2, nombre="De camino", descripcion="De camino a la tarea")
     estado3 = Estados(id=3, nombre="En proceso", descripcion="Realizando la tarea")
     estado4 = Estados(id=4, nombre="Terminado", descripcion="Tarea terminada")
-    estado5 = Estados(id=5, nombre="En progreso", descripcion="Desinfectando area")
-    estado6 = Estados(id=6, nombre="De camino", descripcion="Acudiendo al lugar solicitado")
-    estado7 = Estados(id=7, nombre="Avería mecánica", descripcion="La aspiradora se ha atascado")
-    estado8 = Estados(id=8, nombre="Batería baja", descripcion="Volviendo a la base de carga")
+    estado5 = Estados(id=5, nombre="Avería mecánica", descripcion="La aspiradora se ha atascado")
+    estado6 = Estados(id=6, nombre="Batería baja", descripcion="Volviendo a la base de carga")
 
 
     db.session.add(estado0)
@@ -500,43 +527,67 @@ def inserta_estados():
     db.session.commit()
     db.session.add(estado6)
     db.session.commit()
-    db.session.add(estado7)
-    db.session.commit()
-    db.session.add(estado8)
-    db.session.commit()
 
+
+def inserta_tipos():
+    tipo1 = Tipo_tarea(tipo="limpieza")
+    tipo2 = Tipo_tarea(tipo="desinfeccion")
+    tipo3 = Tipo_tarea(tipo="transporte")
+    tipo4 = Tipo_tarea(tipo="videollamada")
+    
+    db.session.add(tipo1)
+    db.session.commit()
+    db.session.add(tipo2)
+    db.session.commit()
+    db.session.add(tipo3)
+    db.session.commit()
+    db.session.add(tipo4)
+    db.session.commit()
 
 def inserta_tareas():
     tarea1 = Tareas(
         id=1,
         nombre="Limpieza",
+        tipo_tarea="limpieza",
         rob_Id=122,
         estado_id=1,
         asignaTecnico="tecnico1",
-        param0="DURACION=20",
+        param0="DURACION=20"
     )
+
     tarea2 = Tareas(
         id=2,
         nombre="Videollamada",
-        rob_Id=122,
+        tipo_tarea="videollamada",
+        rob_Id=124,
         estado_id=2,
         asignaTecnico="tecnico2",
-        param0="NOMBRE_PROGRAMA=Skype",
+        param0="NOMBRE_PROGRAMA=Skype"
     )
+
     tarea3 = Tareas(
-        id=3, nombre="Aspirar", rob_Id=124, estado_id=2, asignaTecnico="tecnico1"
+        id=3, 
+        nombre="Aspirar", 
+        tipo_tarea="limpieza",
+        rob_Id=123, 
+        estado_id=2, 
+        asignaTecnico="tecnico1"
     )
+
     tarea4 = Tareas(
         id=4,
         nombre="Desinfectar",
-        rob_Id=125,
+        tipo_tarea="desinfeccion",
+        rob_Id=124,
         estado_id=3,
         asignaTecnico="tecnico1",
         ejecutaMedico="medico1",
     )
+
     tarea5 = Tareas(
         id=5,
         nombre="Limpieza a fondo",
+        tipo_tarea="limpieza",
         rob_Id=126,
         estado_id=1,
         asignaTecnico="tecnico1",
@@ -546,11 +597,13 @@ def inserta_tareas():
         param3 = "ENERGIA=BATERIA",
         param4 = "PARAR.SI=BATERIA-BAJA"
     )
+
     tarea6 = Tareas(
         id=6,
         nombre="Fregar suelo",
+        tipo_tarea="limpieza",
         rob_Id=127,
-        estado_id=1,
+        estado_id=3,
         asignaTecnico="tecnico1",
         param0 = "MODO=FREGONA",
         param1 = "TIEMPO=3600",
@@ -558,11 +611,13 @@ def inserta_tareas():
         param3 = "AGRESIVIDAD=MODERADA",
         param4 = "BOCINA=NO"
     )
+
     tarea7 = Tareas(
         id=7,
         nombre="Luz en quirófano",
+        tipo_tarea="transporte",
         rob_Id=123,
-        estado_id=1,
+        estado_id=4,
         asignaTecnico="tecnico1",
         ejecutaMedico = "medico1",
         param0 = "POTENCIA=30",
@@ -573,6 +628,7 @@ def inserta_tareas():
     tarea8 = Tareas(
         id=8,
         nombre="Videllamada consulta 1",
+        tipo_tarea="videollamada",
         # rob_Id=125,
         estado_id=0,
         asignaTecnico="tecnico1",
@@ -581,6 +637,7 @@ def inserta_tareas():
     tarea9 = Tareas(
         id=9,
         nombre="Videollamada consulta 23",
+        tipo_tarea="videollamada",
         # rob_Id=125,
         estado_id=0,
         asignaTecnico="tecnico1",
@@ -589,6 +646,7 @@ def inserta_tareas():
     tarea10 = Tareas(
         id=10,
         nombre="LLevar medicamentos a sala 119",
+        tipo_tarea="transporte",
         # rob_Id=125,
         estado_id=0,
         asignaTecnico="tecnico1",
@@ -597,6 +655,7 @@ def inserta_tareas():
     tarea11 = Tareas(
         id=11,
         nombre="Llevar herramientas a quirófano 3",
+        tipo_tarea="transporte",
         # rob_Id=125,
         estado_id=0,
         asignaTecnico="tecnico1",
@@ -605,6 +664,7 @@ def inserta_tareas():
     tarea12 = Tareas(
         id=12,
         nombre="Llevar herramientas a quirófano 5",
+        tipo_tarea="transporte",
         # rob_Id=125,
         estado_id=0,
         asignaTecnico="tecnico1",
@@ -666,8 +726,14 @@ if __name__ == "__main__":
     db.create_all()
     inserta_usuarios()
     inserta_estados()
+    inserta_tipos()
     inserta_robots()
     inserta_subclases()
     inserta_tareas()
+
+    r = Robots.query.with_entities(Robots).filter(Robots.id == 122).one()
+    print(type(r.tipos_tareas))
+    for i in r.tipos_tareas:
+        print(i.tipo)
 
     app.run(port=5000, debug=True)

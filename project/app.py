@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, flash, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine, and_, select, update
+from sqlalchemy import create_engine, and_, select, update, func
 from sqlalchemy.pool import StaticPool
 from uuid import uuid4
 from sqlalchemy import func
@@ -316,71 +316,88 @@ def robotDetails():
     return render_template("robotDetails.jinja", user=user, row=row, robot=robot)
 
 
+def _putParams(tareaNueva:Tareas):
+    if (request.form.get("var0") != "" and request.form.get("val0") != ""):
+        tareaNueva.param0 = request.form.get("var0") + "=" + request.form.get("val0")
+    if(request.form.get("var1") != "" and request.form.get("val1") != ""):
+        tareaNueva.param1 = request.form.get("var1") + "=" + request.form.get("val1")
+    if(request.form.get("var2") != "" and request.form.get("val2") != ""):
+        tareaNueva.param2 = request.form.get("var2") + "=" + request.form.get("val2")
+    if(request.form.get("var3") != "" and request.form.get("val3") != ""):
+        tareaNueva.param3 = request.form.get("var3") + "=" + request.form.get("val3")
+    if(request.form.get("var4") != "" and request.form.get("val4") != ""):
+        tareaNueva.param4 = request.form.get("var4") + "=" + request.form.get("val4")
+    if(request.form.get("var5") != "" and request.form.get("val5") != ""):
+        tareaNueva.param5 = request.form.get("var5") + "=" + request.form.get("val5")
+    if(request.form.get("var6") != "" and request.form.get("val6") != ""):
+        tareaNueva.param6 = request.form.get("var6") + "=" + request.form.get("val6")
+    if(request.form.get("var7") != "" and request.form.get("val7") != ""):
+        tareaNueva.param7 = request.form.get("var7") + "=" + request.form.get("val7")
+    if(request.form.get("var8") != "" and request.form.get("val8") != ""):
+        tareaNueva.param8 = request.form.get("var8") + "=" + request.form.get("val8")
+    if(request.form.get("var9") != "" and request.form.get("val9") != ""):
+        tareaNueva.param9 = request.form.get("var9") + "=" + request.form.get("val9")
+
+
 @app.route("/task-creator", methods=["GET", "POST"])
 def modifyTask():
     if request.method == "POST":
-        print("hello")
-        # TODO: Implementar aquí qué cambios ocurrirían en la base de datos al pulsar el botón Aplicar
         user = request.form.get("user")
         idTarea = request.form.get("idTarea")
         nom = request.form.get("nombre")
-        # par0 = request.form.get("var0") + "=" + request.form.get("val0")
-        # par1 = request.form.get("var1") + "=" + request.form.get("val1")
-        # par2 = request.form.get("var2") + "=" + request.form.get("val2")
-        # par3 = request.form.get("var3") + "=" + request.form.get("val3")
-        # par4 = request.form.get("var4") + "=" + request.form.get("val4")
-        # par5 = request.form.get("var5") + "=" + request.form.get("val5")
-        # par6 = request.form.get("var6") + "=" + request.form.get("val6")
-        # par7 = request.form.get("var7") + "=" + request.form.get("val7")
-        # par8 = request.form.get("var8") + "=" + request.form.get("val8")
-        # par9 = request.form.get("var9") + "=" + request.form.get("val9")
         
-        tareaNueva = ""
         if (idTarea == "" or idTarea == None):
-            nuevoId = int(db.session.query(func.max(id))) + 1
+            nuevoId = Tareas.query.with_entities(func.max(Tareas.id)).one()[0] + 1
+
             tareaNueva = Tareas(
-            id=nuevoId,
-            nombre=nom,
-            estado_id=0,
-            asignaTecnico=user,
+                id=nuevoId,
+                nombre=nom,
+                estado_id=0,
+                asignaTecnico=user,
+                # tipo_tarea=
             )
+            _putParams(tareaNueva)
+
             db.session.add(tareaNueva)
             db.session.commit()
         
         else:
-            sentencia = select(Tareas).where(Tareas.id == idTarea)
-            tareaNueva = db.session.execute(sentencia)
-        
-        if (request.form.get("var0") != ""):
-            tareaNueva.param0 = request.form.get("var0") + "=" + request.form.get("val0")
-        if(request.form.get("var1") != ""):
-            tareaNueva.param1 = request.form.get("var1") + "=" + request.form.get("val1")
-        if(request.form.get("var2") != ""):
-            tareaNueva.param2 = request.form.get("var2") + "=" + request.form.get("val2")
-        if(request.form.get("var3") != ""):
-            tareaNueva.param3 = request.form.get("var3") + "=" + request.form.get("val3")
-        if(request.form.get("var4") != ""):
-            tareaNueva.param4 = request.form.get("var4") + "=" + request.form.get("val4")
-        if(request.form.get("var5") != ""):
-            tareaNueva.param5 = request.form.get("var5") + "=" + request.form.get("val5")
-        if(request.form.get("var6") != ""):
-            tareaNueva.param6 = request.form.get("var6") + "=" + request.form.get("val6")
-        if(request.form.get("var7") != ""):
-            tareaNueva.param7 = request.form.get("var7") + "=" + request.form.get("val7")
-        if(request.form.get("var8") != ""):
-            tareaNueva.param8 = request.form.get("var8") + "=" + request.form.get("val8")
-        if(request.form.get("var9") != ""):
-            tareaNueva.param9 = request.form.get("var9") + "=" + request.form.get("val9")
+            tareaNueva = Tareas.query.with_entities(Tareas).filter(Tareas.id == idTarea).one() #select(Tareas).where(Tareas.id == idTarea)
+            print(tareaNueva)
+            if tareaNueva.nombre != nom:
+                tareaNueva.nombre = nom
+            tareaNueva.asignaTecnico = user
+            _putParams(tareaNueva)
 
-        db.session.commit()
-        
-        return redirect(f"/tecnico?user={result.usuario}")
+            db.session.query(Tareas).filter(Tareas.id == tareaNueva.id).update(
+                {
+                    Tareas.nombre: tareaNueva.nombre,
+                    Tareas.param0: tareaNueva.param0,
+                    Tareas.param1: tareaNueva.param1,
+                    Tareas.param2: tareaNueva.param2,
+                    Tareas.param3: tareaNueva.param3,
+                    Tareas.param4: tareaNueva.param4,
+                    Tareas.param5: tareaNueva.param5,
+                    Tareas.param6: tareaNueva.param6,
+                    Tareas.param7: tareaNueva.param7,
+                    Tareas.param8: tareaNueva.param8,
+                    Tareas.param9: tareaNueva.param9,
+                    Tareas.tipo_tarea: tareaNueva.tipo_tarea,
+                    Tareas.estado_id: tareaNueva.estado_id,
+                    Tareas.rob_Id: tareaNueva.rob_Id,
+                    Tareas.asignaTecnico: tareaNueva.asignaTecnico,
+                }, synchronize_session=False
+            )
+            db.session.commit()
+
+        return redirect(f"/tecnico?user={user}")
+    
     else:
-        IdTareaSeleccionada = request.args.get("idTarea")
-        nombreTecnico = request.args.get("user")
-        if IdTareaSeleccionada != None:
+        idTarea = request.args.get("idTarea")
+        user = request.args.get("user")
+        if idTarea != None:
             try:
-                sentencia = select(Tareas).where(Tareas.id == IdTareaSeleccionada)
+                sentencia = select(Tareas).where(Tareas.id == idTarea)
                 peticion = db.session.execute(sentencia)
                 resultado = peticion.one()[0]
                 par0 = resultado.param0 if resultado.param0 != None else ""
@@ -407,7 +424,8 @@ def modifyTask():
                     par8=par8,
                     par9=par9,
                     nombre = nombreTarea,
-                    nombreTecnico = nombreTecnico
+                    user = user,
+                    idTarea = idTarea
                 )
             except:
                 return render_template(
@@ -423,8 +441,25 @@ def modifyTask():
                     par8="",
                     par9="",
                     nombre = "",
-                    nombreTecnico = nombreTecnico
+                    user = user,
+                    idTarea = idTarea
                 )
+        return render_template(
+            "taskEditor.jinja",
+            par0="",
+            par1="",
+            par2="",
+            par3="",
+            par4="",
+            par5="",
+            par6="",
+            par7="",
+            par8="",
+            par9="",
+            nombre = "",
+            user = user,
+            idTarea = idTarea
+        )
 
 
 # ======= API ENDPOINTS =======
@@ -730,10 +765,5 @@ if __name__ == "__main__":
     inserta_robots()
     inserta_subclases()
     inserta_tareas()
-
-    r = Robots.query.with_entities(Robots).filter(Robots.id == 122).one()
-    print(type(r.tipos_tareas))
-    for i in r.tipos_tareas:
-        print(i.tipo)
 
     app.run(port=5000, debug=True)

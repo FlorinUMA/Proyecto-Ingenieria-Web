@@ -22,6 +22,10 @@
 </div>
 {% endblock %}
 
+{% block route %}
+  Home > Técnico > Detalles del robot
+{% endblock %}
+
 {% block content%}
 <script>custom_return("{{user}}")</script>
 
@@ -42,6 +46,7 @@
       <tr>
         <th scope="col">Id Tarea</th>
         <th scope="col">Nombre</th>
+        <th scope="col">Tipo</th>
         <th scope="col">Estado</th>
         <th scope="col">Ejecutada por</th>
       </tr>
@@ -54,6 +59,7 @@
       <tr onclick="location.href='{{ref}}'">
         <td>{{i.id}}</td>
         <td>{{i.nombre}}</td>
+        <td>{{i.tipo_tarea}}</td>
         <td>{{i.estado_id|muestraEstado()}}</td>
         <td>{{i.ejecutaMedico}}</td>
       </tr>
@@ -61,19 +67,5 @@
     </tbody>
   </table>
 </div>
-
-{% endblock %}
-
-{% block scripts %}
-
-<script>
-
-  function refGestor(tarea){
-    if(tarea=null){
-      location.href = 'task-creator/?user'
-    }
-  }
-
-</script>
 
 {% endblock %}

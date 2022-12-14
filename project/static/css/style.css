@@ -118,7 +118,7 @@ fieldset p{
 }
 
 main {
-  margin-top: 75px;
+  margin-top: 90px;
 }
 
 .navbar a:active, a:focus {
@@ -147,7 +147,6 @@ main {
   background-color: rgba(10, 10, 10, 0.7);
   padding: 15px;
 }
-
 
 @media screen and (min-width: 600px){
   .home-link{

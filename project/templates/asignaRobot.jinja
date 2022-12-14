@@ -11,20 +11,35 @@
 
 {% endblock %}
 
+{%block navbar%}
+<div class="collapse navbar-collapse" id="menuItems">
+  <ul class="navbar-nav me-auto">
+    <li class="nav-item">
+      {% set ref = 'medico?user='+user %}
+      <a href={{ref}} class="nav-link">Volver a médico</a>
+    </li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block route %}
+  Home > Médico > Asigna Robot
+{% endblock %}
+
 {% block content%}
 
 <script>custom_return("{{user}}")</script>
 
 <div class="container-fluid my-5 px-5">
-    <h2 class="mini_title">Tarea: {{tarea.nombre}}({{tarea.id}})</h2>
-    <p>
+    <h2 class="mini_title mx-5">Tarea: {{tarea.nombre}}({{tarea.id}})</h2>
+    <p class="mx-5">
         Seleccione el robot más adecuado para la tarea. Los parámetros de la tarea son los siguientes:
     </p>
-    <div class="row">
+    <div class="row mx-5">
         <div class="col-sm-6">
             <form action="/asigna-robot" method="POST">
 
-                <select class="form-select" name="robot">
+                <select class="form-select" name="robot" style="width: 75%;">
                     {% for r in robots %}
                         <option value="{{r.id}}">{{r.nombre}}</option>
                     {% endfor %}

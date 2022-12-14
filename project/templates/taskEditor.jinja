@@ -33,7 +33,7 @@
 {% block content%}
 
 <div class="container-fluid my-5">
-    <form>
+    <form action="/login" method="post">
       <div class="form-row">
         <div class="col">
           <!-- Cajas de variables. -->
@@ -68,4 +68,6 @@
 </div>
 
 <button type="submit" class="btn btn-primary btn-block mb-4">Aplicar</button>
+</form>
+
 {% endblock %}

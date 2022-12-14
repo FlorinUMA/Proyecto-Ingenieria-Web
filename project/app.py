@@ -286,10 +286,10 @@ def robotDetails():
     return render_template("robotDetails.jinja", user=user, row=row, robot=robot)
 
 
-@app.route("/gestor-tareas", methods=["GET", "POST"])
+@app.route("/task-creator", methods=["GET", "POST"])
 def modifyTask():
     if request.method == "GET":
-        IdTareaSeleccionada = request.args.get("idTareaGT")
+        IdTareaSeleccionada = request.args.get("idTarea")
         if IdTareaSeleccionada != None:
             try:
                 sentencia = select(Tareas).where(Tareas.id == IdTareaSeleccionada)
@@ -381,6 +381,8 @@ def inserta_robots():
     robot2 = Robots(id=123, nombre="C3PO")
     robot3 = Robots(id=124, nombre="R2D2")
     robot4 = Robots(id=125, nombre="GR0GU")
+    robot5 = Robots(id=126, nombre="Lavatronix3000")
+    robot6 = Robots(id=127, nombre="TorboCleaner5000")
 
     db.session.add(robot1)
     db.session.commit()
@@ -389,6 +391,10 @@ def inserta_robots():
     db.session.add(robot3)
     db.session.commit()
     db.session.add(robot4)
+    db.session.commit()
+    db.session.add(robot5)
+    db.session.commit()
+    db.session.add(robot6)
     db.session.commit()
 
 
@@ -414,6 +420,11 @@ def inserta_estados():
     estado2 = Estados(id=2, nombre="De camino", descripcion="De camino a la tarea")
     estado3 = Estados(id=3, nombre="En proceso", descripcion="Realizando la tarea")
     estado4 = Estados(id=4, nombre="Terminado", descripcion="Tarea terminada")
+    estado5 = Estados(id=5, nombre="En progreso", descripcion="Desinfectando area")
+    estado6 = Estados(id=6, nombre="De camino", descripcion="Acudiendo al lugar solicitado")
+    estado7 = Estados(id=7, nombre="Avería mecánica", descripcion="La aspiradora se ha atascado")
+    estado8 = Estados(id=8, nombre="Batería baja", descripcion="Volviendo a la base de carga")
+
 
     db.session.add(estado0)
     db.session.commit()
@@ -424,6 +435,14 @@ def inserta_estados():
     db.session.add(estado3)
     db.session.commit()
     db.session.add(estado4)
+    db.session.commit()
+    db.session.add(estado5)
+    db.session.commit()
+    db.session.add(estado6)
+    db.session.commit()
+    db.session.add(estado7)
+    db.session.commit()
+    db.session.add(estado8)
     db.session.commit()
 
 
@@ -455,6 +474,41 @@ def inserta_tareas():
         asignaTecnico="tecnico1",
         ejecutaMedico="medico1",
     )
+    tarea5 = Tareas(
+        id=5,
+        nombre="Limpieza a fondo",
+        rob_Id=126,
+        estado_id=1,
+        asignaTecnico="tecnico1",
+        param0 = "POTENCIA=560",
+        param1 = "TIEMPO=3000",
+        param2 = "RAYOS=UV",
+        param3 = "ENERGIA=BATERIA",
+        param4 = "PARAR.SI=BATERIA-BAJA"
+    )
+    tarea6 = Tareas(
+        id=6,
+        nombre="Fregar suelo",
+        rob_Id=127,
+        estado_id=1,
+        asignaTecnico="tecnico1",
+        param0 = "MODO=FREGONA",
+        param1 = "TIEMPO=3600",
+        param2 = "RAYOS=GAMMA",
+        param3 = "AGRESIVIDAD=MODERADA",
+        param4 = "BOCINA=NO"
+    )
+    tarea7 = Tareas(
+        id=7,
+        nombre="Luz en quirófano",
+        rob_Id=123,
+        estado_id=1,
+        asignaTecnico="tecnico1",
+        ejecutaMedico = "medico1",
+        param0 = "POTENCIA=30",
+        param1 = "COLOR=3000K",
+        param2 = "UBICACION=QUIROFANO1"
+    )
 
     db.session.add(tarea1)
     db.session.commit()
@@ -464,6 +518,30 @@ def inserta_tareas():
     db.session.commit()
     db.session.add(tarea4)
     db.session.commit()
+    db.session.add(tarea5)
+    db.session.commit()
+    db.session.add(tarea6)
+    db.session.commit()
+    db.session.add(tarea7)
+    db.session.commit()
+
+def inserta_histrorial():
+    historial1 = Historial(
+        idEstado = 1,
+        idTarea = 1
+    )
+    historial2 = Historial(
+        idEstado = 2,
+        idTarea = 1
+    )
+    Historial(
+        idEstado = 3,
+        idTarea = 1
+    )
+    Historial(
+        idEstado = 3,
+        idTarea = 6
+    )
 
 
 # ======= INICIO DE LA APLICACIÓN =======

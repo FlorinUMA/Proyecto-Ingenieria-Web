@@ -33,41 +33,44 @@
 {% block content%}
 
 <div class="container-fluid my-5">
-    <form action="/login" method="post">
+    <form action="/task-creator" method="POST">
+      <input type="hidden" name="user" value={{nombreTecnico}}>
+      <input type="hidden" name="idTarea" value={{idTarea}}>
       <div class="form-row">
         <div class="col">
           <!-- Cajas de variables. -->
-          
-          <input type="text" class="form-control" placeholder="Variable 0" value={{par0|mostrarNombreVariable()}}>
-          <input type="text" class="form-control" placeholder="Variable 1" value={{par1|mostrarNombreVariable()}}>
-          <input type="text" class="form-control" placeholder="Variable 2" value={{par2|mostrarNombreVariable()}}>
-          <input type="text" class="form-control" placeholder="Variable 3" value={{par3|mostrarNombreVariable()}}>
-          <input type="text" class="form-control" placeholder="Variable 4" value={{par4|mostrarNombreVariable()}}>
-          <input type="text" class="form-control" placeholder="Variable 5" value={{par5|mostrarNombreVariable()}}>
-          <input type="text" class="form-control" placeholder="Variable 6" value={{par6|mostrarNombreVariable()}}>
-          <input type="text" class="form-control" placeholder="Variable 7" value={{par7|mostrarNombreVariable()}}>
-          <input type="text" class="form-control" placeholder="Variable 8" value={{par8|mostrarNombreVariable()}}>
-          <input type="text" class="form-control" placeholder="Variable 9" value={{par9|mostrarNombreVariable()}}>
+          <input type="text" class="form-control" name="n" placeholder="Nombre tarea" value="Nombre de la tarea" readonly>
+          <input type="text" class="form-control" name="var0" placeholder="Variable 0" value={{par0|mostrarNombreVariable()}}>
+          <input type="text" class="form-control" name="var1" placeholder="Variable 1" value={{par1|mostrarNombreVariable()}}>
+          <input type="text" class="form-control" name="var2" placeholder="Variable 2" value={{par2|mostrarNombreVariable()}}>
+          <input type="text" class="form-control" name="var3" placeholder="Variable 3" value={{par3|mostrarNombreVariable()}}>
+          <input type="text" class="form-control" name="var4" placeholder="Variable 4" value={{par4|mostrarNombreVariable()}}>
+          <input type="text" class="form-control" name="var5" placeholder="Variable 5" value={{par5|mostrarNombreVariable()}}>
+          <input type="text" class="form-control" name="var6" placeholder="Variable 6" value={{par6|mostrarNombreVariable()}}>
+          <input type="text" class="form-control" name="var7" placeholder="Variable 7" value={{par7|mostrarNombreVariable()}}>
+          <input type="text" class="form-control" name="var8" placeholder="Variable 8" value={{par8|mostrarNombreVariable()}}>
+          <input type="text" class="form-control" name="var9" placeholder="Variable 9" value={{par9|mostrarNombreVariable()}}>
         </div>
         
         <div class="col">
             <!-- Cajas de valores de variables. -->
-          <input type="text" class="form-control" placeholder="Valor variable 0" value={{par0|mostrarValorVariable()}}>
-          <input type="text" class="form-control" placeholder="Valor variable 1" value={{par1|mostrarValorVariable()}}>
-          <input type="text" class="form-control" placeholder="Valor variable 2" value={{par2|mostrarValorVariable()}}>
-          <input type="text" class="form-control" placeholder="Valor variable 3" value={{par3|mostrarValorVariable()}}>
-          <input type="text" class="form-control" placeholder="Valor variable 4" value={{par4|mostrarValorVariable()}}>
-          <input type="text" class="form-control" placeholder="Valor variable 5" value={{par5|mostrarValorVariable()}}>
-          <input type="text" class="form-control" placeholder="Valor variable 6" value={{par6|mostrarValorVariable()}}>
-          <input type="text" class="form-control" placeholder="Valor variable 7" value={{par7|mostrarValorVariable()}}>
-          <input type="text" class="form-control" placeholder="Valor variable 8" value={{par8|mostrarValorVariable()}}>
-          <input type="text" class="form-control" placeholder="Valor variable 9" value={{par9|mostrarValorVariable()}}>
+          <input type="text" class="form-control" name="nombre" placeholder="Nombre asignado" value={{nombre}}>
+          <input type="text" class="form-control" name="val0" placeholder="Valor variable 0" value={{par0|mostrarValorVariable()}}>
+          <input type="text" class="form-control" name="val1" placeholder="Valor variable 1" value={{par1|mostrarValorVariable()}}>
+          <input type="text" class="form-control" name="val2" placeholder="Valor variable 2" value={{par2|mostrarValorVariable()}}>
+          <input type="text" class="form-control" name="val3" placeholder="Valor variable 3" value={{par3|mostrarValorVariable()}}>
+          <input type="text" class="form-control" name="val4" placeholder="Valor variable 4" value={{par4|mostrarValorVariable()}}>
+          <input type="text" class="form-control" name="val5" placeholder="Valor variable 5" value={{par5|mostrarValorVariable()}}>
+          <input type="text" class="form-control" name="val6" placeholder="Valor variable 6" value={{par6|mostrarValorVariable()}}>
+          <input type="text" class="form-control" name="val7" placeholder="Valor variable 7" value={{par7|mostrarValorVariable()}}>
+          <input type="text" class="form-control" name="val8" placeholder="Valor variable 8" value={{par8|mostrarValorVariable()}}>
+          <input type="text" class="form-control" name="val9" placeholder="Valor variable 9" value={{par9|mostrarValorVariable()}}>
         </div>
       </div>
     </form>
 </div>
 
-<button type="submit" class="btn btn-primary btn-block mb-4">Aplicar</button>
+<input type="submit" class="btn btn-primary btn-block mb-4" value = "Aplicar">
 </form>
 
 {% endblock %}

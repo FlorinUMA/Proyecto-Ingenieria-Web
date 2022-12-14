@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, and_, select, update
 from sqlalchemy.pool import StaticPool
 from uuid import uuid4
+from sqlalchemy import func
 
 engine = create_engine(
     "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
@@ -288,8 +289,66 @@ def robotDetails():
 
 @app.route("/task-creator", methods=["GET", "POST"])
 def modifyTask():
-    if request.method == "GET":
+    if request.method == "POST":
+        print("hello")
+        # TODO: Implementar aquí qué cambios ocurrirían en la base de datos al pulsar el botón Aplicar
+        user = request.form.get("user")
+        idTarea = request.form.get("idTarea")
+        nom = request.form.get("nombre")
+        # par0 = request.form.get("var0") + "=" + request.form.get("val0")
+        # par1 = request.form.get("var1") + "=" + request.form.get("val1")
+        # par2 = request.form.get("var2") + "=" + request.form.get("val2")
+        # par3 = request.form.get("var3") + "=" + request.form.get("val3")
+        # par4 = request.form.get("var4") + "=" + request.form.get("val4")
+        # par5 = request.form.get("var5") + "=" + request.form.get("val5")
+        # par6 = request.form.get("var6") + "=" + request.form.get("val6")
+        # par7 = request.form.get("var7") + "=" + request.form.get("val7")
+        # par8 = request.form.get("var8") + "=" + request.form.get("val8")
+        # par9 = request.form.get("var9") + "=" + request.form.get("val9")
+        
+        tareaNueva = ""
+        if (idTarea == "" or idTarea == None):
+            nuevoId = int(db.session.query(func.max(id))) + 1
+            tareaNueva = Tareas(
+            id=nuevoId,
+            nombre=nom,
+            estado_id=0,
+            asignaTecnico=user,
+            )
+            db.session.add(tareaNueva)
+            db.session.commit()
+        
+        else:
+            sentencia = select(Tareas).where(Tareas.id == idTarea)
+            tareaNueva = db.session.execute(sentencia)
+        
+        if (request.form.get("var0") != ""):
+            tareaNueva.param0 = request.form.get("var0") + "=" + request.form.get("val0")
+        if(request.form.get("var1") != ""):
+            tareaNueva.param1 = request.form.get("var1") + "=" + request.form.get("val1")
+        if(request.form.get("var2") != ""):
+            tareaNueva.param2 = request.form.get("var2") + "=" + request.form.get("val2")
+        if(request.form.get("var3") != ""):
+            tareaNueva.param3 = request.form.get("var3") + "=" + request.form.get("val3")
+        if(request.form.get("var4") != ""):
+            tareaNueva.param4 = request.form.get("var4") + "=" + request.form.get("val4")
+        if(request.form.get("var5") != ""):
+            tareaNueva.param5 = request.form.get("var5") + "=" + request.form.get("val5")
+        if(request.form.get("var6") != ""):
+            tareaNueva.param6 = request.form.get("var6") + "=" + request.form.get("val6")
+        if(request.form.get("var7") != ""):
+            tareaNueva.param7 = request.form.get("var7") + "=" + request.form.get("val7")
+        if(request.form.get("var8") != ""):
+            tareaNueva.param8 = request.form.get("var8") + "=" + request.form.get("val8")
+        if(request.form.get("var9") != ""):
+            tareaNueva.param9 = request.form.get("var9") + "=" + request.form.get("val9")
+
+        db.session.commit()
+        
+        return redirect(f"/tecnico?user={result.usuario}")
+    else:
         IdTareaSeleccionada = request.args.get("idTarea")
+        nombreTecnico = request.args.get("user")
         if IdTareaSeleccionada != None:
             try:
                 sentencia = select(Tareas).where(Tareas.id == IdTareaSeleccionada)
@@ -305,7 +364,7 @@ def modifyTask():
                 par7 = resultado.param7 if resultado.param7 != None else ""
                 par8 = resultado.param8 if resultado.param8 != None else ""
                 par9 = resultado.param9 if resultado.param9 != None else ""
-
+                nombreTarea = resultado.nombre if resultado.nombre != None else ""
                 return render_template(
                     "taskEditor.jinja",
                     par0=par0,
@@ -318,6 +377,8 @@ def modifyTask():
                     par7=par7,
                     par8=par8,
                     par9=par9,
+                    nombre = nombreTarea,
+                    nombreTecnico = nombreTecnico
                 )
             except:
                 return render_template(
@@ -332,10 +393,9 @@ def modifyTask():
                     par7="",
                     par8="",
                     par9="",
+                    nombre = "",
+                    nombreTecnico = nombreTecnico
                 )
-    else:
-        # TODO: Implementar aquí qué cambios ocurrirían en la base de datos al pulsar el botón aplicar
-        return render_template("index.jinja", idTareaExistente=None)
 
 
 # ======= API ENDPOINTS =======

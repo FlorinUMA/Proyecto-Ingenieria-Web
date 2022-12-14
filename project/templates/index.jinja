@@ -51,11 +51,11 @@
 
 {% block content%}
 <div class="container-fluid text-white my-5 mx-auto">
-    <div class="container-sm row justify-content-between min-vw-100">
+    <div class="row justify-content-between">
         <fieldset class="col-xl-6 mb-6 px-5">
             <legend class="my-2 mx-3 row align-items-center justify-content-center">Control de robots asistenciales</legend>
             <div>
-                <p>
+                <p class="shadow">
                     Los robots asistenciales están siendo progresivamente incorporados al ámbito sanitario.
                     El uso de estos robots no son más que una nueva herramienta en para ayudar a los trabajadores sanitarios 
                     y mejorar la atención a los pacientes en los hospitales y las clínicas. El uso de robótica en el ámbito médico
@@ -79,20 +79,18 @@
             </div>
         </fieldset>
         <fieldset class="col-xl-5 mb-6 my-auto mx-auto">
-            <img class="rounded mx-auto my-auto" src="{{url_for('static', filename='img/tuggy-inline.png')}}" alt="robot" title="robot" height=400 width=600>
+            <img class="rounded mx-auto my-auto shadow-lg" src="{{url_for('static', filename='img/robot-asis.jpg')}}" alt="robot" title="robot" height=410 width=600>
         </fieldset>
-        {# <fieldset class="fieldset-about col-md-4">
-            
-        </fieldset> #}
     </div>
-    <div class="container-sm row justify-content-between min-vw-100 mt-5">
-        <fieldset class="col-xl-5 mb-6 mx-auto my-auto">
-            <img class="rounded mx-auto mt-5" src="{{url_for('static', filename='img/tuggy-inline.png')}}" alt="robot" title="robot" height=400 width=600>
+    
+    <div class="row justify-content-between mt-5">
+        <fieldset class="col-xl-5 mb-6 my-auto mx-auto">
+            <img class="rounded mx-auto my-auto shadow-lg" src="{{url_for('static', filename='img/doctor-pc.jpg')}}" alt="robot" title="robot" height=400 width=600>
         </fieldset>
         <fieldset class="col-xl-6 mb-6 px-5">
-            <legend class="my-2 mx-3 row align-items-center justify-content-center">Uso de la aplicación</legend>
+            <legend class="my-2 mx-3 row align-items-center justify-content-center">Control de robots asistenciales</legend>
             <div>
-                <p>
+                <p class="shadow">
                     Nuestra aplicación será multiusuario de dos tipos: Técnico y Médico <br><br>
 
                     Un técnico será el encargado de gestionar las capacidades y habilidades de los robots del hospital, 
@@ -104,7 +102,9 @@
                 </p>
             </div>
         </fieldset>
+        
     </div>
+    
 </div>
 
 {% endblock %}

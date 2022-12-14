@@ -510,6 +510,47 @@ def inserta_tareas():
         param2 = "UBICACION=QUIROFANO1"
     )
 
+    tarea8 = Tareas(
+        id=8,
+        nombre="Videllamada consulta 1",
+        # rob_Id=125,
+        estado_id=0,
+        asignaTecnico="tecnico1",
+        ejecutaMedico="medico1",
+    )
+    tarea9 = Tareas(
+        id=9,
+        nombre="Videollamada consulta 23",
+        # rob_Id=125,
+        estado_id=0,
+        asignaTecnico="tecnico1",
+        ejecutaMedico="medico1",
+    )
+    tarea10 = Tareas(
+        id=10,
+        nombre="LLevar medicamentos a sala 119",
+        # rob_Id=125,
+        estado_id=0,
+        asignaTecnico="tecnico1",
+        ejecutaMedico="medico1",
+    )
+    tarea11 = Tareas(
+        id=11,
+        nombre="Llevar herramientas a quirófano 3",
+        # rob_Id=125,
+        estado_id=0,
+        asignaTecnico="tecnico1",
+        ejecutaMedico="medico1",
+    )
+    tarea12 = Tareas(
+        id=12,
+        nombre="Llevar herramientas a quirófano 5",
+        # rob_Id=125,
+        estado_id=0,
+        asignaTecnico="tecnico1",
+        ejecutaMedico="medico1",
+    )
+
     db.session.add(tarea1)
     db.session.commit()
     db.session.add(tarea2)
@@ -524,6 +565,18 @@ def inserta_tareas():
     db.session.commit()
     db.session.add(tarea7)
     db.session.commit()
+    db.session.add(tarea8)
+    db.session.commit()
+    db.session.add(tarea9)
+    db.session.commit()
+    db.session.add(tarea10)
+    db.session.commit()
+    db.session.add(tarea11)
+    db.session.commit()
+    db.session.add(tarea12)
+    db.session.commit()
+
+
 
 def inserta_histrorial():
     historial1 = Historial(

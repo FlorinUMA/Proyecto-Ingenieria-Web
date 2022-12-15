@@ -130,15 +130,6 @@ class Tareas(db.Model):
         )
 
 
-class Historial(db.Model):
-    __tablename__ = "historial"
-    idEstado = db.Column(db.Integer, db.ForeignKey(Estados.id), primary_key=True)
-    idTarea = db.Column(db.Integer, db.ForeignKey(Tareas.rob_Id), primary_key=True)
-
-    def __repr__(self):
-        return "Historial %r" % self.idEstado + " " + self.idTarea
-
-
 # ======= CONTROL DE ERRORES =======
 
 
@@ -268,7 +259,7 @@ def medico():
     return render_template("medico.jinja", user=user, tareas=tareas)
 
 
-@app.route("/asigna-robot", methods=["GET", "POST"])
+@app.route("/medico/asigna-robot", methods=["GET", "POST"])
 def asignaRobot():
     user = request.args.get("user")
     tarea_id = request.args.get("id_tarea")
@@ -276,16 +267,20 @@ def asignaRobot():
     if request.method == "POST":
         robot_id = request.form.get("robot")
         tarea_id = request.form.get("id_tarea")
+        user = request.form.get("user")
 
         # Actualizamos el robot asignado en la base de datos
         db.session.query(Tareas).filter(Tareas.id == int(tarea_id)).update(
             {
                 Tareas.rob_Id: int(robot_id),
                 Tareas.estado_id: 1,
+                Tareas.ejecutaMedico: user
             }, 
             synchronize_session=False
         )
         db.session.commit()
+
+        print(db.session.query(Tareas).filter(Tareas.id == int(tarea_id)).one().ejecutaMedico)
 
         return redirect(f"/medico?user={request.form.get('user')}")
 
@@ -295,6 +290,24 @@ def asignaRobot():
     robots = Robots.query.with_entities(Robots).filter(Robots.tipos_tareas.contains(tipo)).all()
 
     return render_template("asignaRobot.jinja", user=user, tarea=tarea, robots=robots)
+
+@app.route("/medico/cancelar-tarea", methods=["POST"])
+def cancelar_tarea():
+    body = request.get_json()
+    idTarea = body["idTarea"] #Recibe el ID de la tarea a cancelar
+    print(idTarea)
+    try:
+        db.session.query(Tareas).filter(Tareas.id == int(idTarea)).update(
+            {
+                Tareas.estado_id: 0,
+                Tareas.rob_Id: None,
+                Tareas.ejecutaMedico: None
+            }, synchronize_session=False
+        )
+        db.session.commit()
+        return "Tarea cancelada"
+    except:
+        return abort(404)
 
 
 @app.route("/tecnico", methods=["GET"])
@@ -360,7 +373,6 @@ def modifyTask():
 
         if estadoTarea == None and idRobot == 'None':
             estadoTarea=0
-            print('asnfgsa')
         elif estadoTarea == None and idRobot != 'None':
             estadoTarea=1
 
@@ -505,11 +517,10 @@ def modifyTask():
 def borrar_tarea():
     body = request.get_json()
     idTarea = body["idTarea"] #Recibe el ID de la tarea a eliminar
-    user = body["user"] #Recibe el usuario del técnico para redigirilo a la vista principal una vez borrado la tarea
     try:
         db.session.query(Tareas).filter(Tareas.id==idTarea).delete()
         db.session.commit()
-        return redirect(f"/tecnico?user={user}")
+        return "Tarea eliminada"
     except:
         return abort(404)
     
@@ -784,26 +795,6 @@ def inserta_tareas():
     db.session.commit()
     db.session.add(tarea12)
     db.session.commit()
-
-
-
-def inserta_histrorial():
-    historial1 = Historial(
-        idEstado = 1,
-        idTarea = 1
-    )
-    historial2 = Historial(
-        idEstado = 2,
-        idTarea = 1
-    )
-    Historial(
-        idEstado = 3,
-        idTarea = 1
-    )
-    Historial(
-        idEstado = 3,
-        idTarea = 6
-    )
 
 
 # ======= INICIO DE LA APLICACIÓN =======

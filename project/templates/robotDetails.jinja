@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block route %}
-  Home > Técnico > Detalles del robot
+  Home > Técnico > <u>Detalles del robot</u>
 {% endblock %}
 
 {% block content%}
@@ -61,7 +61,7 @@
         <td>{{i.nombre}}</td>
         <td>{{i.tipo_tarea}}</td>
         <td>{{i.estado_id|muestraEstado()}}</td>
-        <td>{{i.ejecutaMedico}}</td>
+        <td>{{i.ejecutaMedico if i.ejecutaMedico != none else ""}}</td>
       </tr>
       {% endfor %}
     </tbody>

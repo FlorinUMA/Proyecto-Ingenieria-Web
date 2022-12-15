@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block route %}
-  Home > Técnico > Ver tareas
+  Home > Técnico > <u>Ver tareas</u>
 {% endblock %}
 
 {% block content%}
@@ -52,7 +52,7 @@
                 <td>{{tarea.tipo_tarea}}</td>
                 <td>{{tarea.estado_id|muestraEstado()}}</td>
                 <td>{{tarea.rob_Id|muestraRobot()}}</td>
-                <td><button type="button" class="btn btn-danger" onclick="sendDelete('{{tarea.id}}', '{{user}}')">Eliminar</button></td>
+                <td><button type="button" class="btn btn-danger" onclick="sendDelete('{{tarea.id}}')">Eliminar</button></td>
               </tr>
             {% endfor %}
       </tbody>
@@ -65,13 +65,12 @@
 
   <script>
 
-    function sendDelete(id_tarea, user_name) {
+    function sendDelete(id_tarea) {
       fetch("/tecnico/borrar-tarea", {
         method: "POST",
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify({
-          idTarea: id_tarea,
-          user: user_name
+          idTarea: id_tarea
           })
       }).then(res => {
         window.location.reload()

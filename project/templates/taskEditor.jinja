@@ -26,10 +26,14 @@
 {% block route %}
 
 {% if idTarea != "" %}
-Home > Técnico > Detalles del robot > Modificar tarea
-{% else %}
-Home > Técnico > Añadir tarea
-{% endif%}
+    Home > Técnico > Detalles del robot > <u>Modificar tarea</u>
+  {% else %}
+    {% if idRobot != none %}
+      Home > Técnico > Detalles del robot > <u>Añadir tarea</u>
+    {% else %}
+      Home > Técnico > <u>Añadir tarea</u>
+    {% endif %}
+  {% endif%}
 
 {% endblock %}
 

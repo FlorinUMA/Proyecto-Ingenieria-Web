@@ -377,8 +377,11 @@ def modifyTask():
             estadoTarea=1
 
         if (idTarea == "" or idTarea == None):
-            nuevoId = Tareas.query.with_entities(func.max(Tareas.id)).one()[0] + 1
-
+            nuevoId = Tareas.query.with_entities(func.max(Tareas.id)).one()[0]
+            # Este if permite generar un id nuevo incluso si no existe ninguna tarea existente
+            if(nuevoId == None or nuevoId == ""):
+                nuevoId = 1
+            nuevoId +=1
             tareaNueva = Tareas(
                 id=nuevoId,
                 nombre=nom,

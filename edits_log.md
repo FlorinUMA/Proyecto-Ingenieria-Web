@@ -79,3 +79,8 @@ Juan Carlos ha añadido múltiples cambios de visualización y funcionamiento de
 ## 13/12/2022
 Hoy se han reunido Florin, Pablo y Juan Carlos para continuar con el proyecto de forma general.
 
+## 14/12/2022
+Nos hemos reunido todo el grupo para seguir con el desarrollo de la web y la actualización de la memoria.
+
+## 15/12/2022
+Se ha reunido todo el grupo para terminar de corregir pequeños problemas en la web y terminar de actualizar la memoria.

@@ -6,14 +6,16 @@
 
 {% block content %}
 <div class="container-fluid text-center p-5" style="display: grid; place-content:center;">
-    <h1>
-        ERROR 404
-    </h1>
-    <div>
-        ERROR: URL incorrecta, regresa a la página principal<br><br>
-        <a href="{{ url_for('index') }}" style="text-decoration: none; color: white;">
-            <p>Click Here
-        </a> to go to the Home Page</p><br>
+    <div class="p-5" style="width: fit-content; border-radius: 5px; background-color: rgba(10,10,10,0.3);">
+        <h1 class="mini_title mb-5">
+            ERROR 404
+        </h1>
+        <div style="color: black;">
+            <b>ERROR</b>: URL incorrecta o fallo al cargar la página, regresa a la página principal<br><br>
+            <a href="{{ url_for('index') }}" style="text-decoration: none; color: white;">
+                <p>Pincha aquí
+            </a> para volver a la página principal</p><br>
+        </div>
     </div>
 </div>
 {% endblock %}

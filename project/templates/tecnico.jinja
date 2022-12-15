@@ -9,6 +9,12 @@
 
 <script src="{{url_for('static',filename='js/changeReturn.js')}}"></script>
 
+<style>
+    li.nav-item{
+        cursor: pointer;
+    }
+</style>
+
 {% endblock %}
 
 {%block navbar%}
@@ -18,6 +24,9 @@
       <a href="/tecnico/task-creator?user={{user}}" class="nav-link">Añadir nueva tarea</a>
     </li>
     <li class="nav-item">
+      <a onclick="nuevoTipo('{{user}}')" class="nav-link" style="">Añadir nuevo tipo</a>
+    </li>
+    <li class="nav-item">
       <a href="/tecnico/ver-tareas?user={{user}}" class="nav-link">Tareas</a>
     </li>
   </ul>
@@ -25,7 +34,7 @@
 {% endblock %}
 
 {% block route %}
-  Home > <u>Técnico</u>
+  Inicio > <u>Técnico</u>
 {% endblock %}
 
 {% block content%}
@@ -63,6 +72,57 @@
 function refRobot(user, id) {
   location.href = `/tecnico/robotDetails?user=${user}&id=${id}`;
 }
+</script>
+
+<script>
+
+async function nuevoTipo() {
+        const { value: tipo } = await Swal.fire({
+            title: 'Inserte el nuevo tipo',
+            input: 'text',
+            icon: 'question',
+            inputLabel: 'Tipo:',
+            showCancelButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                return '¡El tipo no puede estar vacío!'
+                }
+            }
+        })
+        if(tipo) {
+            const tipoNuevo = {
+                "tipoNuevo": tipo
+            };
+
+            function postTipo(data) {
+                return new Promise(function (resolve, reject){
+                    fetch('/tecnico/nuevo-tipo', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    })
+                    .then(
+                        (response) => response.json().then(data =>{
+                            resolve(data);
+                        }),
+                        (error) => {reject(error);}
+                    );
+                })
+            }
+
+            let result = postTipo(tipoNuevo)
+            if(result.hasOwnProperty('message')){
+                msg = JSON.stringify(result.errors[0].message)
+                Swal.fire("Webhook creation failed", msg.replace(/["]/g, ""), "error")
+            }
+            else {
+                Swal.fire("Webhook created", "Webhook was created successfully", "success")
+            }  
+        }
+    }
+
 </script>
 
 {% endblock %}

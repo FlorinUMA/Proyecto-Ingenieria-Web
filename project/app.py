@@ -348,24 +348,34 @@ def robotDetails():
 def _putParams(tareaNueva:Tareas):
     if (request.form.get("var0") != "" and request.form.get("val0") != ""):
         tareaNueva.param0 = request.form.get("var0") + "=" + request.form.get("val0")
+    else: tareaNueva.param0 = ""
     if(request.form.get("var1") != "" and request.form.get("val1") != ""):
         tareaNueva.param1 = request.form.get("var1") + "=" + request.form.get("val1")
+    else: tareaNueva.param1 = ""        
     if(request.form.get("var2") != "" and request.form.get("val2") != ""):
         tareaNueva.param2 = request.form.get("var2") + "=" + request.form.get("val2")
+    else: tareaNueva.param2 = ""
     if(request.form.get("var3") != "" and request.form.get("val3") != ""):
         tareaNueva.param3 = request.form.get("var3") + "=" + request.form.get("val3")
+    else: tareaNueva.param3 = ""
     if(request.form.get("var4") != "" and request.form.get("val4") != ""):
         tareaNueva.param4 = request.form.get("var4") + "=" + request.form.get("val4")
+    else: tareaNueva.param4 = ""
     if(request.form.get("var5") != "" and request.form.get("val5") != ""):
         tareaNueva.param5 = request.form.get("var5") + "=" + request.form.get("val5")
+    else: tareaNueva.param5 = ""
     if(request.form.get("var6") != "" and request.form.get("val6") != ""):
         tareaNueva.param6 = request.form.get("var6") + "=" + request.form.get("val6")
+    else: tareaNueva.param6 = ""
     if(request.form.get("var7") != "" and request.form.get("val7") != ""):
         tareaNueva.param7 = request.form.get("var7") + "=" + request.form.get("val7")
+    else: tareaNueva.param7 = ""
     if(request.form.get("var8") != "" and request.form.get("val8") != ""):
         tareaNueva.param8 = request.form.get("var8") + "=" + request.form.get("val8")
+    else: tareaNueva.param8 = ""
     if(request.form.get("var9") != "" and request.form.get("val9") != ""):
         tareaNueva.param9 = request.form.get("var9") + "=" + request.form.get("val9")
+    else: tareaNueva.param9 = ""
 
 
 @app.route("/tecnico/task-creator", methods=["GET", "POST"])
@@ -526,6 +536,7 @@ def modifyTask():
             idRobot = idRobot
         )
 
+
 @app.route("/tecnico/borrar-tarea", methods=["POST"])
 def borrar_tarea():
     body = request.get_json()
@@ -536,6 +547,18 @@ def borrar_tarea():
         return "Tarea eliminada"
     except:
         return abort(404)
+
+@app.route("/tecnico/nuevo-tipo", methods=["POST"])
+def nuevo_tipo():
+    body = request.get_json()
+    print(body)
+    nuevoTipo = body["tipoNuevo"]
+    try:
+        db.session.add(Tipo_tarea(tipo=nuevoTipo))
+        db.session.commit()
+        return "Tipo creado"
+    except:
+        return jsonify({"message": "No se pudo crear el tipo"})
     
 
 

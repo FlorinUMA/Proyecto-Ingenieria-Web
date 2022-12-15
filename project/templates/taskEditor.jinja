@@ -26,12 +26,12 @@
 {% block route %}
 
 {% if idTarea != "" %}
-    Home > Técnico > Detalles del robot > <u>Modificar tarea</u>
+    Inicio > Técnico > Detalles del robot > <u>Modificar tarea</u>
   {% else %}
     {% if idRobot != none %}
-      Home > Técnico > Detalles del robot > <u>Añadir tarea</u>
+      Inicio > Técnico > Detalles del robot > <u>Añadir tarea</u>
     {% else %}
-      Home > Técnico > <u>Añadir tarea</u>
+      Inicio > Técnico > <u>Añadir tarea</u>
     {% endif %}
   {% endif%}
 
@@ -66,25 +66,25 @@
         
         <!-- Cajas de variables. -->
         <input type="text" class="form-control mb-2" name="var0" placeholder="Variable 0"
-          value={{par0|mostrarNombreVariable()}}>
+          value='{{par0|mostrarNombreVariable()}}'>
         <input type="text" class="form-control mb-2" name="var1" placeholder="Variable 1"
-          value={{par1|mostrarNombreVariable()}}>
+          value='{{par1|mostrarNombreVariable()}}'>
         <input type="text" class="form-control mb-2" name="var2" placeholder="Variable 2"
-          value={{par2|mostrarNombreVariable()}}>
+          value='{{par2|mostrarNombreVariable()}}'>
         <input type="text" class="form-control mb-2" name="var3" placeholder="Variable 3"
-          value={{par3|mostrarNombreVariable()}}>
+          value='{{par3|mostrarNombreVariable()}}'>
         <input type="text" class="form-control mb-2" name="var4" placeholder="Variable 4"
-          value={{par4|mostrarNombreVariable()}}>
+          value='{{par4|mostrarNombreVariable()}}'>
         <input type="text" class="form-control mb-2" name="var5" placeholder="Variable 5"
-          value={{par5|mostrarNombreVariable()}}>
+          value='{{par5|mostrarNombreVariable()}}'>
         <input type="text" class="form-control mb-2" name="var6" placeholder="Variable 6"
-          value={{par6|mostrarNombreVariable()}}>
+          value='{{par6|mostrarNombreVariable()}}'>
         <input type="text" class="form-control mb-2" name="var7" placeholder="Variable 7"
-          value={{par7|mostrarNombreVariable()}}>
+          value='{{par7|mostrarNombreVariable()}}'>
         <input type="text" class="form-control mb-2" name="var8" placeholder="Variable 8"
-          value={{par8|mostrarNombreVariable()}}>
+          value='{{par8|mostrarNombreVariable()}}'>
         <input type="text" class="form-control mb-5" name="var9" placeholder="Variable 9"
-          value={{par9|mostrarNombreVariable()}}>
+          value='{{par9|mostrarNombreVariable()}}'>
 
         <input type="submit" class="btn btn-primary btn-block mb-4 mx-auto" value="Aplicar" style="width: 160px;">
       </div>
@@ -117,25 +117,25 @@
 
         <!-- Cajas de valores de variables. -->
         <input type="text" class="form-control mb-2" name="val0" placeholder="Valor variable 0"
-          value={{par0|mostrarValorVariable()}}>
+          value='{{par0|mostrarValorVariable()}}'>
         <input type="text" class="form-control mb-2" name="val1" placeholder="Valor variable 1"
-          value={{par1|mostrarValorVariable()}}>
+          value='{{par1|mostrarValorVariable()}}'>
         <input type="text" class="form-control mb-2" name="val2" placeholder="Valor variable 2"
-          value={{par2|mostrarValorVariable()}}>
+          value='{{par2|mostrarValorVariable()}}'>
         <input type="text" class="form-control mb-2" name="val3" placeholder="Valor variable 3"
-          value={{par3|mostrarValorVariable()}}>
+          value='{{par3|mostrarValorVariable()}}'>
         <input type="text" class="form-control mb-2" name="val4" placeholder="Valor variable 4"
-          value={{par4|mostrarValorVariable()}}>
+          value='{{par4|mostrarValorVariable()}}'>
         <input type="text" class="form-control mb-2" name="val5" placeholder="Valor variable 5"
-          value={{par5|mostrarValorVariable()}}>
+          value='{{par5|mostrarValorVariable()}}'>
         <input type="text" class="form-control mb-2" name="val6" placeholder="Valor variable 6"
-          value={{par6|mostrarValorVariable()}}>
+          value='{{par6|mostrarValorVariable()}}'>
         <input type="text" class="form-control mb-2" name="val7" placeholder="Valor variable 7"
-          value={{par7|mostrarValorVariable()}}>
+          value='{{par7|mostrarValorVariable()}}'>
         <input type="text" class="form-control mb-2" name="val8" placeholder="Valor variable 8"
-          value={{par8|mostrarValorVariable()}}>
+          value='{{par8|mostrarValorVariable()}}'>
         <input type="text" class="form-control mb-5" name="val9" placeholder="Valor variable 9"
-          value={{par9|mostrarValorVariable()}}>
+          value='{{par9|mostrarValorVariable()}}'>
 
         {# <input type="button" class="btn btn-danger btn-block mb-4 mx-auto" value="Cancelar" style="width: 160px;" onclick=""> #}
         <div class="text-center">

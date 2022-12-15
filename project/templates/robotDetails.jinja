@@ -15,7 +15,7 @@
 <div class="collapse navbar-collapse" id="menuItems">
   <ul class="navbar-nav me-auto">
     <li class="nav-item">
-      {% set ref = 'tecnico?user='+user %}
+      {% set ref = '/tecnico?user='+user %}
       <a href={{ref}} class="nav-link">Volver a técnico</a>
     </li>
   </ul>
@@ -35,7 +35,7 @@
   <h2 class="mini_title">Tareas de {{robot.nombre}}</h2>
 
   <div>
-    {% set ref = 'task-creator?user='+user + "&idTarea="%}
+    {% set ref = '/tecnico/task-creator?user='+user + "&idTarea="%}
     <button class="btn btn-primary" onclick="location.href='{{ref}}'">Crear nueva tarea</button>
   </div>
 
@@ -54,7 +54,7 @@
     <tbody>
       {% for i in row %}
 
-        {% set ref = 'task-creator?user='+user+'&idTarea='+i.id|string %}
+        {% set ref = '/tecnico/task-creator?user='+user+'&idTarea='+i.id|string %}
 
       <tr onclick="location.href='{{ref}}'">
         <td>{{i.id}}</td>

@@ -8,18 +8,15 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
   integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-<style>
-  form i {
-    cursor: pointer;
-  }
-</style>
+<script src="{{url_for('static',filename='js/changeReturn.js')}}"></script>
+
 {% endblock %}
 
 {%block navbar%}
 <div class="collapse navbar-collapse" id="menuItems">
   <ul class="navbar-nav me-auto">
     <li class="nav-item">
-      {% set ref = 'tecnico?user='+user %}
+      {% set ref = '/tecnico?user='+user %}
       <a href={{ref}} class="nav-link">Volver a técnico</a>
     </li>
   </ul>
@@ -28,78 +25,115 @@
 
 {% block route %}
 
-{% if nombre != "" %}
+{% if idTarea != "" %}
 Home > Técnico > Detalles del robot > Modificar tarea
 {% else %}
 Home > Técnico > Añadir tarea
 {% endif%}
+
 {% endblock %}
 
 <!-- Form: -->
 
 {% block content%}
+<script>custom_return("{{user}}")</script>
 
-<div class="container-fluid my-5">
-  <form action="/task-creator" method="POST">
-    <div class="form-row">
-      <div class="col">
-        <!-- Cajas de variables. -->
-        <input type="text" class="form-control" name="n" placeholder="Nombre tarea" value="Nombre de la tarea" readonly>
-        <input type="text" class="form-control" name="var0" placeholder="Variable 0"
-          value={{par0|mostrarNombreVariable()}}>
-        <input type="text" class="form-control" name="var1" placeholder="Variable 1"
-          value={{par1|mostrarNombreVariable()}}>
-        <input type="text" class="form-control" name="var2" placeholder="Variable 2"
-          value={{par2|mostrarNombreVariable()}}>
-        <input type="text" class="form-control" name="var3" placeholder="Variable 3"
-          value={{par3|mostrarNombreVariable()}}>
-        <input type="text" class="form-control" name="var4" placeholder="Variable 4"
-          value={{par4|mostrarNombreVariable()}}>
-        <input type="text" class="form-control" name="var5" placeholder="Variable 5"
-          value={{par5|mostrarNombreVariable()}}>
-        <input type="text" class="form-control" name="var6" placeholder="Variable 6"
-          value={{par6|mostrarNombreVariable()}}>
-        <input type="text" class="form-control" name="var7" placeholder="Variable 7"
-          value={{par7|mostrarNombreVariable()}}>
-        <input type="text" class="form-control" name="var8" placeholder="Variable 8"
-          value={{par8|mostrarNombreVariable()}}>
-        <input type="text" class="form-control" name="var9" placeholder="Variable 9"
-          value={{par9|mostrarNombreVariable()}}>
-      </div>
+<div class="container-fluid my-5 px-5">
 
-      <div class="col">
-        <!-- Cajas de valores de variables. -->
-        <input type="text" class="form-control" name="nombre" placeholder="Nombre asignado" value={{nombre}}>
-        <input type="text" class="form-control" name="val0" placeholder="Valor variable 0"
-          value={{par0|mostrarValorVariable()}}>
-        <input type="text" class="form-control" name="val1" placeholder="Valor variable 1"
-          value={{par1|mostrarValorVariable()}}>
-        <input type="text" class="form-control" name="val2" placeholder="Valor variable 2"
-          value={{par2|mostrarValorVariable()}}>
-        <input type="text" class="form-control" name="val3" placeholder="Valor variable 3"
-          value={{par3|mostrarValorVariable()}}>
-        <input type="text" class="form-control" name="val4" placeholder="Valor variable 4"
-          value={{par4|mostrarValorVariable()}}>
-        <input type="text" class="form-control" name="val5" placeholder="Valor variable 5"
-          value={{par5|mostrarValorVariable()}}>
-        <input type="text" class="form-control" name="val6" placeholder="Valor variable 6"
-          value={{par6|mostrarValorVariable()}}>
-        <input type="text" class="form-control" name="val7" placeholder="Valor variable 7"
-          value={{par7|mostrarValorVariable()}}>
-        <input type="text" class="form-control" name="val8" placeholder="Valor variable 8"
-          value={{par8|mostrarValorVariable()}}>
-        <input type="text" class="form-control" name="val9" placeholder="Valor variable 9"
-          value={{par9|mostrarValorVariable()}}>
-      </div>
-    </div>
-    <p>
-    {{idTarea}}
-    </p>
-
+  {% if idTarea != "" %}
+    <h2 class="mini_title"> Modificar la tarea {{idTarea}}</h2>
+  {% else %}
+    <h2 class="mini_title"> Añadir nueva tarea</h2>
+  {% endif%}
+  <br>
+  <form action="/tecnico/task-creator" method="POST">
     <input type="hidden" name="user" value='{{user}}'>
     <input type="hidden" name="idTarea" value='{{idTarea}}'>
-    <input type="submit" class="btn btn-primary btn-block mb-4" value="Aplicar">
+
+    <div class="row">
+      <div class="col-sm-6 px-5">
+        <label for="nombre">Nombre de la tarea:</label>
+        <input type="text" class="form-inline-control ml-3 mb-2" name="nombre" id="nombre" placeholder="Nombre asignado" required value='{{nombre}}'>
+        
+        <!-- Cajas de variables. -->
+        <input type="text" class="form-control mb-2" name="var0" placeholder="Variable 0"
+          value={{par0|mostrarNombreVariable()}}>
+        <input type="text" class="form-control mb-2" name="var1" placeholder="Variable 1"
+          value={{par1|mostrarNombreVariable()}}>
+        <input type="text" class="form-control mb-2" name="var2" placeholder="Variable 2"
+          value={{par2|mostrarNombreVariable()}}>
+        <input type="text" class="form-control mb-2" name="var3" placeholder="Variable 3"
+          value={{par3|mostrarNombreVariable()}}>
+        <input type="text" class="form-control mb-2" name="var4" placeholder="Variable 4"
+          value={{par4|mostrarNombreVariable()}}>
+        <input type="text" class="form-control mb-2" name="var5" placeholder="Variable 5"
+          value={{par5|mostrarNombreVariable()}}>
+        <input type="text" class="form-control mb-2" name="var6" placeholder="Variable 6"
+          value={{par6|mostrarNombreVariable()}}>
+        <input type="text" class="form-control mb-2" name="var7" placeholder="Variable 7"
+          value={{par7|mostrarNombreVariable()}}>
+        <input type="text" class="form-control mb-2" name="var8" placeholder="Variable 8"
+          value={{par8|mostrarNombreVariable()}}>
+        <input type="text" class="form-control mb-5" name="var9" placeholder="Variable 9"
+          value={{par9|mostrarNombreVariable()}}>
+
+        <input type="submit" class="btn btn-primary btn-block mb-4 mx-auto" value="Aplicar" style="width: 160px;">
+      </div>
+
+      <div class="col-sm-6 px-5">
+        <label for="tipo">Tipo de tarea:</label>
+        {# <input type="text" class="form-inline-control" name="tipo_tarea" id="tipo" placeholder="Tipo" value={{tipoTarea}}> #}
+        <select class="form-inline-control ml-3 mb-2" name="tipo">
+            {% for t in tipos %}
+                <option value="{{t.tipo}}" {% if t.tipo == tipoTarea %} selected {% endif %}>{{t.tipo}}</option>
+            {% endfor %}
+        </select>
+
+        <label for="tipo" class="ml-5">Estado de la tarea:</label>
+
+        {# <select> #}
+        {% if idTarea != "" %}
+          <select class="form-inline-control ml-3 mb-2" name="estado">
+        {% else %}
+          <select class="form-inline-control ml-3 mb-2" name="estado" disabled>
+        {% endif%}
+
+            {% for e in estados %}
+                <option value="{{e.id}}" {% if e.id == estadoTarea %} selected {% endif %}>{{e.nombre}}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Cajas de valores de variables. -->
+        <input type="text" class="form-control mb-2" name="val0" placeholder="Valor variable 0"
+          value={{par0|mostrarValorVariable()}}>
+        <input type="text" class="form-control mb-2" name="val1" placeholder="Valor variable 1"
+          value={{par1|mostrarValorVariable()}}>
+        <input type="text" class="form-control mb-2" name="val2" placeholder="Valor variable 2"
+          value={{par2|mostrarValorVariable()}}>
+        <input type="text" class="form-control mb-2" name="val3" placeholder="Valor variable 3"
+          value={{par3|mostrarValorVariable()}}>
+        <input type="text" class="form-control mb-2" name="val4" placeholder="Valor variable 4"
+          value={{par4|mostrarValorVariable()}}>
+        <input type="text" class="form-control mb-2" name="val5" placeholder="Valor variable 5"
+          value={{par5|mostrarValorVariable()}}>
+        <input type="text" class="form-control mb-2" name="val6" placeholder="Valor variable 6"
+          value={{par6|mostrarValorVariable()}}>
+        <input type="text" class="form-control mb-2" name="val7" placeholder="Valor variable 7"
+          value={{par7|mostrarValorVariable()}}>
+        <input type="text" class="form-control mb-2" name="val8" placeholder="Valor variable 8"
+          value={{par8|mostrarValorVariable()}}>
+        <input type="text" class="form-control mb-5" name="val9" placeholder="Valor variable 9"
+          value={{par9|mostrarValorVariable()}}>
+
+        {# <input type="button" class="btn btn-danger btn-block mb-4 mx-auto" value="Cancelar" style="width: 160px;" onclick=""> #}
+        <div class="text-center">
+          {% set ref = 'tecnico?user='+user%}
+          <button class="btn btn-danger mb-4" onclick="location.href='{{ref}}'" style="width: 160px;">Cancelar</button>
+        </div>
+      </div>
+    </div>
   </form>
 </div>
 
 {% endblock %}
+

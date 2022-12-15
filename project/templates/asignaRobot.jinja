@@ -48,8 +48,12 @@
                 <p>
                     <input type="hidden" name="user" value={{user}}>
                     <input type="hidden" name="id_tarea" value={{tarea.id}}>
-                    <input type="submit" class="btn btn-primary mt-3" value="Asignar">
-                    <button class="btn btn-danger mt-3" onclick="history.back()"> Cancel</button>
+                    <div class="mt-3">
+                        <input type="submit" class="btn btn-primary" value="Asignar">
+                        {% set ref = 'medico?user='+user%}
+                        <button class="btn btn-danger" onclick="location.href='{{ref}}'">Cancelar</button>
+                    </div>
+                    
                 </p>
 
             </form>

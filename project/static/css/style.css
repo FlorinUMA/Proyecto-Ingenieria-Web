@@ -148,6 +148,16 @@ main {
   padding: 15px;
 }
 
+.form-inline-control {
+  border: 1px;
+  border-color: #d3d3d3;
+  border-radius: 3px;
+  padding: 6px;
+  padding-left: 10px;
+  background-color: white;
+  width: fit-content;
+}
+
 @media screen and (min-width: 600px){
   .home-link{
     transition: font-size var(--transition-properties);

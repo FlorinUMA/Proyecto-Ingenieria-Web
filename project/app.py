@@ -304,8 +304,14 @@ def tecnico():
     tareas = Tareas.query.with_entities(Tareas).all()
     return render_template("tecnico.jinja", user=user, row=row, tareas=tareas)
 
+@app.route("/tecnico/ver-tareas", methods=["GET"])
+def ver_tareas():
+    user = request.args.get("user")
+    tareas = Tareas.query.with_entities(Tareas).all()
+    return render_template("verTareas.jinja", user=user, tareas=tareas)
 
-@app.route("/robotDetails", methods=["GET"])
+
+@app.route("/tecnico/robotDetails", methods=["GET"])
 def robotDetails():
     user = request.args.get("user")
     id_robot = request.args.get("id", type=int)
@@ -339,22 +345,26 @@ def _putParams(tareaNueva:Tareas):
         tareaNueva.param9 = request.form.get("var9") + "=" + request.form.get("val9")
 
 
-@app.route("/task-creator", methods=["GET", "POST"])
+@app.route("/tecnico/task-creator", methods=["GET", "POST"])
 def modifyTask():
     if request.method == "POST":
         user = request.form.get("user")
         idTarea = request.form.get("idTarea")
+        tipoTarea = request.form.get("tipo")
+        estadoTarea = request.form.get("estado")
+        if estadoTarea == None:
+            estadoTarea=0
         nom = request.form.get("nombre")
-        
+
         if (idTarea == "" or idTarea == None):
             nuevoId = Tareas.query.with_entities(func.max(Tareas.id)).one()[0] + 1
 
             tareaNueva = Tareas(
                 id=nuevoId,
                 nombre=nom,
-                estado_id=0,
+                estado_id=estadoTarea,
                 asignaTecnico=user,
-                # tipo_tarea=
+                tipo_tarea=tipoTarea
             )
             _putParams(tareaNueva)
 
@@ -362,11 +372,12 @@ def modifyTask():
             db.session.commit()
         
         else:
-            tareaNueva = Tareas.query.with_entities(Tareas).filter(Tareas.id == idTarea).one() #select(Tareas).where(Tareas.id == idTarea)
-            print(tareaNueva)
+            tareaNueva = Tareas.query.with_entities(Tareas).filter(Tareas.id == idTarea).one()
             if tareaNueva.nombre != nom:
                 tareaNueva.nombre = nom
             tareaNueva.asignaTecnico = user
+            tareaNueva.tipo_tarea = tipoTarea
+            tareaNueva.estado_id = estadoTarea
             _putParams(tareaNueva)
 
             db.session.query(Tareas).filter(Tareas.id == tareaNueva.id).update(
@@ -395,22 +406,22 @@ def modifyTask():
     else:
         idTarea = request.args.get("idTarea")
         user = request.args.get("user")
+        tipos = Tipo_tarea.query.with_entities(Tipo_tarea).all()
+        estados = Estados.query.with_entities(Estados).all()
+
         if idTarea != None:
             try:
-                sentencia = select(Tareas).where(Tareas.id == idTarea)
-                peticion = db.session.execute(sentencia)
-                resultado = peticion.one()[0]
-                par0 = resultado.param0 if resultado.param0 != None else ""
-                par1 = resultado.param1 if resultado.param1 != None else ""
-                par2 = resultado.param2 if resultado.param2 != None else ""
-                par3 = resultado.param3 if resultado.param3 != None else ""
-                par4 = resultado.param4 if resultado.param4 != None else ""
-                par5 = resultado.param5 if resultado.param5 != None else ""
-                par6 = resultado.param6 if resultado.param6 != None else ""
-                par7 = resultado.param7 if resultado.param7 != None else ""
-                par8 = resultado.param8 if resultado.param8 != None else ""
-                par9 = resultado.param9 if resultado.param9 != None else ""
-                nombreTarea = resultado.nombre if resultado.nombre != None else ""
+                tarea = Tareas.query.with_entities(Tareas).filter(Tareas.id == idTarea).one()
+                par0 = tarea.param0 if tarea.param0 != None else ""
+                par1 = tarea.param1 if tarea.param1 != None else ""
+                par2 = tarea.param2 if tarea.param2 != None else ""
+                par3 = tarea.param3 if tarea.param3 != None else ""
+                par4 = tarea.param4 if tarea.param4 != None else ""
+                par5 = tarea.param5 if tarea.param5 != None else ""
+                par6 = tarea.param6 if tarea.param6 != None else ""
+                par7 = tarea.param7 if tarea.param7 != None else ""
+                par8 = tarea.param8 if tarea.param8 != None else ""
+                par9 = tarea.param9 if tarea.param9 != None else ""
                 return render_template(
                     "taskEditor.jinja",
                     par0=par0,
@@ -423,9 +434,13 @@ def modifyTask():
                     par7=par7,
                     par8=par8,
                     par9=par9,
-                    nombre = nombreTarea,
+                    nombre = str(tarea.nombre),
                     user = user,
-                    idTarea = idTarea
+                    idTarea = idTarea,
+                    tipoTarea=tarea.tipo_tarea,
+                    estadoTarea=tarea.estado_id,
+                    estados = estados,
+                    tipos = tipos
                 )
             except:
                 return render_template(
@@ -442,7 +457,11 @@ def modifyTask():
                     par9="",
                     nombre = "",
                     user = user,
-                    idTarea = idTarea
+                    idTarea = "",
+                    tipoTarea="",
+                    estadoTarea="",
+                    estados = estados,
+                    tipos = tipos
                 )
         return render_template(
             "taskEditor.jinja",
@@ -458,7 +477,11 @@ def modifyTask():
             par9="",
             nombre = "",
             user = user,
-            idTarea = idTarea
+            idTarea = "",
+            tipoTarea="",
+            estadoTarea="",
+            estados = estados,
+            tipos = tipos
         )
 
 

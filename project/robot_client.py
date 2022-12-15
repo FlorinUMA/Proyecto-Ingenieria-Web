@@ -5,11 +5,11 @@ from json import dumps
 
 
 # Post 1 en el que el robot asigna un nuevo estado
-id_robot = 2
+id_tarea = 2
 nuevo_estado = 3
 
 response = post(
-    f"http://localhost:5000/api/status/{id_robot}",
+    f"http://localhost:5000/api/status/{id_tarea}",
     json={"status": nuevo_estado},
     headers={"Content-Type": "application/json"},
 )

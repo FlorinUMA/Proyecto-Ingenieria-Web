@@ -53,8 +53,10 @@ Los endpoints son:
   "status": {nuevo_estado}
 }
 ```
-Donde id tarea es el identificador numérico de la tarea a modificar y el cuerpo es de la forma:
+Donde _id\_tarea_ es el identificador numérico de la tarea a modificar y _nuevo\_estado_ es el identificador del estado a asignar.
+
 ---
+
 **POST** `/api/robot`
 ```
 {
@@ -62,4 +64,4 @@ Donde id tarea es el identificador numérico de la tarea a modificar y el cuerpo
   "tipos": {lista_tipos}
 }
 ```
-El cuerpo es de la forma (la lista de tipos de tareas solo admitirá aquellos que hayan sido previamente añadidos por un técnico):
+Donde _nombre\_robot_ es el nombre del nuevo robot y _lista\_tipos_ es la lista de los tipos de tareas que admite en formato string, esta lista solo admitirá aquellos tipos que hayan sido añadido previamente por un técnico.

@@ -67,8 +67,8 @@ class Estados(db.Model):
 
 manyRobots_manyTypes = db.Table(
     "manyRobots_manyTypes",
-    db.Column("robot_id", db.ForeignKey('Robots.id')),
-    db.Column("tipo_tarea", db.ForeignKey('Tipo_tarea.tipo')),
+    db.Column("robot_id", db.ForeignKey("Robots.id")),
+    db.Column("tipo_tarea", db.ForeignKey("Tipo_tarea.tipo")),
 )
 
 
@@ -76,7 +76,9 @@ class Robots(db.Model):
     __tablename__ = "Robots"
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(30), nullable=True)
-    tipos_tareas = db.relationship("Tipo_tarea", secondary=manyRobots_manyTypes, back_populates="robots_ids")
+    tipos_tareas = db.relationship(
+        "Tipo_tarea", secondary=manyRobots_manyTypes, back_populates="robots_ids"
+    )
 
     def __repr__(self):
         return "Robot %r" % self.id
@@ -86,7 +88,9 @@ class Tipo_tarea(db.Model):
     __tablename__ = "Tipo_tarea"
     tipo = db.Column(db.String(30), primary_key=True)
 
-    robots_ids = db.relationship("Robots", secondary=manyRobots_manyTypes, back_populates="tipos_tareas")
+    robots_ids = db.relationship(
+        "Robots", secondary=manyRobots_manyTypes, back_populates="tipos_tareas"
+    )
     tareas = db.relationship("Tareas")
 
     def __repr__(self):
@@ -110,7 +114,9 @@ class Tareas(db.Model):
     param8 = db.Column(db.String(100), nullable=True)
     param9 = db.Column(db.String(100), nullable=True)
 
-    tipo_tarea = db.Column(db.String(30), db.ForeignKey(Tipo_tarea.tipo), nullable=False)
+    tipo_tarea = db.Column(
+        db.String(30), db.ForeignKey(Tipo_tarea.tipo), nullable=False
+    )
 
     estado_id = db.Column(db.Integer, db.ForeignKey(Estados.id), nullable=False)
     rob_Id = db.Column(db.Integer, db.ForeignKey(Robots.id), nullable=True)
@@ -178,7 +184,7 @@ def presentValueParam(variable):
 
 @app.template_filter("filtroFecha")
 def filtroFecha(fecha: datetime.datetime):
-    if(fecha == None):
+    if fecha == None:
         return ""
     return fecha.strftime("%d/%m/%Y %H:%M")
 
@@ -283,27 +289,41 @@ def asignaRobot():
                 Tareas.rob_Id: int(robot_id),
                 Tareas.estado_id: 1,
                 Tareas.ejecutaMedico: user,
-                Tareas.fecha_ejecucion: datetime.datetime.today()
-            }, 
-            synchronize_session=False
+                Tareas.fecha_ejecucion: datetime.datetime.today(),
+            },
+            synchronize_session=False,
         )
         db.session.commit()
 
-        print(db.session.query(Tareas).filter(Tareas.id == int(tarea_id)).one().ejecutaMedico)
+        print(
+            db.session.query(Tareas)
+            .filter(Tareas.id == int(tarea_id))
+            .one()
+            .ejecutaMedico
+        )
 
         return redirect(f"/medico?user={request.form.get('user')}")
 
     tarea = Tareas.query.with_entities(Tareas).filter(Tareas.id == tarea_id).one()
-    tipo = Tipo_tarea.query.with_entities(Tipo_tarea).filter(Tipo_tarea.tipo == tarea.tipo_tarea).one()
+    tipo = (
+        Tipo_tarea.query.with_entities(Tipo_tarea)
+        .filter(Tipo_tarea.tipo == tarea.tipo_tarea)
+        .one()
+    )
 
-    robots = Robots.query.with_entities(Robots).filter(Robots.tipos_tareas.contains(tipo)).all()
+    robots = (
+        Robots.query.with_entities(Robots)
+        .filter(Robots.tipos_tareas.contains(tipo))
+        .all()
+    )
 
     return render_template("asignaRobot.jinja", user=user, tarea=tarea, robots=robots)
+
 
 @app.route("/medico/cancelar-tarea", methods=["POST"])
 def cancelar_tarea():
     body = request.get_json()
-    idTarea = body["idTarea"] #Recibe el ID de la tarea a cancelar
+    idTarea = body["idTarea"]  # Recibe el ID de la tarea a cancelar
     print(idTarea)
     try:
         db.session.query(Tareas).filter(Tareas.id == int(idTarea)).update(
@@ -311,8 +331,9 @@ def cancelar_tarea():
                 Tareas.estado_id: 0,
                 Tareas.rob_Id: None,
                 Tareas.ejecutaMedico: None,
-                Tareas.fecha_ejecucion: None
-            }, synchronize_session=False
+                Tareas.fecha_ejecucion: None,
+            },
+            synchronize_session=False,
         )
         db.session.commit()
         return "Tarea cancelada"
@@ -326,6 +347,7 @@ def tecnico():
     row = Robots.query.with_entities(Robots).all()
     tareas = Tareas.query.with_entities(Tareas).all()
     return render_template("tecnico.jinja", user=user, row=row, tareas=tareas)
+
 
 @app.route("/tecnico/ver-tareas", methods=["GET"])
 def ver_tareas():
@@ -342,40 +364,52 @@ def robotDetails():
     row = Tareas.query.with_entities(Tareas).filter(Tareas.rob_Id == id_robot).all()
     print(row)
     robot = Robots.query.with_entities(Robots).filter(Robots.id == id_robot).one()
-    return render_template("robotDetails.jinja", user=user, row=row, robot=robot, id_robot = str(id_robot))
+    return render_template(
+        "robotDetails.jinja", user=user, row=row, robot=robot, id_robot=str(id_robot)
+    )
 
 
-def _putParams(tareaNueva:Tareas):
-    if (request.form.get("var0") != "" and request.form.get("val0") != ""):
+def _putParams(tareaNueva: Tareas):
+    if request.form.get("var0") != "" and request.form.get("val0") != "":
         tareaNueva.param0 = request.form.get("var0") + "=" + request.form.get("val0")
-    else: tareaNueva.param0 = ""
-    if(request.form.get("var1") != "" and request.form.get("val1") != ""):
+    else:
+        tareaNueva.param0 = ""
+    if request.form.get("var1") != "" and request.form.get("val1") != "":
         tareaNueva.param1 = request.form.get("var1") + "=" + request.form.get("val1")
-    else: tareaNueva.param1 = ""        
-    if(request.form.get("var2") != "" and request.form.get("val2") != ""):
+    else:
+        tareaNueva.param1 = ""
+    if request.form.get("var2") != "" and request.form.get("val2") != "":
         tareaNueva.param2 = request.form.get("var2") + "=" + request.form.get("val2")
-    else: tareaNueva.param2 = ""
-    if(request.form.get("var3") != "" and request.form.get("val3") != ""):
+    else:
+        tareaNueva.param2 = ""
+    if request.form.get("var3") != "" and request.form.get("val3") != "":
         tareaNueva.param3 = request.form.get("var3") + "=" + request.form.get("val3")
-    else: tareaNueva.param3 = ""
-    if(request.form.get("var4") != "" and request.form.get("val4") != ""):
+    else:
+        tareaNueva.param3 = ""
+    if request.form.get("var4") != "" and request.form.get("val4") != "":
         tareaNueva.param4 = request.form.get("var4") + "=" + request.form.get("val4")
-    else: tareaNueva.param4 = ""
-    if(request.form.get("var5") != "" and request.form.get("val5") != ""):
+    else:
+        tareaNueva.param4 = ""
+    if request.form.get("var5") != "" and request.form.get("val5") != "":
         tareaNueva.param5 = request.form.get("var5") + "=" + request.form.get("val5")
-    else: tareaNueva.param5 = ""
-    if(request.form.get("var6") != "" and request.form.get("val6") != ""):
+    else:
+        tareaNueva.param5 = ""
+    if request.form.get("var6") != "" and request.form.get("val6") != "":
         tareaNueva.param6 = request.form.get("var6") + "=" + request.form.get("val6")
-    else: tareaNueva.param6 = ""
-    if(request.form.get("var7") != "" and request.form.get("val7") != ""):
+    else:
+        tareaNueva.param6 = ""
+    if request.form.get("var7") != "" and request.form.get("val7") != "":
         tareaNueva.param7 = request.form.get("var7") + "=" + request.form.get("val7")
-    else: tareaNueva.param7 = ""
-    if(request.form.get("var8") != "" and request.form.get("val8") != ""):
+    else:
+        tareaNueva.param7 = ""
+    if request.form.get("var8") != "" and request.form.get("val8") != "":
         tareaNueva.param8 = request.form.get("var8") + "=" + request.form.get("val8")
-    else: tareaNueva.param8 = ""
-    if(request.form.get("var9") != "" and request.form.get("val9") != ""):
+    else:
+        tareaNueva.param8 = ""
+    if request.form.get("var9") != "" and request.form.get("val9") != "":
         tareaNueva.param9 = request.form.get("var9") + "=" + request.form.get("val9")
-    else: tareaNueva.param9 = ""
+    else:
+        tareaNueva.param9 = ""
 
 
 @app.route("/tecnico/task-creator", methods=["GET", "POST"])
@@ -391,32 +425,34 @@ def modifyTask():
         print(estadoTarea)
         print(idRobot)
 
-        if estadoTarea == None and idRobot == 'None':
-            estadoTarea=0
-        elif estadoTarea == None and idRobot != 'None':
-            estadoTarea=1
+        if estadoTarea == None and idRobot == "None":
+            estadoTarea = 0
+        elif estadoTarea == None and idRobot != "None":
+            estadoTarea = 1
 
-        if (idTarea == "" or idTarea == None):
+        if idTarea == "" or idTarea == None:
             nuevoId = Tareas.query.with_entities(func.max(Tareas.id)).one()[0]
             # Este if permite generar un id nuevo incluso si no existe ninguna tarea existente
-            if(nuevoId == None or nuevoId == ""):
+            if nuevoId == None or nuevoId == "":
                 nuevoId = 0
-            nuevoId +=1
+            nuevoId += 1
             tareaNueva = Tareas(
                 id=nuevoId,
                 nombre=nom,
                 estado_id=estadoTarea,
                 asignaTecnico=user,
                 tipo_tarea=tipoTarea,
-                rob_Id=idRobot
+                rob_Id=idRobot,
             )
             _putParams(tareaNueva)
 
             db.session.add(tareaNueva)
             db.session.commit()
-        
+
         else:
-            tareaNueva = Tareas.query.with_entities(Tareas).filter(Tareas.id == idTarea).one()
+            tareaNueva = (
+                Tareas.query.with_entities(Tareas).filter(Tareas.id == idTarea).one()
+            )
             if tareaNueva.nombre != nom:
                 tareaNueva.nombre = nom
             tareaNueva.asignaTecnico = user
@@ -441,12 +477,13 @@ def modifyTask():
                     Tareas.estado_id: tareaNueva.estado_id,
                     Tareas.rob_Id: tareaNueva.rob_Id,
                     Tareas.asignaTecnico: tareaNueva.asignaTecnico,
-                }, synchronize_session=False
+                },
+                synchronize_session=False,
             )
             db.session.commit()
 
         return redirect(f"/tecnico?user={user}")
-    
+
     else:
         idTarea = request.args.get("idTarea")
         user = request.args.get("user")
@@ -454,13 +491,19 @@ def modifyTask():
         tipos = Tipo_tarea.query.with_entities(Tipo_tarea).all()
         estados = Estados.query.with_entities(Estados).all()
 
-        if (idRobot != None):
-            robot = Robots.query.with_entities(Robots).filter(Robots.id == idRobot).one()
+        if idRobot != None:
+            robot = (
+                Robots.query.with_entities(Robots).filter(Robots.id == idRobot).one()
+            )
             tipos = robot.tipos_tareas
 
         if idTarea != None:
-            try:                 
-                tarea = Tareas.query.with_entities(Tareas).filter(Tareas.id == idTarea).one()
+            try:
+                tarea = (
+                    Tareas.query.with_entities(Tareas)
+                    .filter(Tareas.id == idTarea)
+                    .one()
+                )
                 par0 = tarea.param0 if tarea.param0 != None else ""
                 par1 = tarea.param1 if tarea.param1 != None else ""
                 par2 = tarea.param2 if tarea.param2 != None else ""
@@ -483,14 +526,14 @@ def modifyTask():
                     par7=par7,
                     par8=par8,
                     par9=par9,
-                    nombre = str(tarea.nombre),
-                    user = user,
-                    idTarea = idTarea,
+                    nombre=str(tarea.nombre),
+                    user=user,
+                    idTarea=idTarea,
                     tipoTarea=tarea.tipo_tarea,
                     estadoTarea=tarea.estado_id,
-                    estados = estados,
-                    tipos = tipos,
-                    idRobot = idRobot
+                    estados=estados,
+                    tipos=tipos,
+                    idRobot=idRobot,
                 )
             except:
                 return render_template(
@@ -505,14 +548,14 @@ def modifyTask():
                     par7="",
                     par8="",
                     par9="",
-                    nombre = "",
-                    user = user,
-                    idTarea = "",
+                    nombre="",
+                    user=user,
+                    idTarea="",
                     tipoTarea="",
                     estadoTarea="",
-                    estados = estados,
-                    tipos = tipos,
-                    idRobot = idRobot
+                    estados=estados,
+                    tipos=tipos,
+                    idRobot=idRobot,
                 )
         return render_template(
             "taskEditor.jinja",
@@ -526,27 +569,28 @@ def modifyTask():
             par7="",
             par8="",
             par9="",
-            nombre = "",
-            user = user,
-            idTarea = "",
+            nombre="",
+            user=user,
+            idTarea="",
             tipoTarea="",
             estadoTarea="",
-            estados = estados,
-            tipos = tipos,
-            idRobot = idRobot
+            estados=estados,
+            tipos=tipos,
+            idRobot=idRobot,
         )
 
 
 @app.route("/tecnico/borrar-tarea", methods=["POST"])
 def borrar_tarea():
     body = request.get_json()
-    idTarea = body["idTarea"] #Recibe el ID de la tarea a eliminar
+    idTarea = body["idTarea"]  # Recibe el ID de la tarea a eliminar
     try:
-        db.session.query(Tareas).filter(Tareas.id==idTarea).delete()
+        db.session.query(Tareas).filter(Tareas.id == idTarea).delete()
         db.session.commit()
         return "Tarea eliminada"
     except:
         return abort(404)
+
 
 @app.route("/tecnico/nuevo-tipo", methods=["POST"])
 def nuevo_tipo():
@@ -559,8 +603,6 @@ def nuevo_tipo():
         return "Tipo creado"
     except:
         return jsonify({"message": "No se pudo crear el tipo"})
-    
-
 
 
 # ======= API ENDPOINTS =======
@@ -578,6 +620,32 @@ def changeTaskStatus(id_tarea):
         )
         db.session.commit()
         return jsonify({"statusCode": 200, "message": "Task status updated"})
+    except:
+        return jsonify({"statusCode": 400, "message": "Bad request"})
+
+
+@app.route("/api/robot", methods=["POST"])
+def addRobot():
+    try:
+        body = request.get_json()
+        nom = body["nombre"]
+        id_tipos = body["tipos"]
+        tipos = []
+        for t in id_tipos:
+            try:
+                tipo = Tipo_tarea.query.with_entities(Tipo_tarea).filter(Tipo_tarea.tipo == t).one()
+                tipos.append(tipo)
+            except:
+                pass
+        nuevo_id = Robots.query.with_entities(func.max(Robots.id)).one()[0]
+        if nuevo_id == None or nuevo_id == "":
+            nuevo_id = 0
+        nuevo_id += 1
+
+        robot = Robots(id=nuevo_id, nombre=nom, tipos_tareas=tipos)
+        db.session.add(robot)
+        db.session.commit()
+        return jsonify({"statusCode": 200, "message": "Robot creado"})
     except:
         return jsonify({"statusCode": 400, "message": "Bad request"})
 
@@ -602,12 +670,50 @@ def inserta_usuarios():
 
 
 def inserta_robots():
-    robot1 = Robots(id=122, nombre="XLR8", tipos_tareas=[Tipo_tarea.query.get("limpieza"), Tipo_tarea.query.get("desinfeccion"), Tipo_tarea.query.get("transporte")])
-    robot2 = Robots(id=123, nombre="C3PO", tipos_tareas=[Tipo_tarea.query.get("limpieza"), Tipo_tarea.query.get("transporte")])
-    robot3 = Robots(id=124, nombre="R2D2", tipos_tareas=[Tipo_tarea.query.get("videollamada"), Tipo_tarea.query.get("desinfeccion")])
-    robot4 = Robots(id=125, nombre="GR0GU", tipos_tareas=[Tipo_tarea.query.get("videollamada"), Tipo_tarea.query.get("transporte")])
-    robot5 = Robots(id=126, nombre="Lavatronix3000", tipos_tareas=[Tipo_tarea.query.get("limpieza"), Tipo_tarea.query.get("desinfeccion")])
-    robot6 = Robots(id=127, nombre="TorboCleaner5000", tipos_tareas=[Tipo_tarea.query.get("limpieza")])
+    robot1 = Robots(
+        id=1,
+        nombre="XLR8",
+        tipos_tareas=[
+            Tipo_tarea.query.get("limpieza"),
+            Tipo_tarea.query.get("desinfeccion"),
+            Tipo_tarea.query.get("transporte"),
+        ],
+    )
+    robot2 = Robots(
+        id=2,
+        nombre="C3PO",
+        tipos_tareas=[
+            Tipo_tarea.query.get("limpieza"),
+            Tipo_tarea.query.get("transporte"),
+        ],
+    )
+    robot3 = Robots(
+        id=3,
+        nombre="R2D2",
+        tipos_tareas=[
+            Tipo_tarea.query.get("videollamada"),
+            Tipo_tarea.query.get("desinfeccion"),
+        ],
+    )
+    robot4 = Robots(
+        id=4,
+        nombre="GR0GU",
+        tipos_tareas=[
+            Tipo_tarea.query.get("videollamada"),
+            Tipo_tarea.query.get("transporte"),
+        ],
+    )
+    robot5 = Robots(
+        id=5,
+        nombre="Lavatronix3000",
+        tipos_tareas=[
+            Tipo_tarea.query.get("limpieza"),
+            Tipo_tarea.query.get("desinfeccion"),
+        ],
+    )
+    robot6 = Robots(
+        id=6, nombre="TorboCleaner5000", tipos_tareas=[Tipo_tarea.query.get("limpieza")]
+    )
 
     db.session.add(robot1)
     db.session.commit()
@@ -645,9 +751,12 @@ def inserta_estados():
     estado2 = Estados(id=2, nombre="De camino", descripcion="De camino a la tarea")
     estado3 = Estados(id=3, nombre="En proceso", descripcion="Realizando la tarea")
     estado4 = Estados(id=4, nombre="Terminado", descripcion="Tarea terminada")
-    estado5 = Estados(id=5, nombre="Avería mecánica", descripcion="La aspiradora se ha atascado")
-    estado6 = Estados(id=6, nombre="Batería baja", descripcion="Volviendo a la base de carga")
-
+    estado5 = Estados(
+        id=5, nombre="Avería mecánica", descripcion="La aspiradora se ha atascado"
+    )
+    estado6 = Estados(
+        id=6, nombre="Batería baja", descripcion="Volviendo a la base de carga"
+    )
 
     db.session.add(estado0)
     db.session.commit()
@@ -670,7 +779,7 @@ def inserta_tipos():
     tipo2 = Tipo_tarea(tipo="desinfeccion")
     tipo3 = Tipo_tarea(tipo="transporte")
     tipo4 = Tipo_tarea(tipo="videollamada")
-    
+
     db.session.add(tipo1)
     db.session.commit()
     db.session.add(tipo2)
@@ -680,45 +789,50 @@ def inserta_tipos():
     db.session.add(tipo4)
     db.session.commit()
 
+
 def inserta_tareas():
     tarea1 = Tareas(
         id=1,
         nombre="Limpieza",
         tipo_tarea="limpieza",
-        rob_Id=122,
+        rob_Id=1,
         fecha_ejecucion=datetime.datetime.today(),
         estado_id=1,
         asignaTecnico="tecnico1",
-        param0="DURACION=20"
+        param0="DURACION=20",
     )
 
     tarea2 = Tareas(
         id=2,
         nombre="Videollamada",
         tipo_tarea="videollamada",
-        rob_Id=124,
-        fecha_ejecucion=datetime.datetime(day=12, month=2, year=2021, hour=16, minute=52),
+        rob_Id=3,
+        fecha_ejecucion=datetime.datetime(
+            day=12, month=2, year=2021, hour=16, minute=52
+        ),
         estado_id=2,
         asignaTecnico="tecnico2",
-        param0="NOMBRE_PROGRAMA=Skype"
+        param0="NOMBRE_PROGRAMA=Skype",
     )
 
     tarea3 = Tareas(
-        id=3, 
-        nombre="Aspirar", 
+        id=3,
+        nombre="Aspirar",
         tipo_tarea="limpieza",
-        rob_Id=123,
+        rob_Id=2,
         fecha_ejecucion=datetime.datetime.today(),
-        estado_id=2, 
-        asignaTecnico="tecnico1"
+        estado_id=2,
+        asignaTecnico="tecnico1",
     )
 
     tarea4 = Tareas(
         id=4,
         nombre="Desinfectar",
         tipo_tarea="desinfeccion",
-        rob_Id=124,
-        fecha_ejecucion=datetime.datetime(day=13, month=6, year=2022, hour=23, minute=32),
+        rob_Id=3,
+        fecha_ejecucion=datetime.datetime(
+            day=13, month=6, year=2022, hour=23, minute=32
+        ),
         estado_id=3,
         asignaTecnico="tecnico1",
         ejecutaMedico="medico1",
@@ -728,44 +842,46 @@ def inserta_tareas():
         id=5,
         nombre="Limpieza a fondo",
         tipo_tarea="limpieza",
-        rob_Id=126,
+        rob_Id=5,
         fecha_ejecucion=datetime.datetime(day=7, month=10, year=2022, hour=7, minute=1),
         estado_id=1,
         asignaTecnico="tecnico1",
-        param0 = "POTENCIA=560",
-        param1 = "TIEMPO=3000",
-        param2 = "RAYOS=UV",
-        param3 = "ENERGIA=BATERIA",
-        param4 = "PARAR.SI=BATERIA-BAJA"
+        param0="POTENCIA=560",
+        param1="TIEMPO=3000",
+        param2="RAYOS=UV",
+        param3="ENERGIA=BATERIA",
+        param4="PARAR.SI=BATERIA-BAJA",
     )
 
     tarea6 = Tareas(
         id=6,
         nombre="Fregar suelo",
         tipo_tarea="limpieza",
-        rob_Id=127,
+        rob_Id=6,
         fecha_ejecucion=datetime.datetime.today(),
         estado_id=3,
         asignaTecnico="tecnico1",
-        param0 = "MODO=FREGONA",
-        param1 = "TIEMPO=3600",
-        param2 = "RAYOS=GAMMA",
-        param3 = "AGRESIVIDAD=MODERADA",
-        param4 = "BOCINA=NO"
+        param0="MODO=FREGONA",
+        param1="TIEMPO=3600",
+        param2="RAYOS=GAMMA",
+        param3="AGRESIVIDAD=MODERADA",
+        param4="BOCINA=NO",
     )
 
     tarea7 = Tareas(
         id=7,
         nombre="Luz en quirófano",
         tipo_tarea="transporte",
-        rob_Id=123,
-        fecha_ejecucion=datetime.datetime(day=30, month=8, year=2019, hour=9, minute=45),
+        rob_Id=2,
+        fecha_ejecucion=datetime.datetime(
+            day=30, month=8, year=2019, hour=9, minute=45
+        ),
         estado_id=4,
         asignaTecnico="tecnico1",
-        ejecutaMedico = "medico1",
-        param0 = "POTENCIA=30",
-        param1 = "COLOR=3000K",
-        param2 = "UBICACION=QUIROFANO1"
+        ejecutaMedico="medico1",
+        param0="POTENCIA=30",
+        param1="COLOR=3000K",
+        param2="UBICACION=QUIROFANO1",
     )
 
     tarea8 = Tareas(

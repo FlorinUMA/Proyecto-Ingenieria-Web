@@ -29,6 +29,7 @@
           <th scope="col">Tarea</th>
           <th scope="col">Tipo</th>
           <th scope="col">Estado</th>
+          <th scope="col">Fecha de ejecución</th>
           <th scope="col">Robot asignado</th>
         </tr>
       </thead>
@@ -39,6 +40,7 @@
                 <td>{{tarea.nombre}}</td>
                 <td>{{tarea.tipo_tarea}}</td>
                 <td>{{tarea.estado_id|muestraEstado()}}</td>
+                <td>{{tarea.fecha_ejecucion|filtroFecha()}}</td>
                 <td>{{tarea.rob_Id|muestraRobot()}}</td>
               </tr>
             {% endfor %}

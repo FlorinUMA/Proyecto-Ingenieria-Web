@@ -36,11 +36,12 @@
     <table class="table table-dark mx-auto" style="width: 85%;">
       <thead class="thead-dark">
         <tr>
-          <th scope="col" style="width: 15%;">ID Tarea</th>
+          <th scope="col" style="width: 10%;">ID Tarea</th>
           <th scope="col" style="width: 25%;">Tarea</th>
           <th scope="col" style="width: 15%;">Tipo</th>
-          <th scope="col" style="width: 15%;">Estado</th>
-          <th scope="col" style="width: 20%;">Robot asignado</th>
+          <th scope="col" style="width: 10%;">Estado</th>
+          <th scope="col" style="width: 15%;">Fecha de ejecución</th>
+          <th scope="col" style="width: 15%;">Robot asignado</th>
           <th scope="col" style="width: 10%;"></th>
         </tr>
       </thead>
@@ -51,6 +52,7 @@
                 <td>{{tarea.nombre}}</td>
                 <td>{{tarea.tipo_tarea}}</td>
                 <td>{{tarea.estado_id|muestraEstado()}}</td>
+                <td>{{tarea.fecha_ejecucion|filtroFecha()}}</td>
                 <td>{{tarea.rob_Id|muestraRobot()}}</td>
                 <td><button type="button" class="btn btn-danger" onclick="sendDelete('{{tarea.id}}')">Eliminar</button></td>
               </tr>

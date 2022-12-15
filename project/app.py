@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, and_, select, update, func
 from sqlalchemy.pool import StaticPool
 from uuid import uuid4
 from sqlalchemy import func
+import datetime
 
 engine = create_engine(
     "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
@@ -71,7 +72,6 @@ manyRobots_manyTypes = db.Table(
 )
 
 
-
 class Robots(db.Model):
     __tablename__ = "Robots"
     id = db.Column(db.Integer, primary_key=True)
@@ -98,6 +98,7 @@ class Tareas(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=False)
+    fecha_ejecucion = db.Column(db.DateTime(), nullable=True)
     param0 = db.Column(db.String(100), nullable=True)
     param1 = db.Column(db.String(100), nullable=True)
     param2 = db.Column(db.String(100), nullable=True)
@@ -173,6 +174,13 @@ def presentNameParam(variable):
 @app.template_filter("mostrarValorVariable")
 def presentValueParam(variable):
     return variable.split("=")[1] if len(variable) > 0 else ""
+
+
+@app.template_filter("filtroFecha")
+def filtroFecha(fecha: datetime.datetime):
+    if(fecha == None):
+        return ""
+    return fecha.strftime("%d/%m/%Y %H:%M")
 
 
 # ======= WEBPAGE ENDPOINTS =======
@@ -274,7 +282,8 @@ def asignaRobot():
             {
                 Tareas.rob_Id: int(robot_id),
                 Tareas.estado_id: 1,
-                Tareas.ejecutaMedico: user
+                Tareas.ejecutaMedico: user,
+                Tareas.fecha_ejecucion: datetime.datetime.today()
             }, 
             synchronize_session=False
         )
@@ -301,7 +310,8 @@ def cancelar_tarea():
             {
                 Tareas.estado_id: 0,
                 Tareas.rob_Id: None,
-                Tareas.ejecutaMedico: None
+                Tareas.ejecutaMedico: None,
+                Tareas.fecha_ejecucion: None
             }, synchronize_session=False
         )
         db.session.commit()
@@ -653,6 +663,7 @@ def inserta_tareas():
         nombre="Limpieza",
         tipo_tarea="limpieza",
         rob_Id=122,
+        fecha_ejecucion=datetime.datetime.today(),
         estado_id=1,
         asignaTecnico="tecnico1",
         param0="DURACION=20"
@@ -663,6 +674,7 @@ def inserta_tareas():
         nombre="Videollamada",
         tipo_tarea="videollamada",
         rob_Id=124,
+        fecha_ejecucion=datetime.datetime(day=12, month=2, year=2021, hour=16, minute=52),
         estado_id=2,
         asignaTecnico="tecnico2",
         param0="NOMBRE_PROGRAMA=Skype"
@@ -672,7 +684,8 @@ def inserta_tareas():
         id=3, 
         nombre="Aspirar", 
         tipo_tarea="limpieza",
-        rob_Id=123, 
+        rob_Id=123,
+        fecha_ejecucion=datetime.datetime.today(),
         estado_id=2, 
         asignaTecnico="tecnico1"
     )
@@ -682,6 +695,7 @@ def inserta_tareas():
         nombre="Desinfectar",
         tipo_tarea="desinfeccion",
         rob_Id=124,
+        fecha_ejecucion=datetime.datetime(day=13, month=6, year=2022, hour=23, minute=32),
         estado_id=3,
         asignaTecnico="tecnico1",
         ejecutaMedico="medico1",
@@ -692,6 +706,7 @@ def inserta_tareas():
         nombre="Limpieza a fondo",
         tipo_tarea="limpieza",
         rob_Id=126,
+        fecha_ejecucion=datetime.datetime(day=7, month=10, year=2022, hour=7, minute=1),
         estado_id=1,
         asignaTecnico="tecnico1",
         param0 = "POTENCIA=560",
@@ -706,6 +721,7 @@ def inserta_tareas():
         nombre="Fregar suelo",
         tipo_tarea="limpieza",
         rob_Id=127,
+        fecha_ejecucion=datetime.datetime.today(),
         estado_id=3,
         asignaTecnico="tecnico1",
         param0 = "MODO=FREGONA",
@@ -720,6 +736,7 @@ def inserta_tareas():
         nombre="Luz en quirófano",
         tipo_tarea="transporte",
         rob_Id=123,
+        fecha_ejecucion=datetime.datetime(day=30, month=8, year=2019, hour=9, minute=45),
         estado_id=4,
         asignaTecnico="tecnico1",
         ejecutaMedico = "medico1",
@@ -732,7 +749,6 @@ def inserta_tareas():
         id=8,
         nombre="Videllamada consulta 1",
         tipo_tarea="videollamada",
-        # rob_Id=125,
         estado_id=0,
         asignaTecnico="tecnico1",
         ejecutaMedico="medico1",
@@ -741,7 +757,6 @@ def inserta_tareas():
         id=9,
         nombre="Videollamada consulta 23",
         tipo_tarea="videollamada",
-        # rob_Id=125,
         estado_id=0,
         asignaTecnico="tecnico1",
         ejecutaMedico="medico1",
@@ -750,7 +765,6 @@ def inserta_tareas():
         id=10,
         nombre="LLevar medicamentos a sala 119",
         tipo_tarea="transporte",
-        # rob_Id=125,
         estado_id=0,
         asignaTecnico="tecnico1",
         ejecutaMedico="medico1",
@@ -759,7 +773,6 @@ def inserta_tareas():
         id=11,
         nombre="Llevar herramientas a quirófano 3",
         tipo_tarea="transporte",
-        # rob_Id=125,
         estado_id=0,
         asignaTecnico="tecnico1",
         ejecutaMedico="medico1",
@@ -768,7 +781,6 @@ def inserta_tareas():
         id=12,
         nombre="Llevar herramientas a quirófano 5",
         tipo_tarea="transporte",
-        # rob_Id=125,
         estado_id=0,
         asignaTecnico="tecnico1",
         ejecutaMedico="medico1",

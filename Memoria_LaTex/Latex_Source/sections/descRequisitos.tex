@@ -22,6 +22,8 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitosFuncionales}
    		RF-9 & En la monitorización del robot se deberá poder acceder a todos los tipos de tareas & Necesario\\
    		RF-10 & Autorización mediante usuario-contraseña para entrar en la aplicación. & Deseable\\
    		RF-11 & Los robots notifican a la aplicación si estos no pueden realizar la tarea por alguna razón. & Prioritario\\
+         RF-12 & Eliminación de una tarea. & Prioritario\\
+         RF-13 & Creación de un nuevo tipo de robots. & Prioritario\\
  		\bottomrule
  		\end{tabular}
 
@@ -243,7 +245,42 @@ A continuación, observamos en la tabla \ref{tab:prioridadRequisitosFuncionales}
  		\bottomrule
  		\end{tabular}
 \end{table}
-
+\begin{table}[H]
+    \label{tab:reqF12}
+ 	\caption{Descripción requisito RF-12}
+	\centering
+	
+	\begin{tabular}{C{3cm}|C{12cm}}
+ 		\toprule
+ 		\textbf{Atributo} & \textbf{Descripción} \\
+ 		\midrule
+ 	    ID & RF-12 \\
+ 	    Cómo... & Técnico \\
+ 	    Quiero... & Borrar una tarea. \\
+ 	    Para obtener... & Una nueva lista de tareas sin la eliminada.  \\
+ 	    Criterio de Aceptación & Que podamos eliminar la tarea de la base de datos sin ningún conflicto.  \\
+ 	    Versión & 1.3 \\
+ 		\bottomrule
+ 		\end{tabular}
+\end{table}
+\begin{table}[H]
+    \label{tab:reqF13}
+ 	\caption{Descripción requisito RF-13}
+	\centering
+	
+	\begin{tabular}{C{3cm}|C{12cm}}
+ 		\toprule
+ 		\textbf{Atributo} & \textbf{Descripción} \\
+ 		\midrule
+ 	    ID & RF-13 \\
+ 	    Cómo... & Técnico \\
+ 	    Quiero... & Añadir nuevos tipos de robots. \\
+ 	    Para obtener... & Un conjunto de tipos de robots aumentado con el introducido.  \\
+ 	    Criterio de Aceptación & Que lo introduzcamos correctamente en la base de datos sin ningún conflicto.  \\
+ 	    Versión & 1.3 \\
+ 		\bottomrule
+ 		\end{tabular}
+\end{table}
 \subsection{Requisitos no funcionales}
 Observamos en la tabla \ref{tab:prioridadRequisitosNoFuncionales} la prioridad de los requisitos no funcionales, así como su tipo.
 \begin{table} [H]
@@ -349,9 +386,9 @@ Observamos en la tabla \ref{tab:prioridadRequisitosNoFuncionales} la prioridad d
  		\textbf{Atributo} & \textbf{Descripción} \\
  		\midrule
  	    ID & RNF-6 \\
- 	    Descripción & La información asociada a una tarea deberá incluir la fecha y la hora a la que se ha realizado. \\
+ 	    Descripción & La información asociada a una tarea deberá incluir la fecha y la hora a la que se ha iniciado por el médico. \\
  	    Precedente & RF-8 \\
- 	    Versión & 1 \\
+ 	    Versión & 2 \\
  		\bottomrule
  		\end{tabular}
 \end{table}

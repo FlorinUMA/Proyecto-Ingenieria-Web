@@ -22,7 +22,7 @@ Para realizar el modelo IFML de nuestra aplicación, que pretende definir el com
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth]{images/Tech-IFML.PNG}
+	\includegraphics[width=1\textwidth]{images/Tech-IFML.png}
 	\caption{Modelo IFML concreto de la vista del técnico}
 	\label{fig:IFMLTech}
 \end{figure}
@@ -31,18 +31,23 @@ Como podemos observar en la figura \ref{fig:IFMLModel}, la web dispondrá de una
 
 Dentro del contenedor \textit{Main View}, tendremos diferentes \textit{View Containers} dependiendo si el usuario es un empleado sanitario o bien, un técnico.
 
-Si el usuario es un personal sanitario, usará el contenedor \textit{Doctor}. En él, el usuario podrá visualizar una lista con todos los robots y sus respectivos estados (ocupado, libre o error). Dicha característica implementa los requisitos funcionales RF-4, RF-7 y RF-12. 
+Si el usuario es un personal sanitario, usará el contenedor \textit{Tasks list}. En él, el usuario podrá visualizar una lista con todos los robots, sus respectivas tareas, sus respectivos estados (ocupado, libre o error), fecha de ejecución y el robot asignado para cada tarea. Dichas características implementas los requisitos funcionales RF-4, RF-7 y RF-12 y el requisito no funcional RFN-6.
 
-Además, el usuario podrá seleccionar un robot en concreto de dicha lista, lo cual desplegará la información completa de ese robot (su tarea actual, problemas surgidos y el historial de tareas de la última jornada), y también permitirá asignar una nueva tarea o bien cancelarla. Si el usuario selecciona un elemento del historial (elemento de \textit{History of previous tasks}), se mostrará la configuración de la tarea, y si dicha tarea está en ejecución, se podrá cambiar la configuración de la misma.
-Las características mencionadas reflejan los requisitos funcionales RF-1, RF-2, RF-3, RF-4, RF-7, RF-8, RF-9 Y RF-11.
+Además, el usuario podrá seleccionar una tarea en concreto de dicha lista, lo cual desplegará la información completa de esa tarea (parámetros y una lista con los robots que pueden desempeñarla), y también permitirá asignar una nueva tarea a un robot permitido o bien cancelarla, es decir, se realiza la transición hacia la vista \textit{Task Manager}.
+Las características mencionadas reflejan los requisitos funcionales RF-1, RF-2, RF-4, RF-7, RF-9 Y RF-11.
 
 Todas las acciones de gestión de tareas descritas anteriormente se actualizarán en el robot afectado con la acción \textit{Modify task queue} y se volverá a la lista de robots anterior.
 
-Si el usuario es un técnico, obtendremos un comportamiento similar al anterior. En este caso, el contenedor a usar será \textit{Technician}. En él, el usuario podrá visualizar una lista con todos los tipos de robots existentes. Dicha característica implementa el requisito RF-5. Si el técnico elige un determinado tipo, se mostrará un formulario con todas las posibles tareas que dicho tipo de robot puede ejecutar. Además, permitirá modificar, eliminar y añadir tareas. Para ello, se desplegará un formulario de casillas con dos columnas y diez filas donde el técnico podrá añadir hasta 10 pares clave-valor. Es decir, si el robot dispone del atributo DurationOfTask y tiene como valor el tiempo en segundo de la ejecución de una tarea, el técnico añadirá en la casilla de la primera columna DurationOfTask y en la casilla de la segunda columna de la misma fila, añadirá el tiempo en segundos.
+Si el usuario es un técnico, obtendremos un comportamiento similar al anterior. En este caso, el contenedor a usar será \textit{Robot List}. En él, el usuario podrá visualizar una lista con todos los tipos de robots existentes. Si el técnico elige un determinado tipo de robot, se mostrará un formulario con todas las posibles tareas que dicho tipo de robot puede ejecutar. Además, permitirá modificar, eliminar y añadir tareas. Para ello, el técnico deberá seleccionar el robot que desea modificar, lo que generará un formulario (vista \textit{Task Creator}) donde el técnico podrá añadir hasta 10 pares clave-valor. Es decir, si el robot dispone del atributo DurationOfTask y tiene como valor el tiempo en segundo de la ejecución de una tarea, el técnico añadirá en la casilla de la primera columna DurationOfTask y en la casilla de la segunda columna de la misma fila, añadirá el tiempo en segundos. 
+
+Todas las acciones de gestión descritas anteriormente se actualizarán en los robots del mismo tipo con la acción \textit{Apply new task values} y se volverá a la lista de tipos de tarea anterior.
 
 Dichas características representan los requisitos funcionales RF-6 y RF-9.
 
-Todas las acciones de gestión descritas anteriormente se actualizarán en los robots del mismo tipo con la acción \textit{Apply new task values} y se volverá a la lista de tipos de tarea anterior.
+Además, el técnico podrá visualizar para su comodidad todas las tareas existentes si selecciona el botón \textit{Tasks}, el cual le redireccionará al contenedor \textit{Tasks Viewer}, y además, podrá elegir cuál desea eliminar si pulsa sobre un botón. Dicha característica implementa el requisito funcional RF-12.
+
+Finalmente, el técnico podrá añadir nuevos tipos de robots si en la vista \textit{Robot list} selecciona el botón \textit{Add new type}. Dicha función implementa el requisito funcional RF-13.
+
 
 \subsection{Diseño de lógica}
 
@@ -75,6 +80,19 @@ Por último, en la figura \ref{fig:deploy} podemos observar el diagrama de despl
 	\label{fig:deploy}
 \end{figure}
 
+\subsection{Modelo conceptual base de datos}
+La base de datos consistirá en un determinado conjunto de entidades y relaciones. Véase figura \ref{fig:database}.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{images/ModeloConceptual.png}
+	\caption{Diagrama conceptual de la base de datos}
+	\label{fig:database}
+\end{figure}
 
+Como podemos apreciar, nuestra base de datos contendrá información sobre los usuarios registrados, los diferentes robots existentes, las tareas y los estados de los mismos.
+
+Un tipo de tarea (representado como la entidad débil Tareas) puede poseer hasta 10 atributos de configuración y un ID único. Dicha entidad débil está identificada por la entidad Robots, la cual posee información sobre los robots que hay actualmente disponibles en el hospital.
+
+Una tarea va a disponer de diferentes estados (representados por la entidad Estados). Además, un robot podrá ser compatible con varios tipos de tarea en concreto (entidad Tipo\_tarea) y dicha entidad podrá estar asociada a varias tareas, es decir, que existirán tareas de diferentes tipos, pero cada tarea será únicamente de un tipo.
 \newpage

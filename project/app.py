@@ -353,12 +353,16 @@ def modifyTask():
         tipoTarea = request.form.get("tipo")
         estadoTarea = request.form.get("estado")
         idRobot = request.form.get("idRobot")
-        if estadoTarea == None:
-            if idRobot == None:
-                estadoTarea=0
-            else:
-                estadoTarea=1
         nom = request.form.get("nombre")
+
+        print(estadoTarea)
+        print(idRobot)
+
+        if estadoTarea == None and idRobot == 'None':
+            estadoTarea=0
+            print('asnfgsa')
+        elif estadoTarea == None and idRobot != 'None':
+            estadoTarea=1
 
         if (idTarea == "" or idTarea == None):
             nuevoId = Tareas.query.with_entities(func.max(Tareas.id)).one()[0] + 1
@@ -499,14 +503,15 @@ def modifyTask():
 
 @app.route("/tecnico/borrar-tarea", methods=["POST"])
 def borrar_tarea():
-    idTarea = request.form.get("idTarea") #Recibe el ID de la tarea a eliminar
-    user = request.form.get("user") #Recibe el usuario del técnico para redigirilo a la vista principal una vez borrado la tarea
+    body = request.get_json()
+    idTarea = body["idTarea"] #Recibe el ID de la tarea a eliminar
+    user = body["user"] #Recibe el usuario del técnico para redigirilo a la vista principal una vez borrado la tarea
     try:
         db.session.query(Tareas).filter(Tareas.id==idTarea).delete()
         db.session.commit()
         return redirect(f"/tecnico?user={user}")
     except:
-        return render_template(error404())
+        return abort(404)
     
 
 

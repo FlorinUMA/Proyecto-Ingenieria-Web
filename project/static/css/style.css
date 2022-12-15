@@ -157,26 +157,3 @@ main {
   background-color: white;
   width: fit-content;
 }
-
-@media screen and (min-width: 600px){
-  .home-link{
-    transition: font-size var(--transition-properties);
-  }
-  .home-link:hover{
-    color:black;
-    font-size: large;
-  }
-
-  .btn{
-    transition: all var(--transition-properties);
-  }
-
-  .btn:hover{
-    font-size: large;
-  }
-}
-@media screen and (min-width: 992px){
-  .fieldset-container{
-    gap: 1em;
-  }
-}

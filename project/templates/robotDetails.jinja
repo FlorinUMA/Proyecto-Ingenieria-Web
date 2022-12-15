@@ -54,7 +54,7 @@
     <tbody>
       {% for i in row %}
 
-        {% set ref = '/tecnico/task-creator?user='+user+'&idTarea='+i.id|string %}
+        {% set ref = '/tecnico/task-creator?user=' + user+ '&idRobot=' + id_robot + '&idTarea=' + i.id|string %}
 
       <tr onclick="location.href='{{ref}}'">
         <td>{{i.id}}</td>

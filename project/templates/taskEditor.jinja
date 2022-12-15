@@ -43,7 +43,11 @@ Home > Técnico > Añadir tarea
   {% if idTarea != "" %}
     <h2 class="mini_title"> Modificar la tarea {{idTarea}}</h2>
   {% else %}
-    <h2 class="mini_title"> Añadir nueva tarea</h2>
+    {% if idRobot != none %}
+      <h2 class="mini_title"> Añadir nueva tarea para el robot {{idRobot}}</h2>
+    {% else %}
+      <h2 class="mini_title"> Añadir nueva tarea</h2>
+    {% endif %}
   {% endif%}
   <br>
   <form action="/tecnico/task-creator" method="POST">
@@ -98,9 +102,12 @@ Home > Técnico > Añadir tarea
         {% else %}
           <select class="form-inline-control ml-3 mb-2" name="estado" disabled>
         {% endif%}
-
             {% for e in estados %}
+              {% if idTarea=="" and idRobot != none %}
+                <option value=1 selected>En espera</option>
+              {% else %}
                 <option value="{{e.id}}" {% if e.id == estadoTarea %} selected {% endif %}>{{e.nombre}}</option>
+              {% endif %}
             {% endfor %}
         </select>
 

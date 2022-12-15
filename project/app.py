@@ -354,7 +354,10 @@ def modifyTask():
         estadoTarea = request.form.get("estado")
         idRobot = request.form.get("idRobot")
         if estadoTarea == None:
-            estadoTarea=0
+            if idRobot == None:
+                estadoTarea=0
+            else:
+                estadoTarea=1
         nom = request.form.get("nombre")
 
         if (idTarea == "" or idTarea == None):
@@ -412,8 +415,12 @@ def modifyTask():
         tipos = Tipo_tarea.query.with_entities(Tipo_tarea).all()
         estados = Estados.query.with_entities(Estados).all()
 
+        if (idRobot != None):
+            robot = Robots.query.with_entities(Robots).filter(Robots.id == idRobot).one()
+            tipos = robot.tipos_tareas
+
         if idTarea != None:
-            try:
+            try:                 
                 tarea = Tareas.query.with_entities(Tareas).filter(Tareas.id == idTarea).one()
                 par0 = tarea.param0 if tarea.param0 != None else ""
                 par1 = tarea.param1 if tarea.param1 != None else ""

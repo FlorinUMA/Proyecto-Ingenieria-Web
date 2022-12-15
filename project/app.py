@@ -319,7 +319,7 @@ def robotDetails():
     row = Tareas.query.with_entities(Tareas).filter(Tareas.rob_Id == id_robot).all()
     print(row)
     robot = Robots.query.with_entities(Robots).filter(Robots.id == id_robot).one()
-    return render_template("robotDetails.jinja", user=user, row=row, robot=robot)
+    return render_template("robotDetails.jinja", user=user, row=row, robot=robot, id_robot = str(id_robot))
 
 
 def _putParams(tareaNueva:Tareas):
@@ -352,6 +352,7 @@ def modifyTask():
         idTarea = request.form.get("idTarea")
         tipoTarea = request.form.get("tipo")
         estadoTarea = request.form.get("estado")
+        idRobot = request.form.get("idRobot")
         if estadoTarea == None:
             estadoTarea=0
         nom = request.form.get("nombre")
@@ -364,7 +365,8 @@ def modifyTask():
                 nombre=nom,
                 estado_id=estadoTarea,
                 asignaTecnico=user,
-                tipo_tarea=tipoTarea
+                tipo_tarea=tipoTarea,
+                rob_Id=idRobot
             )
             _putParams(tareaNueva)
 
@@ -406,6 +408,7 @@ def modifyTask():
     else:
         idTarea = request.args.get("idTarea")
         user = request.args.get("user")
+        idRobot = request.args.get("idRobot")
         tipos = Tipo_tarea.query.with_entities(Tipo_tarea).all()
         estados = Estados.query.with_entities(Estados).all()
 
@@ -440,7 +443,8 @@ def modifyTask():
                     tipoTarea=tarea.tipo_tarea,
                     estadoTarea=tarea.estado_id,
                     estados = estados,
-                    tipos = tipos
+                    tipos = tipos,
+                    idRobot = idRobot
                 )
             except:
                 return render_template(
@@ -461,7 +465,8 @@ def modifyTask():
                     tipoTarea="",
                     estadoTarea="",
                     estados = estados,
-                    tipos = tipos
+                    tipos = tipos,
+                    idRobot = idRobot
                 )
         return render_template(
             "taskEditor.jinja",
@@ -481,7 +486,8 @@ def modifyTask():
             tipoTarea="",
             estadoTarea="",
             estados = estados,
-            tipos = tipos
+            tipos = tipos,
+            idRobot = idRobot
         )
 
 

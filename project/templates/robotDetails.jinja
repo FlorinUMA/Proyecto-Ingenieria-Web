@@ -35,7 +35,7 @@
   <h2 class="mini_title">Tareas de {{robot.nombre}}</h2>
 
   <div>
-    {% set ref = '/tecnico/task-creator?user='+user + "&idTarea="%}
+    {% set ref = '/tecnico/task-creator?user='+ user + '&idRobot=' + id_robot + "&idTarea="%}
     <button class="btn btn-primary" onclick="location.href='{{ref}}'">Crear nueva tarea</button>
   </div>
 

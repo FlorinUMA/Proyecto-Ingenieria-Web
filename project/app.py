@@ -20,7 +20,7 @@ app.config["SECRET_KEY"] = uuid4().hex
 
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = "sqlite:///hospital.db"  # 3 barras porque es un path relativo. SI fuera absoluto, serían 4 barras
+] = "sqlite:///hospital.db" 
 with app.app_context():
     db = SQLAlchemy(app)
 
@@ -146,7 +146,7 @@ def error404(err):
 
 
 # ======= FILTROS =======
-
+# Dichos filtros se usarán para representar cieta información de otra manera para poder mostrarla en la Web de manera más amigable
 
 @app.template_filter("muestraEstado")
 def searchStatus(estado_id):
@@ -191,7 +191,7 @@ def filtroFecha(fecha: datetime.datetime):
 
 # ======= WEBPAGE ENDPOINTS =======
 
-
+# Definimos el endpoint inicial, es decir, la primera web que aparecerá nada más acceder el usuario a la URL
 @app.route("/", methods=["GET"])
 def index():
     user = request.args.get("user")
@@ -221,7 +221,7 @@ def index():
 
     return render_template("index.jinja", user=user, ismedico=False, istecnico=False)
 
-
+# Implementamos la pantalla de inicio de sesión
 @app.route("/login", methods=["GET", "POST"])
 def login():
     error = False
@@ -239,13 +239,9 @@ def login():
 
             # Ejecutamos la query
             query = db.session.execute(statement)
+            
             # Guardamos el resultado
             result = query.one()[0]
-
-            # ==== PLACEHOLDER PARA COMPROBAR QUE FUNCIONA [BORRAR] ======
-            # print(result.usuario)
-            # print(result.contrasenya)
-            # print(result.rol)
 
             if result.rol == "medico":
                 return redirect(f"/medico?user={result.usuario}")
@@ -265,14 +261,14 @@ def login():
         # Si recibe un GET se carga la página con normalidad
         return render_template("login.jinja", error=error)
 
-
+# Definimos el endpoint principal del médico. Es decir, implementamos la vista Task List del diagrama IFML del médico
 @app.route("/medico", methods=["GET"])
 def medico():
     user = request.args.get("user")
     tareas = Tareas.query.with_entities(Tareas).all()
     return render_template("medico.jinja", user=user, tareas=tareas)
 
-
+# Implementamos la vista Task Manager del diagrama IFML de médico
 @app.route("/medico/asigna-robot", methods=["GET", "POST"])
 def asignaRobot():
     user = request.args.get("user")
@@ -319,7 +315,7 @@ def asignaRobot():
 
     return render_template("asignaRobot.jinja", user=user, tarea=tarea, robots=robots)
 
-
+# Enpoint auxiliar para facilitar la usabilidad de la vista anteriormente mencionada
 @app.route("/medico/cancelar-tarea", methods=["POST"])
 def cancelar_tarea():
     body = request.get_json()
@@ -340,7 +336,7 @@ def cancelar_tarea():
     except:
         return abort(404)
 
-
+# Implementación del componente Robot List del diagrama IFML del técnico
 @app.route("/tecnico", methods=["GET"])
 def tecnico():
     user = request.args.get("user")
@@ -348,19 +344,18 @@ def tecnico():
     tareas = Tareas.query.with_entities(Tareas).all()
     return render_template("tecnico.jinja", user=user, row=row, tareas=tareas)
 
-
+# Implementación de la vista Task viewer del diagrama IFML del técnico
 @app.route("/tecnico/ver-tareas", methods=["GET"])
 def ver_tareas():
     user = request.args.get("user")
     tareas = Tareas.query.with_entities(Tareas).all()
     return render_template("verTareas.jinja", user=user, tareas=tareas)
 
-
+# Implementación de la vista Robot Details del diagrama IFML del técnico
 @app.route("/tecnico/robotDetails", methods=["GET"])
 def robotDetails():
     user = request.args.get("user")
     id_robot = request.args.get("id", type=int)
-    # print(id_robot)
     row = Tareas.query.with_entities(Tareas).filter(Tareas.rob_Id == id_robot).all()
     print(row)
     robot = Robots.query.with_entities(Robots).filter(Robots.id == id_robot).one()
@@ -368,7 +363,7 @@ def robotDetails():
         "robotDetails.jinja", user=user, row=row, robot=robot, id_robot=str(id_robot)
     )
 
-
+# Método auxiliar para transformar la sintaxis de los parámetros de las tareas
 def _putParams(tareaNueva: Tareas):
     if request.form.get("var0") != "" and request.form.get("val0") != "":
         tareaNueva.param0 = request.form.get("var0") + "=" + request.form.get("val0")
@@ -411,7 +406,7 @@ def _putParams(tareaNueva: Tareas):
     else:
         tareaNueva.param9 = ""
 
-
+# Implementación del contenedor Task Creator del diagrama IFML del técnico
 @app.route("/tecnico/task-creator", methods=["GET", "POST"])
 def modifyTask():
     if request.method == "POST":
@@ -424,12 +419,13 @@ def modifyTask():
 
         print(estadoTarea)
         print(idRobot)
-
+        # Si se desea crear una nueva tarea genérica (sin ser asignada a ningún robot en específico), se asignará su estado a Sin Asignar
         if estadoTarea == None and idRobot == "None":
             estadoTarea = 0
+        # Si se desea crear una tarea para un robot en concreto, se establecerá su futuro estado a En Espera
         elif estadoTarea == None and idRobot != "None":
             estadoTarea = 1
-
+        # Rutina para crear una nueva tarea
         if idTarea == "" or idTarea == None:
             nuevoId = Tareas.query.with_entities(func.max(Tareas.id)).one()[0]
             # Este if permite generar un id nuevo incluso si no existe ninguna tarea existente
@@ -448,7 +444,7 @@ def modifyTask():
 
             db.session.add(tareaNueva)
             db.session.commit()
-
+        # Rutina para modificar una tarea existente
         else:
             tareaNueva = (
                 Tareas.query.with_entities(Tareas).filter(Tareas.id == idTarea).one()
@@ -483,20 +479,21 @@ def modifyTask():
             db.session.commit()
 
         return redirect(f"/tecnico?user={user}")
-
+    
+    # En caso de no recibir un POST, se cargará el editor de tareas con los datos ya existentes en la base de datos de una tarea
     else:
         idTarea = request.args.get("idTarea")
         user = request.args.get("user")
         idRobot = request.args.get("idRobot")
         tipos = Tipo_tarea.query.with_entities(Tipo_tarea).all()
         estados = Estados.query.with_entities(Estados).all()
-
+        # Detectamos el tipo de robot que se ha seleccionado para solo poder asignarle un tipo de tarea en concreto
         if idRobot != None:
             robot = (
                 Robots.query.with_entities(Robots).filter(Robots.id == idRobot).one()
             )
             tipos = robot.tipos_tareas
-
+        # Cargamos los datos de la tarea y los representamos
         if idTarea != None:
             try:
                 tarea = (
@@ -557,6 +554,7 @@ def modifyTask():
                     tipos=tipos,
                     idRobot=idRobot,
                 )
+        # Si se crea una nueva tarea, el formulario se cargará vacío
         return render_template(
             "taskEditor.jinja",
             par0="",
@@ -579,7 +577,7 @@ def modifyTask():
             idRobot=idRobot,
         )
 
-
+# Endpoint auxiliar para eliminar una tarea creada
 @app.route("/tecnico/borrar-tarea", methods=["POST"])
 def borrar_tarea():
     body = request.get_json()
@@ -591,7 +589,7 @@ def borrar_tarea():
     except:
         return abort(404)
 
-
+# Implementa el contenedor Type creator del diagrama IFML del técnico
 @app.route("/tecnico/nuevo-tipo", methods=["POST"])
 def nuevo_tipo():
     body = request.get_json()
@@ -650,7 +648,7 @@ def addRobot():
         return jsonify({"statusCode": 400, "message": "Bad request"})
 
 
-# ======= FUNCIONES DE INSERCIÓN DE DATOS =======
+# ======= FUNCIONES DE INSERCIÓN DE DATOS EJEMPLO EN LA BASE DE DATOS=======
 
 
 def inserta_usuarios():

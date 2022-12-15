@@ -490,6 +490,19 @@ def modifyTask():
             idRobot = idRobot
         )
 
+@app.route("/tecnico/borrar-tarea", methods=["POST"])
+def borrar_tarea():
+    idTarea = request.form.get("idTarea") #Recibe el ID de la tarea a eliminar
+    user = request.form.get("user") #Recibe el usuario del técnico para redigirilo a la vista principal una vez borrado la tarea
+    try:
+        db.session.query(Tareas).filter(Tareas.id==idTarea).delete()
+        db.session.commit()
+        return redirect(f"/tecnico?user={user}")
+    except:
+        return render_template(error404())
+    
+
+
 
 # ======= API ENDPOINTS =======
 # Creamos los endpoints de la API para que los robots puedan acceder al sistema

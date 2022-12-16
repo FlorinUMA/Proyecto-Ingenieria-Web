@@ -115,10 +115,10 @@ async function nuevoTipo() {
             let result = postTipo(tipoNuevo)
             if(result.hasOwnProperty('message')){
                 msg = JSON.stringify(result.errors[0].message)
-                Swal.fire("Webhook creation failed", msg.replace(/["]/g, ""), "error")
+                Swal.fire("Creación de tipo fallida", msg.replace(/["]/g, ""), "error")
             }
             else {
-                Swal.fire("Webhook created", "Webhook was created successfully", "success")
+                Swal.fire("Tipo creado", "El nuevo tipo de tarea se ha creado satisfactoriamente", "success")
             }  
         }
     }
